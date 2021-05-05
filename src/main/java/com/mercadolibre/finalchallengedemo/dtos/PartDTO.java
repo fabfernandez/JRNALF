@@ -14,4 +14,6 @@ public class PartDTO {
     private Integer widthDimension;
     private Integer tallDimension;
 
+    private Integer normalPrice;
+
 }

@@ -13,8 +13,14 @@ import java.util.List;
 public interface IPartRepository extends JpaRepository<PartEntity, Long> {
 
     /*Get parts that were modified from the query date to the current date (p)*/
-    @Query("SELECT p from PartEntity p FROM LEFT JOIN parts_modifications " +
-            "ON parts.part_code = parts_modifications.id_part " +
-            "WHERE parts_modifications.last_modification > :lastModification")
+    @Query("SELECT p FROM PartEntity p INNER JOIN FETCH p.partModificationEntity pm " +
+            "ON p.id = pm.id WHERE pm.last_modification <= :lastModification")
     List<PartEntity> findPartEntityByDate(@Param("lastModification")LocalDate date);
+
+    /*Get the parts that varied in price from the date of the consultation to the current date (v)*/
+    @Query("SELECT p FROM PartEntity p INNER JOIN FETCH p.partModificationEntity pm " +
+            "ON p.id = pm.id WHERE pm.normalPrice >= :priceVariation AND pm.last_modification <= :lastModification") // Chequear condicion de consulta
+    List<PartEntity> findPartEntityByPriceVaration(@Param("priceVariation") Integer price, @Param("lastModification") LocalDate date);
+
+
 }

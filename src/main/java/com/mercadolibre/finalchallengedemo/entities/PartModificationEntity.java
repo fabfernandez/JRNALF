@@ -11,12 +11,13 @@ public class PartModificationEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_part", nullable = false)
-    private PartEntity part;
-
     private LocalDate last_modification;
 
     @Column(name = "normal_price")
     private Integer normalPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "part_code", nullable = false)
+    private PartEntity part;
+
 }

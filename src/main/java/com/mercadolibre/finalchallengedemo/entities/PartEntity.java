@@ -2,6 +2,7 @@ package com.mercadolibre.finalchallengedemo.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Entity
 @Table(name = "parts")
@@ -32,5 +33,11 @@ public class PartEntity {
     @Column(nullable = false, length = 5)
     @Size(max = 5, message = "The net weight of the spare part needs 5 numeric characters.")
     private Integer netWeight;
+
+    @Column(name = "normal_price")
+    private Integer normalPrice;
+
+    @OneToMany(mappedBy = "parts")
+    private Set<PartModificationEntity> partModificationEntity;
 
 }
