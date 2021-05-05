@@ -1,13 +1,10 @@
 package com.mercadolibre.finalchallengedemo.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-@Getter @Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PartDTO {
@@ -17,5 +14,4 @@ public class PartDTO {
     private Integer tallDimension;
     private Integer longDimension;
     private Integer netWeight;
-
 }
