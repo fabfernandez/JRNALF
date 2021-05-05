@@ -27,7 +27,6 @@ public class PartServiceImpl implements IPartService {
     }
 
     @Override
-    @Transactional()
     public List<PartDTO> getAll() {
         return this.partRepository.findAll().stream().map(p -> modelMapper.map(p,PartDTO.class)).collect(Collectors.toList());
     }

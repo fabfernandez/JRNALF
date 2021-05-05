@@ -25,7 +25,7 @@ public class PartController {
             return ResponseEntity.ok(this.partService.getPartsByFilter(filter));
         }
 
-        return ResponseEntity.ok(this.partService.getAll());
+        return ResponseEntity.ok(partService.getAll());
     }
 
     @PostMapping("/save")
