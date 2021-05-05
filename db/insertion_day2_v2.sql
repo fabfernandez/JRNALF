@@ -98,7 +98,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 DROP TABLE IF EXISTS `automotriz_delux`.`parts_modifications` ;
 
 CREATE TABLE IF NOT EXISTS `automotriz_delux`.`parts_modifications` (
-  `id_part_modification` INT NOT NULL,
+  `id_part_modification` INT NOT NULL AUTO_INCREMENT,
   `id_part` INT NULL DEFAULT NULL,
   `last_modification` DATETIME NULL DEFAULT NULL,
   `normal_price` INT NULL DEFAULT NULL,
@@ -275,7 +275,7 @@ insert into parts_modifications (id_part, last_modification, normal_price) value
 insert into parts_modifications (id_part, last_modification, normal_price) values (1, '2021-05-02 19:21:01', 962);
 insert into parts_modifications (id_part, last_modification, normal_price) values (2, '2021-01-29 11:11:04', 2305);
 insert into parts_modifications (id_part, last_modification, normal_price) values (3, '2020-10-31 20:28:28', 837);
-insert into parts_modifications (id_part, last_modification, normal_price) values (3, '2020-11-31 20:28:28', 650);
+insert into parts_modifications (id_part, last_modification, normal_price) values (3, '2020-11-30 20:28:28', 650);
 insert into parts_modifications (id_part, last_modification, normal_price) values (4, '2020-06-23 21:15:44', 2243);
 insert into parts_modifications (id_part, last_modification, normal_price) values (5, '2020-11-08 04:04:17', 1236);
 insert into parts_modifications (id_part, last_modification, normal_price) values (6, '2020-06-06 13:39:38', 1119);
