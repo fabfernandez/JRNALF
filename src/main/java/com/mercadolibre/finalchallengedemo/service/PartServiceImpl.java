@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,8 +42,7 @@ public class PartServiceImpl implements IPartService {
                 return null;
                 //return this.partRepository.findPartsModifiedSinceDate(filter.getDate());
             case 'V':
-                return null;
-                //return this.partRepository.findPartsPriceModifiedSinceDate(filter.getDate());
+                return this.partRepository.findPartEntityByDate(filter.getDate(), LocalDate.now()).stream().map(p -> modelMapper.map(p,PartDTO.class)).collect(Collectors.toList());
             case 'C':
             default:
                 return getAll();

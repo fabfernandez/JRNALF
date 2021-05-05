@@ -7,6 +7,9 @@ import com.mercadolibre.finalchallengedemo.util.ValidatorUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
+
 @RestController
 @RequestMapping("/api/v1/parts")
 public class PartController {
@@ -18,7 +21,7 @@ public class PartController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity getParts(PartFilterDTO filter) {
+    public ResponseEntity getParts(@Valid PartFilterDTO filter) {
 
         if(filter.hasFilters()) {
             ValidatorUtil.validatePartFilter(filter);

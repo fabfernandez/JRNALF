@@ -5,9 +5,20 @@ import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException
 
 public class ValidatorUtil {
     public static void validatePartFilter(PartFilterDTO filter) {
-        if( (filter.getQueryType().equals('P') || filter.getQueryType().equals('V'))  && filter.getDate() == null)
-            throw new InvalidPartFilterException("Date can not be null.");
-        if(filter.getOrder() != null && filter.getOrder() > 3 && filter.getOrder() < 1 )
-            throw new InvalidPartFilterException("Order must be 1,2 or 3.");
+        if (filter.getQueryType() != null) {
+            switch (filter.getQueryType()) {
+                case 'P':
+                case 'V':
+                    if (filter.getDate() == null)
+                        throw new InvalidPartFilterException("Date can not be null.");
+                    break;
+                case 'C':
+                    if (filter.getDate() != null)
+                        throw new InvalidPartFilterException("Date does not apply to queryType C.");
+                    break;
+                default:
+                    throw new InvalidPartFilterException("Query type must be C, P or V.");
+            }
+        }
     }
 }
