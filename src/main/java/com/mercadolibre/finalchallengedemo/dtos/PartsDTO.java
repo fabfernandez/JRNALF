@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Getter @Setter
-public class PartResponseDTO {
+public class PartsDTO {
 
     private Integer partCode;
     private String description;

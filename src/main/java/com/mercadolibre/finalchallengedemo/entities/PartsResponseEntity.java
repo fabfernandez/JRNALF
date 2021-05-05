@@ -2,11 +2,13 @@ package com.mercadolibre.finalchallengedemo.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
 @Table(name = "parts")
-public class PartEntity {
+@SecondaryTable(name = "part_modification", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id_part_modification"))
+public class PartsResponseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,4 +39,9 @@ public class PartEntity {
     @OneToMany(mappedBy = "parts")
     private Set<PartModificationEntity> partModificationEntity;
 
+    @Column(name = "normal_price", table = "parts_modifications")
+    private Integer normalPrice;
+    
+    @Column(name = "last_modification", table = "parts_modifications")
+    private LocalDate lastModification;
 }
