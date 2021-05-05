@@ -1,12 +1,11 @@
 package com.mercadolibre.finalchallengedemo.controller;
 
+import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
 import com.mercadolibre.finalchallengedemo.service.PartServiceImpl;
 import com.mercadolibre.finalchallengedemo.util.ValidatorUtil;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/parts")
@@ -20,11 +19,37 @@ public class PartController {
 
     @GetMapping("/list")
     public ResponseEntity getParts(PartFilterDTO filter) {
-        ValidatorUtil.validatePartFilter(filter);
 
-        if(filter.hasFilters())
+        if(filter.hasFilters()) {
+            ValidatorUtil.validatePartFilter(filter);
             return ResponseEntity.ok(this.partService.getPartsByFilter(filter));
+        }
 
         return ResponseEntity.ok(this.partService.getAll());
     }
+
+    @PostMapping("/save")
+    private ResponseEntity savePart(@RequestBody PartDTO part){
+        partService.savePart(part);
+        return ResponseEntity.ok("Part saved.");
+    }
+
+    @GetMapping("/find/{id}")
+    private ResponseEntity findPart(@PathVariable Long id){
+        return ResponseEntity.ok(partService.findPart(id));
+    }
+
+    @PutMapping("/update")
+    private ResponseEntity<String> update(@RequestBody PartDTO part){
+        partService.savePart(part);
+        return ResponseEntity.ok("Part updated.");
+    }
+
+
+    @DeleteMapping("/delete/{id}")
+    private ResponseEntity<String> deleteStudent(@PathVariable Long id){
+        partService.deletePart(id);
+        return ResponseEntity.ok("Eliminó el estudienta");
+    }
+
 }
