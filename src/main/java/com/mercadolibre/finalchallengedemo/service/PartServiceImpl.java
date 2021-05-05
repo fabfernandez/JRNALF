@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class PartServiceImpl implements IPartService {
 
     private final IPartRepository partRepository;
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -65,7 +66,7 @@ public class PartServiceImpl implements IPartService {
         Optional<PartEntity> part = partRepository.findById(id);
         if(!part.isPresent())
             throw new PartsNotFoundedException("The part with id " + id + " was not founded.");
-        return modelMapper.map(part, PartDTO.class);
+        return modelMapper.map(part.get(), PartDTO.class);
     }
 
 
