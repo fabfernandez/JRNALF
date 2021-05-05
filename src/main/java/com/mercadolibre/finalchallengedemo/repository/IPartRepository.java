@@ -12,6 +12,9 @@ import java.util.List;
 @Repository
 public interface IPartRepository extends JpaRepository<PartEntity, Long> {
 
-    //@Query("select p from PartEntity")
-    List<PartEntity> findPartEntityByDate(@Param("")LocalDate date);
+    /*Get parts that were modified from the query date to the current date (p)*/
+    @Query("SELECT p from PartEntity p FROM LEFT JOIN parts_modifications " +
+            "ON parts.part_code = parts_modifications.id_part " +
+            "WHERE parts_modifications.last_modification > :lastModification")
+    List<PartEntity> findPartEntityByDate(@Param("lastModification")LocalDate date);
 }
