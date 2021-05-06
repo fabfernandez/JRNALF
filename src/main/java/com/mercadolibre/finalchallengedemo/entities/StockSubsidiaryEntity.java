@@ -15,7 +15,7 @@ public class StockSubsidiaryEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_part", nullable = false)
-    private PartEntity parts;
+    private PartEntity part;
 
     @ManyToOne
     @JoinColumn(name = "id_subsidiary", nullable = false)

@@ -2,6 +2,7 @@ package com.mercadolibre.finalchallengedemo.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Entity
 @Table(name = "subsidiaries")
@@ -16,8 +17,8 @@ public class SubsidiaryEntity {
     private String name;
 
     @Column(nullable = false, length = 40)
-    @Size(max = 40, message = "The adress of the subsidiary must have a miximium of 40 alphanumeric characters.")
-    private String adress;
+    @Size(max = 40, message = "The address of the subsidiary must have a miximium of 40 alphanumeric characters.")
+    private String address;
 
     @Column(nullable = false, length = 20)
     @Size(max = 20, message = "The phone of the subsidiary must have a miximium of 20 numeric characters.")
@@ -26,5 +27,8 @@ public class SubsidiaryEntity {
     @Column(nullable = false, length = 20)
     @Size(max = 20, message = "The country of the subsidiary must have a miximium of 20 characters.")
     private String country;
+
+    @OneToMany(mappedBy = "subsidiary")
+    private Set<StockSubsidiaryEntity> subsidiaryEntities;
 
 }

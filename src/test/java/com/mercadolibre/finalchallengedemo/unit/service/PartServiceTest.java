@@ -5,8 +5,6 @@ import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
 import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
 import com.mercadolibre.finalchallengedemo.entities.PartsResponseEntity;
-import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
-import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundedException;
 import com.mercadolibre.finalchallengedemo.repository.IPartRepository;
 import com.mercadolibre.finalchallengedemo.service.PartServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.ResourceUtils;
 
 import java.util.Calendar;
@@ -66,7 +62,7 @@ public class PartServiceTest {
         List<PartsResponseEntity> partsEntityList = getList("classpath:allPartsEntities.json",PartsResponseEntity.class);
         List<PartDTO> partsDtoList = getList("classpath:allParts.json",PartDTO.class);
 
-        when(this.partRepository.findPartsModifiedSinceDate(any(),any())).thenReturn(partsEntityList);
+        when(this.partRepository.findPartsModifiedSinceDate(any(),any(),any())).thenReturn(partsEntityList);
 
         PartFilterDTO validFilter = new PartFilterDTO();
         validFilter.setQueryType('P');
@@ -75,9 +71,9 @@ public class PartServiceTest {
         final PartResponseDTO response = partService.getPartsByFilter(validFilter);
 
         assertEquals(partsDtoList.size(), response.getParts().size());
-        verify(partRepository,times(1)).findPartsModifiedSinceDate(any(),any());
+        verify(partRepository,times(1)).findPartsModifiedSinceDate(any(),any(),any());
     }
-    
+
 
     private static <T> T getList(String filePath, Class<?> target) {
         ObjectMapper objectMapper = new ObjectMapper();

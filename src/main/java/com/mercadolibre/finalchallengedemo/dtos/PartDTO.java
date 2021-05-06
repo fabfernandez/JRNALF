@@ -2,6 +2,7 @@ package com.mercadolibre.finalchallengedemo.dtos;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,6 +28,10 @@ public class PartDTO {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date lastModification;
+    @JsonIgnore
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date lastPriceModification;
 
     @Override
     public boolean equals(Object o) {
