@@ -26,8 +26,9 @@ public class OrderController {
 
 
     @GetMapping("/")
-    public ResponseEntity<PartOrderQueryParamsDTO> getOrdersByDealerAndStatus(@Validated @RequestParam PartOrderQueryParamsDTO filter){
-            return ResponseEntity.ok(this.orderService.getOrders(PartOrderQueryParamsDTO));
+    public ResponseEntity<PartOrderQueryParamsDTO> getOrdersByDealerAndStatus(
+            @Validated @RequestParam PartOrderQueryParamsDTO filter){
+            return ResponseEntity.ok(orderService.getOrders(filter));
     }
 
     /*
