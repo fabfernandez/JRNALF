@@ -2,6 +2,7 @@ package com.mercadolibre.finalchallengedemo.controller;
 
 import com.mercadolibre.finalchallengedemo.dtos.OrderResponseDTO;
 import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
+import com.mercadolibre.finalchallengedemo.dtos.partsorders.DealerOrderResponseDTO;
 import com.mercadolibre.finalchallengedemo.dtos.partsorders.PartOrderQueryParamsDTO;
 import com.mercadolibre.finalchallengedemo.repository.IOrderRepository;
 import com.mercadolibre.finalchallengedemo.service.IOrderService;
@@ -26,7 +27,7 @@ public class OrderController {
 
 
     @GetMapping("/")
-    public ResponseEntity<PartOrderQueryParamsDTO> getOrdersByDealerAndStatus(
+    public ResponseEntity<DealerOrderResponseDTO> getOrdersByDealerAndStatus(
             @Validated @RequestParam PartOrderQueryParamsDTO filter){
             return ResponseEntity.ok(orderService.getOrders(filter));
     }
