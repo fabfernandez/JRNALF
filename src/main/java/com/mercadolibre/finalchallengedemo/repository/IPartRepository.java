@@ -27,17 +27,17 @@ public interface IPartRepository extends JpaRepository<PartsResponseEntity, Inte
 
 
     //TODO falta agregar en la tabla parts_modifications algun campo precio para que sea el actual y asi poder saber si es diferente al normal que ya existe en la tabla.
-    //@Query("FROM PartsResponseEntity p WHERE p.normalPrice <> p.salePrice AND p.lastModification BETWEEN :filterDate AND :currentDate ")
-    //List<PartsResponseEntity> findPartsWithPriceModifiedSinceDate(Date filterDate, Date currentDate);
+    @Query("FROM PartsResponseEntity p LEFT JOIN PartModificationEntity pm ON p.id = pm.part.partCode WHERE p.normalPrice <> pm.salePrice AND p.lastModification BETWEEN :filterDate AND :currentDate ")
+    List<PartsResponseEntity> findPartsWithPriceModifiedSinceDate(Date filterDate, Date currentDate);
 
-    //@Query("FROM PartsResponseEntity p WHERE p.normalPrice <> p.salePrice AND p.lastModification BETWEEN :filterDate AND :currentDate ORDER BY p.lastModification ASC")
-    //List<PartsResponseEntity> findPartsWithPriceModifiedSinceDateSortedByDescriptionAsc(Date filterDate, Date currentDate);
+    @Query("FROM PartsResponseEntity p LEFT JOIN PartModificationEntity pm ON p.id = pm.part.partCode WHERE p.normalPrice <> pm.salePrice AND p.lastModification BETWEEN :filterDate AND :currentDate ORDER BY p.description ASC")
+    List<PartsResponseEntity> findPartsWithPriceModifiedSinceDateSortedByDescriptionAsc(Date filterDate, Date currentDate);
 
-    //@Query("FROM PartsResponseEntity p WHERE p.normalPrice <> p.salePrice AND p.lastModification BETWEEN :filterDate AND :currentDate ORDER BY p.lastModification DESC")
-    //List<PartsResponseEntity> findPartsWithPriceModifiedSinceDateSortedByDescriptionDesc(Date filterDate, Date currentDate);
+    @Query("FROM PartsResponseEntity p LEFT JOIN PartModificationEntity pm ON p.id = pm.part.partCode WHERE p.normalPrice <> pm.salePrice AND p.lastModification BETWEEN :filterDate AND :currentDate ORDER BY p.description DESC")
+    List<PartsResponseEntity> findPartsWithPriceModifiedSinceDateSortedByDescriptionDesc(Date filterDate, Date currentDate);
 
-    //@Query("FROM PartsResponseEntity p WHERE p.normalPrice <> p.salePrice AND p.lastModification BETWEEN :filterDate AND :currentDate ORDER BY p.lastModification DESC")
-    //List<PartsResponseEntity> findPartsWithPriceModifiedSinceDateSortedByLastModified(Date filterDate, Date currentDate);
+    @Query("FROM PartsResponseEntity p LEFT JOIN PartModificationEntity pm ON p.id = pm.part.partCode WHERE p.normalPrice <> pm.salePrice AND p.lastModification BETWEEN :filterDate AND :currentDate ORDER BY p.lastModification DESC")
+    List<PartsResponseEntity> findPartsWithPriceModifiedSinceDateSortedByLastModified(Date filterDate, Date currentDate);
 
 
 }

@@ -47,16 +47,16 @@ public class PartServiceImpl implements IPartService {
         PartResponseDTO response = new PartResponseDTO();
         switch (filter.getQueryType()) {
             case 'V':
-                if(order != null) {
+                if(order != null)
                     response.setParts(getSortedPartsWithPriceVariationResponse(order,filterDate,currentDate));
-                }
-                //response.setParts(mapListPartsResponse(partRepository.findPartsWithPriceModifiedSinceDate(filterDate, currentDate));
+                else
+                    response.setParts(mapListPartsResponse(partRepository.findPartsWithPriceModifiedSinceDate(filterDate, currentDate)));
                 break;
             case 'P':
-                if(order != null) {
+                if(order != null) 
                     response.setParts(getSortedPartsPartialResponse(order,filterDate,currentDate));
-                }
-                response.setParts(mapListPartsResponse(partRepository.findPartsModifiedSinceDate(filterDate, currentDate)));
+                else
+                    response.setParts(mapListPartsResponse(partRepository.findPartsModifiedSinceDate(filterDate, currentDate)));
                 break;
             case 'C':
             default:
@@ -102,21 +102,17 @@ public class PartServiceImpl implements IPartService {
         }
     }
 
-    private List<PartDTO> getSortedPartsWithPriceVariationResponse(Integer order, Date filterDAte, Date currentDate) {
+    private List<PartDTO> getSortedPartsWithPriceVariationResponse(Integer order, Date filterDate, Date currentDate) {
         switch (order) {
             case 1:
-                //return mapListPartsResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByDescriptionAsc(filterDate,currentDate));
-                break;
+                return mapListPartsResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByDescriptionAsc(filterDate,currentDate));
             case 2:
-                //return mapListPartsResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByDescriptionDesc(filterDate,currentDate));
-                break;
+                return mapListPartsResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByDescriptionDesc(filterDate,currentDate));
             case 3:
-                //return mapListPartsResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByLastModified(filterDate,currentDate));
-                break;
+                return mapListPartsResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByLastModified(filterDate,currentDate));
             default:
                 throw new InvalidPartFilterException("Order must be 1,2 or 3.");
         }
-        return null;
     }
 
     private List<PartDTO> mapListPartsResponse(List<PartsResponseEntity> parts ) {
