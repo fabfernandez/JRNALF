@@ -98,10 +98,11 @@ DEFAULT CHARACTER SET = utf8mb4;
 DROP TABLE IF EXISTS `automotriz_delux`.`parts_modifications` ;
 
 CREATE TABLE IF NOT EXISTS `automotriz_delux`.`parts_modifications` (
-  `id_part_modification` INT NOT NULL AUTO_INCREMENT,
+  `id_part_modification` INT NOT NULL,
   `id_part` INT NULL DEFAULT NULL,
   `last_modification` DATETIME NULL DEFAULT NULL,
   `normal_price` INT NULL DEFAULT NULL,
+  `sale_price` INT NULL DEFAULT NULL,
   PRIMARY KEY (`id_part_modification`),
   CONSTRAINT `part`
     FOREIGN KEY (`id_part`)
@@ -270,24 +271,24 @@ insert into subsidiaries_stock (id_part, id_subsidiary, quantity) values (14, 5,
 
 -- create parts_modifications
 
-insert into parts_modifications (id_part, last_modification, normal_price) values (1, '2021-03-02 19:21:01', 762);
-insert into parts_modifications (id_part, last_modification, normal_price) values (1, '2021-04-02 19:21:01', 862);
-insert into parts_modifications (id_part, last_modification, normal_price) values (1, '2021-05-02 19:21:01', 962);
-insert into parts_modifications (id_part, last_modification, normal_price) values (2, '2021-01-29 11:11:04', 2305);
-insert into parts_modifications (id_part, last_modification, normal_price) values (3, '2020-10-31 20:28:28', 837);
-insert into parts_modifications (id_part, last_modification, normal_price) values (3, '2020-11-30 20:28:28', 650);
-insert into parts_modifications (id_part, last_modification, normal_price) values (4, '2020-06-23 21:15:44', 2243);
-insert into parts_modifications (id_part, last_modification, normal_price) values (5, '2020-11-08 04:04:17', 1236);
-insert into parts_modifications (id_part, last_modification, normal_price) values (6, '2020-06-06 13:39:38', 1119);
-insert into parts_modifications (id_part, last_modification, normal_price) values (6, '2020-07-06 13:39:38', 1200);
-insert into parts_modifications (id_part, last_modification, normal_price) values (7, '2021-02-27 16:27:51', 358);
-insert into parts_modifications (id_part, last_modification, normal_price) values (8, '2021-02-13 07:50:58', 2223);
-insert into parts_modifications (id_part, last_modification, normal_price) values (8, '2021-02-14 07:50:58', 2200);
-insert into parts_modifications (id_part, last_modification, normal_price) values (8, '2021-02-15 07:50:58', 2500);
-insert into parts_modifications (id_part, last_modification, normal_price) values (9, '2021-03-18 15:32:56', 1722);
-insert into parts_modifications (id_part, last_modification, normal_price) values (10, '2021-03-17 04:11:05', 2151);
-insert into parts_modifications (id_part, last_modification, normal_price) values (12, '2020-08-31 16:53:30', 1431);
-insert into parts_modifications (id_part, last_modification, normal_price) values (14, '2020-07-22 19:59:11', 1998);
+insert into parts_modifications (id_part, last_modification, normal_price) values (1, '2021-03-02 19:21:01', 762, 700);
+insert into parts_modifications (id_part, last_modification, normal_price) values (1, '2021-04-02 19:21:01', 862, 800);
+insert into parts_modifications (id_part, last_modification, normal_price) values (1, '2021-05-02 19:21:01', 962, 900);
+insert into parts_modifications (id_part, last_modification, normal_price) values (2, '2021-01-29 11:11:04', 2305, 2200);
+insert into parts_modifications (id_part, last_modification, normal_price) values (3, '2020-10-31 20:28:28', 837, 800);
+insert into parts_modifications (id_part, last_modification, normal_price) values (3, '2020-11-30 20:28:28', 650, 600);
+insert into parts_modifications (id_part, last_modification, normal_price) values (4, '2020-06-23 21:15:44', 2243, 2200);
+insert into parts_modifications (id_part, last_modification, normal_price) values (5, '2020-11-08 04:04:17', 1236, 1200);
+insert into parts_modifications (id_part, last_modification, normal_price) values (6, '2020-06-06 13:39:38', 1119, 1100);
+insert into parts_modifications (id_part, last_modification, normal_price) values (6, '2020-07-06 13:39:38', 1200, 1100);
+insert into parts_modifications (id_part, last_modification, normal_price) values (7, '2021-02-27 16:27:51', 358, 350);
+insert into parts_modifications (id_part, last_modification, normal_price) values (8, '2021-02-13 07:50:58', 2223, 2200);
+insert into parts_modifications (id_part, last_modification, normal_price) values (8, '2021-02-14 07:50:58', 2200, 2100);
+insert into parts_modifications (id_part, last_modification, normal_price) values (8, '2021-02-15 07:50:58', 2500, 2500);
+insert into parts_modifications (id_part, last_modification, normal_price) values (9, '2021-03-18 15:32:56', 1722, 1650);
+insert into parts_modifications (id_part, last_modification, normal_price) values (10, '2021-03-17 04:11:05', 2151, 2050);
+insert into parts_modifications (id_part, last_modification, normal_price) values (12, '2020-08-31 16:53:30', 1431, 1400);
+insert into parts_modifications (id_part, last_modification, normal_price) values (14, '2020-07-22 19:59:11', 1998, 1900);
 
 -- create order_details
 insert into order_details (id_order_detail, order_id, part_id, quantity) values (1, 1, 1, 2);
