@@ -98,7 +98,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 DROP TABLE IF EXISTS `automotriz_delux`.`parts_modifications` ;
 
 CREATE TABLE IF NOT EXISTS `automotriz_delux`.`parts_modifications` (
-  `id_part_modification` INT NOT NULL,
+  `id_part_modification` INT NOT NULL AUTO_INCREMENT,
   `id_part` INT NULL DEFAULT NULL,
   `last_modification` DATETIME NULL DEFAULT NULL,
   `normal_price` INT NULL DEFAULT NULL,
