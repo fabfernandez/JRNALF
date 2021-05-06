@@ -20,5 +20,7 @@ public class PartModificationEntity {
     @Column(name = "normal_price")
     private Integer normalPrice;
 
+    @Column(name = "sale_price")
+    private Integer salePrice;
 
 }
