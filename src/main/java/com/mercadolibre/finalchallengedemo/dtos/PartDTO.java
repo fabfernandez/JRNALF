@@ -1,17 +1,30 @@
 package com.mercadolibre.finalchallengedemo.dtos;
 
-import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class PartDTO {
-    private Long partCode;
+import java.util.Date;
+
+@Getter @Setter
+public class PartsDTO {
+
+    private Integer partCode;
     private String description;
+    //private String maker;
+   // private Integer quantity;
+   // private Double discountType;
+    private Double normalPrice;
+    //private Double urgentPrice;
+    private Integer netWeight;
+    private Integer longDimension;
     private Integer widthDimension;
     private Integer tallDimension;
-    private Integer longDimension;
-    private Integer netWeight;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date lastModification;
+
 }

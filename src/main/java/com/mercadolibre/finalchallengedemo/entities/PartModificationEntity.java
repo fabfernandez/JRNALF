@@ -9,7 +9,12 @@ public class PartModificationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(name = "id_part_modification")
+    private Integer id_part_modification;
+
+    @ManyToOne
+    @Column(name = "id_part")
+    private Integer id_part;
 
     private LocalDate last_modification;
 

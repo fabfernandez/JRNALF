@@ -1,20 +1,20 @@
 package com.mercadolibre.finalchallengedemo.entities;
 
-import lombok.Getter;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
 @Table(name = "parts")
-@Getter
-public class PartEntity {
+@SecondaryTable(name = "part_modification", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id_part_modification"))
+public class PartsResponseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "part_code")
     @Size(min = 8, message = "The field needs a minimum of 8 numeric characters")
-    private Integer partCode;
+    private Integer id;
 
     @Column(nullable = false, length = 100)
     @Size(max = 100, message = "The field needs a miximium of 100 alphanumeric characters.")
@@ -36,7 +36,12 @@ public class PartEntity {
     @Size(max = 5, message = "The net weight of the spare part needs 5 numeric characters.")
     private Integer netWeight;
 
-    @OneToMany(mappedBy = "part")
+    @OneToMany(mappedBy = "parts")
     private Set<PartModificationEntity> partModificationEntity;
 
+    @Column(name = "normal_price", table = "parts_modifications")
+    private Integer normalPrice;
+    
+    @Column(name = "last_modification", table = "parts_modifications")
+    private LocalDate lastModification;
 }

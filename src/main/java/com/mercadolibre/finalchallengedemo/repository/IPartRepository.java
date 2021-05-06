@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface IPartRepository extends JpaRepository<PartEntity, Long> {
+public interface IPartRepository extends JpaRepository<PartEntity, Integer> {
 
     /*Get parts that were modified from the query date to the current date (p)*/
     @Query("FROM PartEntity p LEFT JOIN PartModificationEntity pm ON p.partCode = pm.part.partCode WHERE pm.last_modification BETWEEN :filterDate AND :currentlyDate ")
