@@ -27,4 +27,5 @@ public class PartOrderQueryParamsDTO {
     @DecimalMin(value = "1", message = "The order value must be 1 or 2")
     @DecimalMax(value = "2", message = "The order value must be 1 or 2")
     private Integer order;
+
 }

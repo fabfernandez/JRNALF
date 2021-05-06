@@ -1,6 +1,8 @@
 package com.mercadolibre.finalchallengedemo.util;
 
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
+import com.mercadolibre.finalchallengedemo.dtos.partsorders.PartOrderQueryParamsDTO;
+import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 
 public class ValidatorUtil {
@@ -37,4 +39,17 @@ public class ValidatorUtil {
             }
         }
     }
+
+    // Validations for the input parameters of requirement 2
+    public static void validateQueryParamFilter(PartOrderQueryParamsDTO filter) {
+        validateQueryParamDealer(filter);
+    }
+
+
+    private static void validateQueryParamDealer(PartOrderQueryParamsDTO filter) {
+        if (filter.getDealerNumber() == null || filter.getDeliveryStatus() != null){
+            throw new InvalidOrderFilterException("The Dealer Number cannot be null");
+        }
+    }
+
 }
