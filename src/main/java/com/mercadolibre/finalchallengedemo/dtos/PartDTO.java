@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Objects;
 
 @Getter @Setter
 public class PartDTO {
@@ -27,4 +28,16 @@ public class PartDTO {
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date lastModification;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PartDTO partDTO = (PartDTO) o;
+        return partCode.equals(partDTO.partCode) && description.equals(partDTO.description) && normalPrice.equals(partDTO.normalPrice) && netWeight.equals(partDTO.netWeight) && longDimension.equals(partDTO.longDimension) && widthDimension.equals(partDTO.widthDimension) && tallDimension.equals(partDTO.tallDimension) && lastModification.equals(partDTO.lastModification);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(partCode, description, normalPrice, netWeight, longDimension, widthDimension, tallDimension, lastModification);
+    }
 }
