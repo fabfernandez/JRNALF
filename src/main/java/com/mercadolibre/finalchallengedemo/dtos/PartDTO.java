@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Getter @Setter
-public class PartsDTO {
+public class PartDTO {
 
     private Integer partCode;
     private String description;

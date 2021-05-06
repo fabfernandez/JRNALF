@@ -14,11 +14,11 @@ public class OrderDetailEntity {
     private Integer quantity;
 
     @ManyToOne
-    @Column(nullable = false, name = "order_id")
+    @JoinColumn(nullable = false, name = "order_id")
     private DealerOrderEntity dealerOrderEntityID;
 
     @ManyToOne
-    @Column(nullable = false, name = "part_id")
+    @JoinColumn(nullable = false, name = "part_id")
     private PartEntity partEntityId;
 
 }

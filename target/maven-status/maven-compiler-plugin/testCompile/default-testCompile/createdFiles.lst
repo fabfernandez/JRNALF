@@ -1,0 +1,9 @@
+com/mercadolibre/finalchallengedemo/integration/ControllerTest.class
+com/mercadolibre/finalchallengedemo/integration/GenerateDoc.class
+com/mercadolibre/finalchallengedemo/integration/IntegrationTest.class
+com/mercadolibre/finalchallengedemo/integration/PingControllerTest.class
+com/mercadolibre/finalchallengedemo/unit/beans/RandomSampleBeanTest.class
+com/mercadolibre/finalchallengedemo/unit/ScopeUtilTest.class
+com/mercadolibre/finalchallengedemo/integration/ControllerExceptionHandlerTest.class
+com/mercadolibre/finalchallengedemo/util/MockitoExtension.class
+com/mercadolibre/finalchallengedemo/unit/contoller/PartControllerTest.class

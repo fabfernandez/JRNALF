@@ -5,6 +5,22 @@ import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException
 
 public class ValidatorUtil {
     public static void validatePartFilter(PartFilterDTO filter) {
+        validatePartFilterQueryType(filter);
+        validatePartFilterOrder(filter);
+        validatePartFilterDate(filter);
+    }
+
+    private static void validatePartFilterOrder(PartFilterDTO filter) {
+        if(filter.getOrder() != null && (filter.getQueryType() == null || filter.getDate() == null))
+            throw new InvalidPartFilterException("Enter queryType and date.");
+    }
+
+    private static void validatePartFilterDate(PartFilterDTO filter) {
+        if(filter.getDate() != null && filter.getQueryType() == null)
+            throw new InvalidPartFilterException("Enter queryType.");
+    }
+
+    private static void validatePartFilterQueryType(PartFilterDTO filter) {
         if (filter.getQueryType() != null) {
             switch (filter.getQueryType()) {
                 case 'P':

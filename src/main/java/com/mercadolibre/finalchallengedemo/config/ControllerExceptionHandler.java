@@ -3,6 +3,7 @@ package com.mercadolibre.finalchallengedemo.config;
 import com.mercadolibre.finalchallengedemo.exceptions.ApiError;
 import com.mercadolibre.finalchallengedemo.exceptions.ApiException;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
+import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundedException;
 import com.newrelic.api.agent.NewRelic;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -56,8 +57,13 @@ public class ControllerExceptionHandler {
 	}
 
 	@ExceptionHandler(InvalidPartFilterException.class)
-	public ResponseEntity handleInvalidDate(InvalidPartFilterException e) {
+	public ResponseEntity handleInvalidDateException(InvalidPartFilterException e) {
 		return handle(HttpStatus.BAD_REQUEST,e.getMessage());
+	}
+
+	@ExceptionHandler(PartsNotFoundedException.class)
+	public ResponseEntity handlePartsNotFoundedException(PartsNotFoundedException e) {
+		return handle(HttpStatus.NOT_FOUND,e.getMessage());
 	}
 
 	@ExceptionHandler(BindException.class)

@@ -1,13 +1,17 @@
 package com.mercadolibre.finalchallengedemo.entities;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
+@Getter
 @Table(name = "parts")
-@SecondaryTable(name = "part_modification", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id_part_modification"))
+@SecondaryTable(name = "parts_modifications", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id_part"))
 public class PartsResponseEntity {
 
     @Id
@@ -36,12 +40,12 @@ public class PartsResponseEntity {
     @Size(max = 5, message = "The net weight of the spare part needs 5 numeric characters.")
     private Integer netWeight;
 
-    @OneToMany(mappedBy = "parts")
+    @OneToMany(mappedBy = "part")
     private Set<PartModificationEntity> partModificationEntity;
 
     @Column(name = "normal_price", table = "parts_modifications")
     private Integer normalPrice;
     
     @Column(name = "last_modification", table = "parts_modifications")
-    private LocalDate lastModification;
+    private Date lastModification;
 }

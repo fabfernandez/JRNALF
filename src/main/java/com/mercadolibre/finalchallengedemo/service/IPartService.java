@@ -1,18 +1,19 @@
 package com.mercadolibre.finalchallengedemo.service;
 
-import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
+import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
+import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
 
 import java.util.List;
 
 public interface IPartService {
-    List<PartDTO> getAll();
+    PartResponseDTO getAll();
 
-    List<PartDTO> getPartsByFilter(PartFilterDTO filter);
+    PartResponseDTO getPartsByFilter(PartFilterDTO filter);
 
-    void deletePart(Long id);
+    void deletePart(Integer id);
 
     void savePart(PartDTO part);
 
-    PartDTO findPart(Long id);
+    PartDTO findPart(Integer id);
 }

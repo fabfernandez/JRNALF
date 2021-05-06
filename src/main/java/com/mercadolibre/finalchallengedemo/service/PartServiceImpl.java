@@ -1,18 +1,20 @@
 package com.mercadolibre.finalchallengedemo.service;
 
-import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
-import com.mercadolibre.finalchallengedemo.entities.PartEntity;
+import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
+import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
+import com.mercadolibre.finalchallengedemo.entities.PartsResponseEntity;
+import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundedException;
 import com.mercadolibre.finalchallengedemo.repository.IPartRepository;
-import org.dom4j.rule.Mode;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,53 +23,104 @@ import java.util.stream.Collectors;
 public class PartServiceImpl implements IPartService {
 
     private final IPartRepository partRepository;
-
-    @Autowired
     private ModelMapper modelMapper;
 
-    public PartServiceImpl(IPartRepository partRepository) {
+    public PartServiceImpl(IPartRepository partRepository, ModelMapper modelMapper) {
         this.partRepository = partRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<PartDTO> getAll() {
-        return this.partRepository.findAll().stream().map(p -> modelMapper.map(p,PartDTO.class)).collect(Collectors.toList());
+    public PartResponseDTO getAll() {
+        PartResponseDTO response = new PartResponseDTO(this.partRepository.findAll().stream().map(p -> modelMapper.map(p, PartDTO.class)).collect(Collectors.toList()));
+        if(response.getParts().isEmpty())
+            throw new PartsNotFoundedException("No parts founded with the requested filter.");
+        return response;
     }
 
     @Override
     @Transactional()
-    public List<PartDTO> getPartsByFilter(PartFilterDTO filter) {
+    public PartResponseDTO getPartsByFilter(PartFilterDTO filter) {
+        Integer order = filter.getOrder();
+        Date filterDate = filter.getDate();
+        Date currentDate = Date.from(Instant.now());
+        PartResponseDTO response = new PartResponseDTO();
         switch (filter.getQueryType()) {
-            case 'P':
-                return null;
-                //return this.partRepository.findPartsModifiedSinceDate(filter.getDate());
             case 'V':
-                return this.partRepository.findPartEntityByDate(filter.getDate(), LocalDate.now()).stream().map(p -> modelMapper.map(p,PartDTO.class)).collect(Collectors.toList());
+                if(order != null) {
+                    response.setParts(getSortedPartsWithPriceVariationResponse(order,filterDate,currentDate));
+                }
+                //response.setParts(mapListPartsResponse(partRepository.findPartsWithPriceModifiedSinceDate(filterDate, currentDate));
+                break;
+            case 'P':
+                if(order != null) {
+                    response.setParts(getSortedPartsPartialResponse(order,filterDate,currentDate));
+                }
+                response.setParts(mapListPartsResponse(partRepository.findPartsModifiedSinceDate(filterDate, currentDate)));
+                break;
             case 'C':
             default:
-                return getAll();
+                response = getAll();
+
         }
+        if(response.getParts().isEmpty())
+            throw new PartsNotFoundedException("No parts founded with the requested filter.");
+        return response;
     }
 
     @Override
     @Transactional
-    public void deletePart(Long id) {
+    public void deletePart(Integer id) {
         partRepository.deleteById(id);
     }
 
     @Override
     @Transactional
     public void savePart(PartDTO part) {
-        partRepository.save(modelMapper.map(part,PartEntity.class));
+        partRepository.save(modelMapper.map(part, PartsResponseEntity.class));
     }
 
     @Override
     @Transactional()
-    public PartDTO findPart(Long id) {
-        Optional<PartEntity> part = partRepository.findById(id);
+    public PartDTO findPart(Integer id) {
+        Optional<PartsResponseEntity> part = partRepository.findById(id);
         if(!part.isPresent())
             throw new PartsNotFoundedException("The part with id " + id + " was not founded.");
         return modelMapper.map(part.get(), PartDTO.class);
+    }
+
+    private List<PartDTO> getSortedPartsPartialResponse(Integer order, Date filterDate, Date currentDate) {
+        switch (order) {
+            case 1:
+                return mapListPartsResponse(this.partRepository.findPartsModifiedSinceDateSortedByDescriptionAsc(filterDate,currentDate));
+            case 2:
+                return mapListPartsResponse(this.partRepository.findPartsModifiedSinceDateSortedByDescriptionDesc(filterDate,currentDate));
+            case 3:
+                return mapListPartsResponse(this.partRepository.findPartsModifiedSinceDateSortedByLastModified(filterDate,currentDate));
+            default:
+                throw new InvalidPartFilterException("Order must be 1,2 or 3.");
+        }
+    }
+
+    private List<PartDTO> getSortedPartsWithPriceVariationResponse(Integer order, Date filterDAte, Date currentDate) {
+        switch (order) {
+            case 1:
+                //return mapListPartsResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByDescriptionAsc(filterDate,currentDate));
+                break;
+            case 2:
+                //return mapListPartsResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByDescriptionDesc(filterDate,currentDate));
+                break;
+            case 3:
+                //return mapListPartsResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByLastModified(filterDate,currentDate));
+                break;
+            default:
+                throw new InvalidPartFilterException("Order must be 1,2 or 3.");
+        }
+        return null;
+    }
+
+    private List<PartDTO> mapListPartsResponse(List<PartsResponseEntity> parts ) {
+        return parts.stream().map(p -> modelMapper.map(p, PartDTO.class)).collect(Collectors.toList());
     }
 
 

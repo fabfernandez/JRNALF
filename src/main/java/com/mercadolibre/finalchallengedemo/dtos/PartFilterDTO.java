@@ -22,7 +22,7 @@ public class PartFilterDTO {
     private Character queryType;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @PastOrPresent(message = "The date must be past or equals to current date")
-    private LocalDate date;
+    private Date date;
     @Digits(integer=1, fraction = 0, message = "The order value must be 1,2 or 3")
     @DecimalMin(value = "1", message = "The order value must be 1,2 or 3")
     @DecimalMax(value = "3", message = "The order value must be 1,2 or 3")
