@@ -10,11 +10,8 @@ public class DealerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(nullable = false, length = 1)
-    @NotNull(message = "Status cannot be null")
-    private Integer id_leader;
+    @Column(nullable = false, length = 1, name = "id_dealer")
+    private Integer idDealer;
 
     @Column(nullable = false, length = 25)
     @Size(max = 25, message = "The country must not have more than 20 characters")
@@ -22,7 +19,7 @@ public class DealerEntity {
 
     @Column(nullable = false, length = 40)
     @Size(max = 40, message = "The adress must not have more than 20 characters")
-    private String adress;
+    private String address;
 
     @Column(nullable = false)
     private Integer phone;

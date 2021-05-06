@@ -11,11 +11,21 @@ public class DealerOrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, name = "order_number")
-    private Integer order_number;
+    private Integer orderNumber;
 
     @Column(nullable = false, name = "order_date")
     private LocalDate orderDate;
 
+    @Column(nullable = false, name = "order_status")
+    private String orderStatus;
+
+    @Column(nullable = false, name = "dealer_id")
+    private Integer dealerId;
+
+    @Column(nullable = false, name = "subsidiary_id")
+    private Integer subsidiaryId;
+
+    /*
     @Column(nullable = false, name = "delivery_date")
     private LocalDate deliveryDate;
 
@@ -26,9 +36,5 @@ public class DealerOrderEntity {
     @Size(max = 1, message = "The status must not have more than 1 character.")
     private String deliveryStatus;
 
-    @Column(nullable = false, name = "dealer_id")
-    private Integer dealerId;
-
-    @Column(nullable = false, name = "subsidiary_id")
-    private Integer subsidiaryId;
+     */
 }

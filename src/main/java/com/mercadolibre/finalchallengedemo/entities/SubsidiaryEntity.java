@@ -17,7 +17,7 @@ public class SubsidiaryEntity {
 
     @Column(nullable = false, length = 40)
     @Size(max = 40, message = "The adress of the subsidiary must have a miximium of 40 alphanumeric characters.")
-    private String adress;
+    private String address;
 
     @Column(nullable = false, length = 20)
     @Size(max = 20, message = "The phone of the subsidiary must have a miximium of 20 numeric characters.")

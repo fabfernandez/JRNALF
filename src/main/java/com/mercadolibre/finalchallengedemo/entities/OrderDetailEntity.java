@@ -9,7 +9,7 @@ public class OrderDetailEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, name = "id_order_detail")
-    private Integer id_order_detail;
+    private Integer idOrderDetail;
 
     private Integer quantity;
 
