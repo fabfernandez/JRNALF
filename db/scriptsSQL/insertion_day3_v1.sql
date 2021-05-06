@@ -54,16 +54,19 @@ DROP TABLE IF EXISTS `automotriz_delux`.`parts` ;
 CREATE TABLE IF NOT EXISTS `automotriz_delux`.`parts` (
   `part_code` INT NOT NULL,
   `description` VARCHAR(100) NULL DEFAULT NULL,
+  `maker` VARCHAR(20) NULL DEFAULT NULL,
   `widthDimension` INT NULL DEFAULT NULL,
   `tallDimension` INT NULL DEFAULT NULL,
   `longDimension` INT NULL DEFAULT NULL,
   `netWeight` INT NULL DEFAULT NULL,
   `normal_price` INT NULL DEFAULT NULL,
+  `urgent_price` INT NULL DEFAULT NULL,
   `last_modification` DATETIME NULL DEFAULT NULL,
   `last_price_modification` DATETIME NULL DEFAULT NULL,
+  `discount_type` VARCHAR(5) NULL DEFAULT NULL,
   PRIMARY KEY (`part_code`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb4 ;
 
 -- Table `automotriz_delux`.`order_details`
 DROP TABLE IF EXISTS `automotriz_delux`.`order_details` ;
@@ -138,20 +141,20 @@ insert into dealers (id_dealer, name, address, phone, country) values (9, 'Deale
 insert into dealers (id_dealer, name, address, phone, country) values (10, 'Dealer Venezuela Two','Boyaca 1500', 56788765, 'Venezuela');
 
 -- create parts
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (1, "Llanta", 100, 100, 100, 100, 762, '2021-03-02 19:21:01', '2021-03-10 19:21:01');
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (2, "Puerta trasera derecha", 30, 40, 30, 40, 862, '2021-03-02 19:21:01', NULL);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (3, "Puerta trasera izquierda", 30, 40, 30, 40, 962, '2021-01-29 11:11:04', '2021-03-29 11:11:04');
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (4, "Puerta delantera derecha", 30, 40, 30, 40, 2305, '2020-10-31 20:28:28', NULL);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (5, "Puerta delantera izquierda", 30, 40, 30, 40, 837, '2020-06-23 21:15:44', NULL);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (6, "Puerta del maletero", 80, 30, 80, 30, 650, '2020-11-08 04:04:17', '2021-02-13 07:50:58');
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (7, "Foco LED delantero", 15, 15, 15, 15, 2243, '2020-06-06 13:39:38', NULL);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (8, "Espejo retrovisor", 100, 55, 100, 100, 1236, '2021-02-13 07:50:58', NULL);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (9, "Espejo derecho", 33, 100, 100, 100, 1119, '2021-02-13 07:50:58', NULL);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (10, "Espejo izquierdo", 40, 100, 99, 100, 1200, '2021-02-13 07:50:58', '2021-02-27 07:50:58');
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (11, "Caja de cambios", 40, 33, 55, 100, 358, '2021-02-13 07:50:58', '2021-04-13 07:50:58');
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (12, "Asiento delantero", 55, 40, 100, 92, 2223, '2021-02-14 07:50:58', NULL);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (13, "Asiento trasero", 92, 100, 33, 100, 2200, '2020-07-22 19:59:11', NULL);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification) values (14, "Apoyacabezas", 92, 33, 100, 92, 2500, '2021-03-17 04:11:05', '2021-04-25 04:11:05');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (1, "Llanta", 100, 100, 100, 100, 762, '2021-03-02 19:21:01', '2021-03-10 19:21:01', 'AA');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (2, "Puerta trasera derecha", 30, 40, 30, 40, 862, '2021-03-02 19:21:01', NULL, 'AA');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (3, "Puerta trasera izquierda", 30, 40, 30, 40, 962, '2021-01-29 11:11:04', '2021-03-29 11:11:04', 'AA');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (4, "Puerta delantera derecha", 30, 40, 30, 40, 2305, '2020-10-31 20:28:28', NULL, 'BB');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (5, "Puerta delantera izquierda", 30, 40, 30, 40, 837, '2020-06-23 21:15:44', NULL, 'BB');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (6, "Puerta del maletero", 80, 30, 80, 30, 650, '2020-11-08 04:04:17', '2021-02-13 07:50:58', 'BB');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (7, "Foco LED delantero", 15, 15, 15, 15, 2243, '2020-06-06 13:39:38', NULL, 'BB');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (8, "Espejo retrovisor", 100, 55, 100, 100, 1236, '2021-02-13 07:50:58', NULL, 'BB');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (9, "Espejo derecho", 33, 100, 100, 100, 1119, '2021-02-13 07:50:58', NULL, 'CC');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (10, "Espejo izquierdo", 40, 100, 99, 100, 1200, '2021-02-13 07:50:58', '2021-02-27 07:50:58', 'CC');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (11, "Caja de cambios", 40, 33, 55, 100, 358, '2021-02-13 07:50:58', '2021-04-13 07:50:58', 'CC');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (12, "Asiento delantero", 55, 40, 100, 92, 2223, '2021-02-14 07:50:58', NULL, 'CC');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (13, "Asiento trasero", 92, 100, 33, 100, 2200, '2020-07-22 19:59:11', NULL, 'CC');
+insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight, normal_price, last_modification, last_price_modification, discount_type) values (14, "Apoyacabezas", 92, 33, 100, 92, 2500, '2021-03-17 04:11:05', '2021-04-25 04:11:05', 'DD');
 
 -- create dealer_orders
 insert into dealer_orders (order_number, order_date, order_status, dealer_id, subsidiary_id) values (1, '2021-04-30 20:23:06', 'P', 7, 5);

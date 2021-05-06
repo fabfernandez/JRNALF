@@ -3,9 +3,7 @@ DROP SCHEMA IF EXISTS `automotriz_delux` ;
 CREATE SCHEMA IF NOT EXISTS `automotriz_delux` DEFAULT CHARACTER SET utf8mb4 ;
 USE `automotriz_delux` ;
 
--- -----------------------------------------------------
 -- Table `automotriz_delux`.`dealers`
--- -----------------------------------------------------
 DROP TABLE IF EXISTS `automotriz_delux`.`dealers` ;
 
 CREATE TABLE IF NOT EXISTS `automotriz_delux`.`dealers` (
@@ -18,9 +16,7 @@ CREATE TABLE IF NOT EXISTS `automotriz_delux`.`dealers` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
--- -----------------------------------------------------
 -- Table `automotriz_delux`.`subsidiaries`
--- -----------------------------------------------------
 DROP TABLE IF EXISTS `automotriz_delux`.`subsidiaries` ;
 
 CREATE TABLE IF NOT EXISTS `automotriz_delux`.`subsidiaries` (
@@ -33,17 +29,13 @@ CREATE TABLE IF NOT EXISTS `automotriz_delux`.`subsidiaries` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
--- -----------------------------------------------------
 -- Table `automotriz_delux`.`dealer_orders`
--- -----------------------------------------------------
 DROP TABLE IF EXISTS `automotriz_delux`.`dealer_orders` ;
 
 CREATE TABLE IF NOT EXISTS `automotriz_delux`.`dealer_orders` (
   `order_number` INT NOT NULL,
   `order_date` DATETIME NOT NULL,
-  `delivery_date` DATETIME NOT NULL,
-  `days_delay` INT NULL DEFAULT '0',
-  `delivery_status` VARCHAR(1) NOT NULL,
+  `order_status` VARCHAR(1) NOT NULL,
   `dealer_id` INT NOT NULL,
   `subsidiary_id` INT NOT NULL,
   PRIMARY KEY (`order_number`),
@@ -56,25 +48,27 @@ CREATE TABLE IF NOT EXISTS `automotriz_delux`.`dealer_orders` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
--- -----------------------------------------------------
 -- Table `automotriz_delux`.`parts`
--- -----------------------------------------------------
 DROP TABLE IF EXISTS `automotriz_delux`.`parts` ;
 
 CREATE TABLE IF NOT EXISTS `automotriz_delux`.`parts` (
   `part_code` INT NOT NULL,
   `description` VARCHAR(100) NULL DEFAULT NULL,
+  `maker` VARCHAR(20) NULL DEFAULT NULL,
   `widthDimension` INT NULL DEFAULT NULL,
   `tallDimension` INT NULL DEFAULT NULL,
   `longDimension` INT NULL DEFAULT NULL,
   `netWeight` INT NULL DEFAULT NULL,
+  `normal_price` INT NULL DEFAULT NULL,
+  `urgent_price` INT NULL DEFAULT NULL,
+  `last_modification` DATETIME NULL DEFAULT NULL,
+  `last_price_modification` DATETIME NULL DEFAULT NULL,
+  `discount_type` VARCHAR(5) NULL DEFAULT NULL,
   PRIMARY KEY (`part_code`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb4 ;
 
--- -----------------------------------------------------
 -- Table `automotriz_delux`.`order_details`
--- -----------------------------------------------------
 DROP TABLE IF EXISTS `automotriz_delux`.`order_details` ;
 
 CREATE TABLE IF NOT EXISTS `automotriz_delux`.`order_details` (
@@ -92,27 +86,7 @@ CREATE TABLE IF NOT EXISTS `automotriz_delux`.`order_details` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
--- -----------------------------------------------------
--- Table `automotriz_delux`.`parts_modifications`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `automotriz_delux`.`parts_modifications` ;
-
-CREATE TABLE IF NOT EXISTS `automotriz_delux`.`parts_modifications` (
-  `id_part_modification` INT NOT NULL AUTO_INCREMENT,
-  `id_part` INT NULL DEFAULT NULL,
-  `last_modification` DATETIME NULL DEFAULT NULL,
-  `normal_price` INT NULL DEFAULT NULL,
-  `sale_price` INT NULL DEFAULT NULL,
-  PRIMARY KEY (`id_part_modification`),
-  CONSTRAINT `part`
-    FOREIGN KEY (`id_part`)
-    REFERENCES `automotriz_delux`.`parts` (`part_code`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
--- -----------------------------------------------------
 -- Table `automotriz_delux`.`subsidiaries_stock`
--- -----------------------------------------------------
 DROP TABLE IF EXISTS `automotriz_delux`.`subsidiaries_stock` ;
 
 CREATE TABLE IF NOT EXISTS `automotriz_delux`.`subsidiaries_stock` (
@@ -129,16 +103,13 @@ CREATE TABLE IF NOT EXISTS `automotriz_delux`.`subsidiaries_stock` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
--- -----------------------------------------------------
 -- Table `automotriz_delux`.`users`
--- -----------------------------------------------------
 DROP TABLE IF EXISTS `automotriz_delux`.`users` ;
 
 CREATE TABLE IF NOT EXISTS `automotriz_delux`.`users` (
   `username` VARCHAR(20) NOT NULL,
   `password` VARCHAR(20) NOT NULL,
   `id_subsidiary` INT NOT NULL,
-  `role` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`username`),
   CONSTRAINT `id_subsidiary`
     FOREIGN KEY (`id_subsidiary`)
@@ -170,32 +141,32 @@ insert into dealers (id_dealer, name, address, phone, country) values (9, 'Deale
 insert into dealers (id_dealer, name, address, phone, country) values (10, 'Dealer Venezuela Two','Boyaca 1500', 56788765, 'Venezuela');
 
 -- create parts
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (1, "Llanta", 100, 100, 100, 100);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (2, "Puerta trasera derecha", 30, 40, 30, 40);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (3, "Puerta trasera izquierda", 30, 40, 30, 40);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (4, "Puerta delantera derecha", 30, 40, 30, 40);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (5, "Puerta delantera izquierda", 30, 40, 30, 40);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (6, "Puerta del maletero", 80, 30, 80, 30);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (7, "Foco LED delantero", 15, 15, 15, 15);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (8, "Espejo retrovisor", 100, 55, 100, 100);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (9, "Espejo derecho", 33, 100, 100, 100);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (10, "Espejo izquierdo", 40, 100, 99, 33);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (11, "Caja de cambios", 40, 33, 55, 100);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (12, "Asiento delantero", 55, 40, 100, 92);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (13, "Asiento trasero", 92, 100, 33, 100);
-insert into parts (part_code, description, widthDimension, tallDimension, longDimension, netWeight) values (14, "Apoyacabezas", 92, 33, 100, 92);
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (1, "Llanta", "Fiat", 100, 100, 100, 100, 762, 900, '2021-03-02 19:21:01', '2021-03-10 19:21:01', "AA");
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (2, "Puerta trasera derecha", "Fiat", 30, 40, 30, 40, 862, 900, '2021-03-02 19:21:01', '2021-04-02 19:21:01', "AA");
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (3, "Puerta trasera izquierda", "Fiat", 30, 40, 30, 40, 962, 1000, '2021-01-29 11:11:04', '2021-03-29 11:11:04', "AA");
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (4, "Puerta delantera derecha", "Fiat", 30, 40, 30, 40, 2305, 2400, '2020-10-31 20:28:28', NULL, "AA");
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (5, "Puerta delantera izquierda", "Fiat", 30, 40, 30, 40, 837, 900, '2020-06-23 21:15:44', NULL, 'BB');
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (6, "Puerta del maletero", "Fiat", 80, 30, 80, 30, 650, 700, '2020-11-08 04:04:17', '2021-02-13 07:50:58', 'BB');
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (7, "Foco LED delantero", "Fiat", 15, 15, 15, 15, 2243, 2300, '2020-06-06 13:39:38', NULL, 'BB');
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (8, "Espejo retrovisor", "Fiat", 100, 55, 100, 100, 1236, 1300, '2021-02-13 07:50:58', NULL, 'BB');
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (9, "Espejo derecho", "Toyota", 33, 100, 100, 100, 1119, 1200, '2021-02-13 07:50:58', NULL, 'CC');
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (10, "Espejo izquierdo", "Toyota", 40, 100, 99, 100, 1200, 1300, '2021-02-13 07:50:58', '2021-02-27 07:50:58', 'CC');
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (11, "Caja de cambios", "Toyota", 40, 33, 55, 100, 358, 400, '2021-02-13 07:50:58', '2021-04-13 07:50:58', 'CC');
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (12, "Asiento delantero", "Toyota", 55, 40, 100, 92, 2223, 2400, '2021-02-14 07:50:58', '2021-03-14 07:50:58', 'CC');
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (13, "Asiento trasero", "Toyota", 92, 100, 33, 100, 2200, 2300, '2020-07-22 19:59:11', '2020-08-22 19:59:11', 'CC');
+insert into parts (part_code, description, maker, widthDimension, tallDimension, longDimension, netWeight, normal_price, urgent_price, last_modification, last_price_modification, discount_type) values (14, "Apoyacabezas", "Toyota", 92, 33, 100, 92, 2500, 2800, '2021-03-17 04:11:05', '2021-04-25 04:11:05', "DD");
 
 -- create dealer_orders
-insert into dealer_orders (order_number, order_date, delivery_date, days_delay, delivery_status, dealer_id, subsidiary_id) values (1, '2021-04-30 20:23:06', '2021-04-01 14:39:09', 93, 'P', 7, 5);
-insert into dealer_orders (order_number, order_date, delivery_date, days_delay, delivery_status, dealer_id, subsidiary_id) values (2, '2020-09-15 21:49:21', '2021-01-08 02:10:04', 2, 'C', 2, 5);
-insert into dealer_orders (order_number, order_date, delivery_date, days_delay, delivery_status, dealer_id, subsidiary_id) values (3, '2021-04-03 16:00:53', '2021-05-02 01:41:36', 91, 'P', 3, 1);
-insert into dealer_orders (order_number, order_date, delivery_date, days_delay, delivery_status, dealer_id, subsidiary_id) values (4, '2020-07-06 20:23:40', '2021-01-23 23:56:40', 34, 'P', 6, 4);
-insert into dealer_orders (order_number, order_date, delivery_date, days_delay, delivery_status, dealer_id, subsidiary_id) values (5, '2021-01-04 05:38:39', '2020-12-18 10:45:18', 56, 'P', 10, 4);
-insert into dealer_orders (order_number, order_date, delivery_date, days_delay, delivery_status, dealer_id, subsidiary_id) values (6, '2020-06-02 20:19:01', '2020-09-04 17:15:25', 66, 'P', 7, 5);
-insert into dealer_orders (order_number, order_date, delivery_date, days_delay, delivery_status, dealer_id, subsidiary_id) values (7, '2021-03-15 17:53:03', '2020-09-20 04:27:58', 71, 'P', 1, 4);
-insert into dealer_orders (order_number, order_date, delivery_date, days_delay, delivery_status, dealer_id, subsidiary_id) values (8, '2021-03-24 21:14:13', '2020-05-11 20:31:24', 75, 'P', 8, 3);
-insert into dealer_orders (order_number, order_date, delivery_date, days_delay, delivery_status, dealer_id, subsidiary_id) values (9, '2020-11-30 14:48:08', '2020-07-30 12:34:15', 28, 'F', 4, 3);
-insert into dealer_orders (order_number, order_date, delivery_date, days_delay, delivery_status, dealer_id, subsidiary_id) values (10, '2020-12-17 02:32:44', '2020-05-15 01:22:51', 3, 'C', 3, 1);
+insert into dealer_orders (order_number, order_date, order_status, dealer_id, subsidiary_id) values (1, '2021-04-30 20:23:06', 'P', 7, 5);
+insert into dealer_orders (order_number, order_date, order_status, dealer_id, subsidiary_id) values (2, '2020-09-15 21:49:21', 'D', 2, 5);
+insert into dealer_orders (order_number, order_date, order_status, dealer_id, subsidiary_id) values (3, '2021-04-03 16:00:53', 'F', 3, 1);
+insert into dealer_orders (order_number, order_date, order_status, dealer_id, subsidiary_id) values (4, '2020-07-06 20:23:40', 'C', 6, 4);
+insert into dealer_orders (order_number, order_date, order_status, dealer_id, subsidiary_id) values (5, '2021-01-04 05:38:39', 'F', 10, 4);
+insert into dealer_orders (order_number, order_date, order_status, dealer_id, subsidiary_id) values (6, '2020-06-02 20:19:01', 'P', 7, 5);
+insert into dealer_orders (order_number, order_date, order_status, dealer_id, subsidiary_id) values (7, '2021-03-15 17:53:03', 'C', 1, 4);
+insert into dealer_orders (order_number, order_date, order_status, dealer_id, subsidiary_id) values (8, '2021-03-24 21:14:13', 'D', 8, 3);
+insert into dealer_orders (order_number, order_date, order_status, dealer_id, subsidiary_id) values (9, '2020-11-30 14:48:08', 'F', 4, 3);
+insert into dealer_orders (order_number, order_date, order_status, dealer_id, subsidiary_id) values (10, '2020-12-17 02:32:44', 'P', 3, 1);
 
 -- create subsidiaries_stock
 insert into subsidiaries_stock (id_part, id_subsidiary, quantity) values (1, 1, 2);
@@ -269,27 +240,6 @@ insert into subsidiaries_stock (id_part, id_subsidiary, quantity) values (14, 3,
 insert into subsidiaries_stock (id_part, id_subsidiary, quantity) values (14, 4, 6);
 insert into subsidiaries_stock (id_part, id_subsidiary, quantity) values (14, 5, 6);
 
--- create parts_modifications
-
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (1, '2021-03-02 19:21:01', 762, 700);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (1, '2021-04-02 19:21:01', 862, 800);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (1, '2021-05-02 19:21:01', 962, 900);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (2, '2021-01-29 11:11:04', 2305, 2200);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (3, '2020-10-31 20:28:28', 837, 800);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (3, '2020-11-30 20:28:28', 650, 600);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (4, '2020-06-23 21:15:44', 2243, 2200);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (5, '2020-11-08 04:04:17', 1236, 1200);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (6, '2020-06-06 13:39:38', 1119, 1100);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (6, '2020-07-06 13:39:38', 1200, 1100);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (7, '2021-02-27 16:27:51', 358, 350);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (8, '2021-02-13 07:50:58', 2223, 2200);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (8, '2021-02-14 07:50:58', 2200, 2100);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (8, '2021-02-15 07:50:58', 2500, 2500);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (9, '2021-03-18 15:32:56', 1722, 1650);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (10, '2021-03-17 04:11:05', 2151, 2050);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (12, '2020-08-31 16:53:30', 1431, 1400);
-insert into parts_modifications (id_part, last_modification, normal_price, sale_price) values (14, '2020-07-22 19:59:11', 1998, 1900);
-
 -- create order_details
 insert into order_details (id_order_detail, order_id, part_id, quantity) values (1, 1, 1, 2);
 insert into order_details (id_order_detail, order_id, part_id, quantity) values (2, 2, 2, 2);
@@ -305,8 +255,8 @@ insert into order_details (id_order_detail, order_id, part_id, quantity) values 
 insert into order_details (id_order_detail, order_id, part_id, quantity) values (12, 10, 14, 4);
 
 -- create users
-insert into users (username, password, id_subsidiary, role) values ('gembleton0', 'IH4YH7kAk', 1, 'admin_BR');
-insert into users (username, password, id_subsidiary, role) values ('jspurgeon1', '0xpbqqetW1xC', 2, 'admin_AR');
-insert into users (username, password, id_subsidiary, role) values ('rtrouncer2', 'RJFdKwtOE', 3, 'admin_UY');
-insert into users (username, password, id_subsidiary, role) values ('amoxon3', 'A98vXM2llsb', 4, 'admin_CO');
-insert into users (username, password, id_subsidiary, role) values ('gsyversen4', 'EXMUyGRqefX', 5, 'admin_VE');
+insert into users (username, password, id_subsidiary) values ('gembleton0', 'IH4YH7kAk', 1);
+insert into users (username, password, id_subsidiary) values ('jspurgeon1', '0xpbqqetW1xC', 2);
+insert into users (username, password, id_subsidiary) values ('rtrouncer2', 'RJFdKwtOE', 3);
+insert into users (username, password, id_subsidiary) values ('amoxon3', 'A98vXM2llsb', 4);
+insert into users (username, password, id_subsidiary) values ('gsyversen4', 'EXMUyGRqefX', 5);
