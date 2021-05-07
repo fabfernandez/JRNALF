@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface IPartRepository extends JpaRepository<PartsResponseEntity, Integer> {
 
-   @Query(" FROM PartsResponseEntity p LEFT JOIN StockSubsidiaryEntity s ON s.subsidiary.id = :idSubsidiary WHERE s.part.partCode = p.partCode and p.lastModification BETWEEN :filterDate AND :currentDate ")
+   @Query(" FROM PartsResponseEntity p LEFT JOIN  StockSubsidiaryEntity s ON s.subsidiary.id = :idSubsidiary WHERE s.part.partCode = p.partCode and p.lastModification BETWEEN :filterDate AND :currentDate ")
     List<PartsResponseEntity> findPartsModifiedSinceDate(Date filterDate, Date currentDate, Integer idSubsidiary);
 
 

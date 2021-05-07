@@ -9,7 +9,6 @@ public class StockSubsidiaryEntity implements Serializable {
 
 
     private Integer quantity;
-    @Id
     @ManyToOne
     @JoinColumn(name = "part_code", nullable = false)
     private PartEntity part;
