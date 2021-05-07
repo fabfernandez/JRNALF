@@ -3,18 +3,25 @@ package com.mercadolibre.finalchallengedemo.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
-
-@Getter @Setter
+@Data
+@Validated
 public class PartDTO {
 
+    @NotNull
     private Integer partCode;
+    @Tex
     private String description;
     //private String maker;
     private Integer quantity;
