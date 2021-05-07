@@ -1,3 +1,4 @@
+DROP SCHEMA IF EXISTS `automotriz_delux` ;
 CREATE SCHEMA IF NOT EXISTS `automotriz_delux` DEFAULT CHARACTER SET utf8mb4;
 USE `automotriz_delux` ;
 
@@ -159,8 +160,8 @@ insert into dealer_orders (order_number, order_date, order_status, dealer_id, su
 
 -- create subsidiaries_stock
 insert into subsidiaries_stock (id_subsidiary, part_code, quantity) values (1, 1, 2);
-insert into subsidiaries_stock (id_subsidiary, part_code, quantity) values (2, 1, 2);
-insert into subsidiaries_stock (id_subsidiary, part_code, quantity) values (3, 1, 2);
+insert into subsidiaries_stock (id_subsidiary, part_code, quantity) values (2, 1, 4);
+insert into subsidiaries_stock (id_subsidiary, part_code, quantity) values (3, 1, 3);
 insert into subsidiaries_stock (id_subsidiary, part_code, quantity) values (4, 1, 0);
 insert into subsidiaries_stock (id_subsidiary, part_code, quantity) values (5, 1, 4);
 insert into subsidiaries_stock (id_subsidiary, part_code, quantity) values (1, 2, 5);
