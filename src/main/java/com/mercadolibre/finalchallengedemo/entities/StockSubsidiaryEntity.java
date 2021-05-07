@@ -13,7 +13,6 @@ import java.io.Serializable;
 @IdClass(RelationshipStockId.class)
 public class StockSubsidiaryEntity implements Serializable {
 
-
     private Integer quantity;
 
     @Id
