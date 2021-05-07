@@ -23,5 +23,5 @@ public class OrderStatusResponseDTO {
     @Pattern(regexp = "^[PDFCpdfc]$", message = "Invalid order status code. ")
     private String orderStatus;
 
-    private ArrayList<OrderDetailsDTO> orderDetails;
+    private ArrayList<PartOrderDetailDTO> orderDetails;
 }
