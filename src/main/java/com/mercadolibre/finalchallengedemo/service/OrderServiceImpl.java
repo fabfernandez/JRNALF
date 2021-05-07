@@ -3,17 +3,14 @@ package com.mercadolibre.finalchallengedemo.service;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusQueryParamsDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusResponseDTO;
 import com.mercadolibre.finalchallengedemo.dtos.partsorders.DealerOrderResponseDTO;
-import com.mercadolibre.finalchallengedemo.dtos.partsorders.OrderDetailsDTO;
-import com.mercadolibre.finalchallengedemo.dtos.partsorders.PartOrderDetailDTO;
 import com.mercadolibre.finalchallengedemo.dtos.partsorders.PartOrderQueryParamsDTO;
-import com.mercadolibre.finalchallengedemo.entities.OrderDetailEntity;
+import com.mercadolibre.finalchallengedemo.entities.DealerOrderEntity;
 import com.mercadolibre.finalchallengedemo.repository.IOrderRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements IOrderService {
@@ -32,10 +29,14 @@ public class OrderServiceImpl implements IOrderService {
                                                               String deliveryStatus,
                                                               String country) {
 
-        List<OrderDetailEntity> response = orderRepository.getOrdersByDealerAndStatus(Integer.valueOf(dealerNumber));
+        //List<OrderDetailEntity> response = orderRepository.getOrdersByDealerAndStatus(Integer.valueOf(dealerNumber));
 
-        List<PartOrderDetailDTO> detailDTOS = response.stream()
-                .map(entity -> modelMapper.map(entity, PartOrderDetailDTO.class)).collect(Collectors.toList());
+        //List<PartOrderDetailDTO> detailDTOS = response.stream()
+        //        .map(entity -> modelMapper.map(entity, PartOrderDetailDTO.class)).collect(Collectors.toList());
+
+
+        List<DealerOrderEntity> queryResult =
+                orderRepository.getDealerOrdersByDealer(Integer.valueOf(dealerNumber));
 
         //build response
         DealerOrderResponseDTO responseDTO = new DealerOrderResponseDTO(
