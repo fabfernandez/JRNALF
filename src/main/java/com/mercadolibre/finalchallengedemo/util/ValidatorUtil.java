@@ -1,7 +1,7 @@
 package com.mercadolibre.finalchallengedemo.util;
 
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
-import com.mercadolibre.finalchallengedemo.dtos.partsorders.PartOrderQueryParamsDTO;
+import com.mercadolibre.finalchallengedemo.dtos.orderstatus.PartOrderQueryParamsDTO;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 
