@@ -3,14 +3,17 @@ package com.mercadolibre.finalchallengedemo.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter @Setter
 public class PartDTO {
 
