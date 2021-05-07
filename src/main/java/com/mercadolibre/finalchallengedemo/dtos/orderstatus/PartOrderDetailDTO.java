@@ -9,6 +9,8 @@ import javax.validation.constraints.Size;
 
 @Data
 @Validated
+//req 2
+//respuesta, dentro de cada "orderDetails" del "orders"
 public class PartOrderDetailDTO {
 
     private Integer partCode;

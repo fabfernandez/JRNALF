@@ -16,15 +16,17 @@ public interface IOrderRepository extends JpaRepository<OrderDetailEntity, Integ
     //get order_number (order_id) with the above
     //get all order_details
     @Query("FROM OrderDetailEntity orderItem" +
-            " LEFT JOIN DealerOrderEntity dealerOrder ON dealerOrder.orderNumber = orderItem.idOrderDetail" +
+            " LEFT JOIN DealerOrderEntity dealerOrder ON dealerOrder.orderNumber = orderItem.id" +
             " LEFT JOIN  DealerEntity dealer ON dealer.idDealer = dealerOrder.dealerId" +
             " LEFT JOIN SubsidiaryEntity subsidiary ON subsidiary.id = dealerOrder.subsidiaryId" +
-            " WHERE orderItem.dealerOrderEntityID.dealerId = :dealerNumber")
-    List<OrderDetailEntity> getOrdersByDealerAndStatus(Integer dealerNumber);
+            " WHERE orderItem.correspondingOrder.dealerId = :dealerNumber")
+    List<OrderDetailEntity> getOrderItemsByDealerAndStatus(Integer dealerNumber);
 
+    /*
     @Query("FROM DealerOrderEntity dealerOrder" +
             " LEFT JOIN  DealerEntity dealer ON dealer.idDealer = dealerOrder.dealerId" +
             " LEFT JOIN SubsidiaryEntity subsidiary ON subsidiary.id = dealerOrder.subsidiaryId" +
             " WHERE dealerOrder.dealerId = :dealerNumber")
     List<DealerOrderEntity> getDealerOrdersByDealer(Integer dealerNumber);
+     */
 }
