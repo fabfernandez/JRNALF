@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/parts/orders")
 public class OrderController {
 
-    private IOrderService orderService;
+    private final IOrderService orderService;
 
     public OrderController(IOrderService orderService) {
         this.orderService = orderService;
     }
 
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<DealerOrderResponseDTO> getOrdersByDealerAndStatus(
             @Validated PartOrderQueryParamsDTO filter){
             //REQ 2 TODO do some magic here
