@@ -2,8 +2,10 @@ package com.mercadolibre.finalchallengedemo.service;
 
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
 import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
+import com.mercadolibre.finalchallengedemo.dtos.partstock.StockSubsidiaryDTO;
 import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
 import com.mercadolibre.finalchallengedemo.entities.PartsResponseEntity;
+import com.mercadolibre.finalchallengedemo.entities.StockSubsidiaryEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IPartRepository;
@@ -80,7 +82,15 @@ public class PartServiceImpl implements IPartService {
     @Override
     @Transactional
     public void savePart(PartDTO part) {
+        //REQ 4 Add or update a part.
+        StockSubsidiaryDTO stock = new StockSubsidiaryDTO();
+        stock.setPart(part.getPartCode());
+        stock.setQuantity(part.getQuantity());
+        stock.setSubsidiary(1);
+
         partRepository.save(modelMapper.map(part, PartsResponseEntity.class));
+        partRepository.save(modelMapper.map(stock, StockSubsidiaryEntity.class));
+
     }
 
     @Override

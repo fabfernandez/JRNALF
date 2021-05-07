@@ -35,6 +35,7 @@ public class PartController {
 
     @PostMapping("/")
     public ResponseEntity savePart(@Validated @RequestBody PartDTO part){
+        //This is the REQ 4 endpoint for adding or modifying parts to the database.
         partService.savePart(part);
         return ResponseEntity.ok("Part saved.");
     }
