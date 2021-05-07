@@ -1,15 +1,23 @@
 package com.mercadolibre.finalchallengedemo.entities;
 
+import lombok.Getter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Getter
 @Table(name = "subsidiaries_stock")
+@IdClass(RelationshipStockId.class)
 public class StockSubsidiaryEntity implements Serializable {
 
 
     private Integer quantity;
-    @ManyToOne
+
+    @Id
+    @ManyToOne(cascade=CascadeType.ALL, optional=true, fetch=FetchType.EAGER)
     @JoinColumn(name = "part_code", nullable = false)
     private PartEntity part;
 
