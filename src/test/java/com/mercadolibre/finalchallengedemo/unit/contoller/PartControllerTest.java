@@ -8,6 +8,7 @@ import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.service.PartServiceImpl;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
