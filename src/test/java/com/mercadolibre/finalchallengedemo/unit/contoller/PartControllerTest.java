@@ -6,9 +6,8 @@ import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
 import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
-import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundedException;
+import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.service.PartServiceImpl;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -112,8 +111,8 @@ public class PartControllerTest {
     @Test
     @DisplayName("When find part by id which not exists, then throw Not Found")
     public void whenFindPartByIdWhichNotExists_thenThrowNotFound() {
-        when(this.partService.findPart(any())).thenThrow(PartsNotFoundedException.class);
-        assertThrows(PartsNotFoundedException.class,() -> partController.findPart(23423));
+        when(this.partService.findPart(any())).thenThrow(PartsNotFoundException.class);
+        assertThrows(PartsNotFoundException.class,() -> partController.findPart(23423));
         verify(partService,times(1)).findPart(any());
     }
 

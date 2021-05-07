@@ -4,6 +4,8 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -36,7 +38,20 @@ public class PartEntity {
     @Size(max = 5, message = "The net weight of the spare part needs 5 numeric characters.")
     private Integer netWeight;
 
+    @Column(name = "normal_price", nullable = false, length = 5)
+    @Size(max = 5, message = "The net weight of the spare part needs 5 numeric characters.")
+    private Integer normalPrice;
+
+    @Column(name ="last_modification")
+    private Date lastModification;
+
+    @Column(name ="last_price_modification")
+    private Date lastPriceModification;
+
     @OneToMany(mappedBy = "part")
-    private Set<PartModificationEntity> partModificationEntity;
+    private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
+
+
+
 
 }

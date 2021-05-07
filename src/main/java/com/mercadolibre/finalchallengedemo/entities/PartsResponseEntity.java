@@ -11,14 +11,14 @@ import java.util.Set;
 @Entity
 @Getter
 @Table(name = "parts")
-@SecondaryTable(name = "parts_modifications", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id_part"))
+@SecondaryTable(name = "subsidiaries_stock", foreignKey = @ForeignKey(name = "part_code"))
 public class PartsResponseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "part_code")
     @Size(min = 8, message = "The field needs a minimum of 8 numeric characters")
-    private Integer id;
+    private Integer partCode;
 
     @Column(nullable = false, length = 100)
     @Size(max = 100, message = "The field needs a miximium of 100 alphanumeric characters.")
@@ -40,12 +40,20 @@ public class PartsResponseEntity {
     @Size(max = 5, message = "The net weight of the spare part needs 5 numeric characters.")
     private Integer netWeight;
 
-    @OneToMany(mappedBy = "part")
-    private Set<PartModificationEntity> partModificationEntity;
-
-    @Column(name = "normal_price", table = "parts_modifications")
+    @Column(name = "normal_price", nullable = false, length = 5)
+    @Size(max = 5, message = "The net weight of the spare part needs 5 numeric characters.")
     private Integer normalPrice;
-    
-    @Column(name = "last_modification", table = "parts_modifications")
+
+    @Column(name ="last_modification")
     private Date lastModification;
+
+    @Column(name ="last_price_modification")
+    private Date lastPriceModification;
+
+    @OneToMany(mappedBy = "part")
+    private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
+
+    @Column(name = "quantity", table = "subsidiaries_stock")
+    private Integer quantity;
+
 }
