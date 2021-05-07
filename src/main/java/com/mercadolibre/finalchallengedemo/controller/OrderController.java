@@ -2,8 +2,7 @@ package com.mercadolibre.finalchallengedemo.controller;
 
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusQueryParamsDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusResponseDTO;
-import com.mercadolibre.finalchallengedemo.dtos.partsorders.DealerOrderResponseDTO;
-import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusCMDTO;
+import com.mercadolibre.finalchallengedemo.dtos.orderstatus.DealerOrderResponseDTO;
 import com.mercadolibre.finalchallengedemo.dtos.partsorders.PartOrderQueryParamsDTO;
 import com.mercadolibre.finalchallengedemo.service.IOrderService;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +19,9 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-
     @GetMapping()
     public ResponseEntity<DealerOrderResponseDTO> getOrdersByDealerAndStatus(
             @Validated PartOrderQueryParamsDTO filter){
-            //REQ 2 TODO do some magic here
             return ResponseEntity.ok(orderService.getOrders(filter));
     }
 
@@ -49,7 +46,5 @@ public class OrderController {
         orderService.saveOrder(order);
         return ResponseEntity.ok("Order updated.");
     }*/
-
-
 
 }

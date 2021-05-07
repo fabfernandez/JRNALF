@@ -1,10 +1,7 @@
 package com.mercadolibre.finalchallengedemo.entities;
 
 
-import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderDetailsDTO;
-
 import javax.persistence.*;
-import java.util.ArrayList;
 
 @Entity
 @Table(name = "orderStatus")
