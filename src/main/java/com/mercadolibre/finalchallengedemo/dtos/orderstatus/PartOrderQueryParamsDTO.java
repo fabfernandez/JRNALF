@@ -1,4 +1,4 @@
-package com.mercadolibre.finalchallengedemo.dtos.partsorders;
+package com.mercadolibre.finalchallengedemo.dtos.orderstatus;
 
 
 import lombok.AllArgsConstructor;

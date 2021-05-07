@@ -3,7 +3,7 @@ package com.mercadolibre.finalchallengedemo.controller;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusQueryParamsDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusResponseDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.DealerOrderResponseDTO;
-import com.mercadolibre.finalchallengedemo.dtos.partsorders.PartOrderQueryParamsDTO;
+import com.mercadolibre.finalchallengedemo.dtos.orderstatus.PartOrderQueryParamsDTO;
 import com.mercadolibre.finalchallengedemo.service.IOrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
