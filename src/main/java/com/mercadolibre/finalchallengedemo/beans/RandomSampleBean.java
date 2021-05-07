@@ -1,6 +1,5 @@
 package com.mercadolibre.finalchallengedemo.beans;
 
-import com.mercadolibre.finalchallengedemo.dtos.SampleDTO;
 import java.util.Random;
 import org.springframework.stereotype.Component;
 

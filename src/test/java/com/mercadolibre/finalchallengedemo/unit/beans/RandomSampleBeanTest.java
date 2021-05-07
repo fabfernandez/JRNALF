@@ -1,6 +1,5 @@
 package com.mercadolibre.finalchallengedemo.unit.beans;
 
-import com.mercadolibre.finalchallengedemo.dtos.SampleDTO;
 import com.mercadolibre.finalchallengedemo.beans.RandomSampleBean;
 
 import org.junit.jupiter.api.Test;

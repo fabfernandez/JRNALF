@@ -6,17 +6,21 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "parts_modifications")
 public class PartModificationEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     @ManyToOne
     @JoinColumn(name = "id_part", nullable = false)
     private PartEntity part;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_part_modification")
+    private Integer id_part_modification;
 
     private LocalDate last_modification;
 
     @Column(name = "normal_price")
     private Integer normalPrice;
+
+    @Column(name = "sale_price")
+    private Integer salePrice;
+
 }

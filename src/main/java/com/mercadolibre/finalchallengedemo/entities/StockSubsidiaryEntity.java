@@ -3,12 +3,15 @@ package com.mercadolibre.finalchallengedemo.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "stock_subsidiary")
+@Table(name = "subsidiaries_stock")
 public class StockSubsidiaryEntity {
 
+    // Tengo dudas con el id, es necesario????
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
+
+    private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "id_part", nullable = false)

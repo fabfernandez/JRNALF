@@ -1,0 +1,112 @@
+[{
+  "id": 1,
+  "description": "Llanta",
+  "widthDimension": 100,
+  "tallDimension": 100,
+  "longDimension": 100,
+  "netWeight": 100
+},
+{
+"id": 2,
+"description": "Puerta trasera derecha",
+"widthDimension": 30,
+"tallDimension": 40,
+"longDimension": 30,
+"netWeight": 40
+},
+{
+"id": 3,
+"description": "Puerta trasera izquierda",
+"widthDimension": 30,
+"tallDimension": 40,
+"longDimension": 30,
+"netWeight": 40
+},
+{
+"id": 4,
+"description": "Puerta delantera derecha",
+"widthDimension": 30,
+"tallDimension": 40,
+"longDimension": 30,
+"netWeight": 40
+},
+{
+"id": 5,
+"description": "Puerta delantera izquierda",
+"widthDimension": 30,
+"tallDimension": 40,
+"longDimension": 30,
+"netWeight": 40
+},
+{
+"id": 6,
+"description": "Puerta del maletero",
+"widthDimension": 80,
+"tallDimension": 30,
+"longDimension": 80,
+"netWeight": 30
+},
+{
+"id": 7,
+"description": "Foco LED delantero",
+"widthDimension": 15,
+"tallDimension": 15,
+"longDimension": 15,
+"netWeight": 15
+},
+{
+"id": 8,
+"description": "Espejo retrovisor",
+"widthDimension": 100,
+"tallDimension": 55,
+"longDimension": 100,
+"netWeight": 100
+},
+{
+"id": 9,
+"description": "Espejo derecho",
+"widthDimension": 33,
+"tallDimension": 100,
+"longDimension": 100,
+"netWeight": 100
+},
+{
+"id": 10,
+"description": "Espejo izquierdo",
+"widthDimension": 40,
+"tallDimension": 100,
+"longDimension": 99,
+"netWeight": 33
+},
+{
+"id": 11,
+"description": "Caja de cambios",
+"widthDimension": 40,
+"tallDimension": 33,
+"longDimension": 55,
+"netWeight": 100
+},
+{
+"id": 12,
+"description": "Asiento delantero",
+"widthDimension": 55,
+"tallDimension": 40,
+"longDimension": 100,
+"netWeight": 92
+},
+{
+"id": 13,
+"description": "Asiento trasero",
+"widthDimension": 92,
+"tallDimension": 100,
+"longDimension": 33,
+"netWeight": 100
+},
+{
+"id": 14,
+"description": "Apoyacabezas",
+"widthDimension": 92,
+"tallDimension": 33,
+"longDimension": 100,
+"netWeight": 92
+}]
