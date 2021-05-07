@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 @Repository
@@ -27,4 +28,8 @@ public interface IOrderRepository extends JpaRepository<OrderDetailEntity, Integ
             " LEFT JOIN SubsidiaryEntity subsidiary ON subsidiary.id = dealerOrder.subsidiaryId" +
             " WHERE dealerOrder.dealerId = :dealerNumber")
     List<DealerOrderEntity> getDealerOrdersByDealer(Integer dealerNumber);
+
+    @Query("FROM DealerOrderEntity dealerOrder " +
+            "WHERE dealerOrder.dealerId = :dealerNumber AND dealerOrder.subsidiaryId = :subsidiaryId")
+    List<DealerOrderEntity> getOrdersFromDealersStatus(Integer dealerNumber, Integer subsidiaryId);
 }

@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 @Validated
 public class OrderStatusQueryParamsDTO {
 
-    @NotNull(message = "Order number cant be null or empty")
-    @Pattern(regexp = "^\\d{4}-\\d{4}-\\d{8}$", message = "Order number does not match the required pattern.")
+    @NotNull(message = "Order number can't be null or empty")
+    @Pattern(regexp = "^\\d{4}-\\d{4}-\\d{8}$", message = "Order number doesn't match the required pattern.")
     private String orderNumberCM;
 }

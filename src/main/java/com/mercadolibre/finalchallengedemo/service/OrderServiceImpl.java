@@ -3,12 +3,17 @@ package com.mercadolibre.finalchallengedemo.service;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusQueryParamsDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusResponseDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.DealerOrderResponseDTO;
+import com.mercadolibre.finalchallengedemo.dtos.orderstatus.PartOrderQueryParamsDTO;
+import com.mercadolibre.finalchallengedemo.dtos.response.OrderResponseDTO;
 import com.mercadolibre.finalchallengedemo.entities.DealerOrderEntity;
 import com.mercadolibre.finalchallengedemo.repository.IOrderRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,8 +52,25 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO orderStatusCMDTO) {
-        //TODO Implement this service
+    public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO
+                                                                         orderStatusCMDTO) {
+        String[] queryArray = orderStatusCMDTO.getOrderNumberCM().split("-");
+        String dealer = queryArray[0];
+        String orderNumber = queryArray[1];
+        OrderResponseDTO response = new OrderResponseDTO();
+
+        // Get orders that matches subsidiary and order number.
+        List<DealerOrderEntity> orderEntities = orderRepository.getOrdersFromDealersStatus(Integer.valueOf(orderNumber), Integer.valueOf(dealer));
+
+        // Setting response values.
+        response.setOrderNumberCE(dealer);
+
+        //configurando modelmapper
+        TypeMap<DealerOrderEntity, OrderResponseDTO> typeMap
+                = modelMapper.createTypeMap(DealerOrderEntity.class, OrderResponseDTO.class);
+
+        typeMap.addMappings(mapper -> mapper.map(order -> order.get))
+        // me falta: orderDate, orderStatus y orderDetails (lista de orderdetail).
         return null;
     }
 
