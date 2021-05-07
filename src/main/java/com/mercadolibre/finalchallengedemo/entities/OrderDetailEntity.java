@@ -1,9 +1,12 @@
 package com.mercadolibre.finalchallengedemo.entities;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "order_details")
+@Getter
 public class OrderDetailEntity {
 
     @Id

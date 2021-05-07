@@ -4,6 +4,7 @@ import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusQueryPara
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusResponseDTO;
 import com.mercadolibre.finalchallengedemo.dtos.partsorders.DealerOrderResponseDTO;
 import com.mercadolibre.finalchallengedemo.dtos.partsorders.OrderDetailsDTO;
+import com.mercadolibre.finalchallengedemo.dtos.partsorders.PartOrderDetailDTO;
 import com.mercadolibre.finalchallengedemo.dtos.partsorders.PartOrderQueryParamsDTO;
 import com.mercadolibre.finalchallengedemo.entities.OrderDetailEntity;
 import com.mercadolibre.finalchallengedemo.repository.IOrderRepository;
@@ -33,10 +34,13 @@ public class OrderServiceImpl implements IOrderService {
 
         List<OrderDetailEntity> response = orderRepository.getOrdersByDealerAndStatus(Integer.valueOf(dealerNumber));
 
+        List<PartOrderDetailDTO> detailDTOS = response.stream()
+                .map(entity -> modelMapper.map(entity, PartOrderDetailDTO.class)).collect(Collectors.toList());
+
         //build response
         DealerOrderResponseDTO responseDTO = new DealerOrderResponseDTO(
                 Integer.valueOf(dealerNumber),
-                response.stream().map(o -> modelMapper.map(o, OrderDetailsDTO.class)).collect(Collectors.toList())
+                null
         );
 
         return responseDTO;
