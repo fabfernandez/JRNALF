@@ -1,9 +1,6 @@
 package com.mercadolibre.finalchallengedemo.config;
 
-import com.mercadolibre.finalchallengedemo.exceptions.ApiError;
-import com.mercadolibre.finalchallengedemo.exceptions.ApiException;
-import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
-import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
+import com.mercadolibre.finalchallengedemo.exceptions.*;
 import com.newrelic.api.agent.NewRelic;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -86,4 +83,14 @@ public class ControllerExceptionHandler {
 	private ResponseEntity<ApiError> handle(HttpStatus status, String message) {
 		return new ResponseEntity<>(new ApiError(status.toString(), message, status.value() ), status);
 	}
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity userNotFoundException(UserNotFoundException e) {
+		return handle(HttpStatus.NOT_FOUND,e.getMessage());
+	}
+
+	@ExceptionHandler(AuthException.class)
+	public ResponseEntity authException(AuthException e) {
+		return handle(HttpStatus.NOT_FOUND,e.getMessage());
+	}
+
 }
