@@ -1,6 +1,5 @@
-package com.mercadolibre.finalchallengedemo.dtos;
+package com.mercadolibre.finalchallengedemo.dtos.response;
 
-import com.mercadolibre.finalchallengedemo.dtos.OrdersDetailsDTO;
 import lombok.Getter;
 import lombok.Setter;
 
