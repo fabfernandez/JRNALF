@@ -1,5 +1,7 @@
 package com.mercadolibre.finalchallengedemo.service;
 
+import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusQueryParamsDTO;
+import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusResponseDTO;
 import com.mercadolibre.finalchallengedemo.dtos.partsorders.DealerOrderResponseDTO;
 import com.mercadolibre.finalchallengedemo.dtos.partsorders.OrderDetailsDTO;
 import com.mercadolibre.finalchallengedemo.dtos.partsorders.PartOrderQueryParamsDTO;
@@ -24,7 +26,8 @@ public class OrderServiceImpl implements IOrderService {
         this.modelMapper = modelMapper;
     }
 
-    private DealerOrderResponseDTO getOrdersByDealerAndStatus(String dealerNumber,
+    @Override
+    public DealerOrderResponseDTO getOrdersByDealerAndStatus(String dealerNumber,
                                                               String deliveryStatus,
                                                               String country) {
 
@@ -37,6 +40,12 @@ public class OrderServiceImpl implements IOrderService {
         );
 
         return responseDTO;
+    }
+
+    @Override
+    public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO orderStatusCMDTO) {
+        //TODO Implement this service
+        return null;
     }
 
 
