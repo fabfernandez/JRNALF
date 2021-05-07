@@ -4,12 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "dealer_orders")
 @Getter
 @Setter
+// UNA ORDEN DE UN DEALER ESPECIFICO
 public class DealerOrderEntity {
 
     @Id
@@ -18,7 +20,7 @@ public class DealerOrderEntity {
     private Integer orderNumber;
 
     @Column(nullable = false, name = "order_date")
-    private LocalDate orderDate;
+    private Date orderDate;
 
     @Column(nullable = false, name = "order_status")
     private String orderStatus;
@@ -29,15 +31,15 @@ public class DealerOrderEntity {
     @Column(nullable = false, name = "subsidiary_id")
     private Integer subsidiaryId;
 
-    /*
+
     @Column(nullable = false, name = "delivery_date")
-    private LocalDate deliveryDate;
+    private Date deliveryDate;
 
     @Column(nullable = false, name = "days_delay")
     private Integer daysDelay;
 
-    @Column(nullable = false, name = "delivery_status", length = 1)
-    @Size(max = 1, message = "The status must not have more than 1 character.")
-    private String deliveryStatus;
-     */
+    @OneToMany(mappedBy = "correspondingOrder")
+    // ITEMS
+    private Set<OrderItemEntity> orderDetails;
+
 }

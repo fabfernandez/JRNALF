@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 //esto es un item de una orden, que contiene UNA parte y que cantidad pide
-public class OrderDetailEntity {
+public class OrderItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,5 +26,10 @@ public class OrderDetailEntity {
     @ManyToOne
     @JoinColumn(nullable = false, name = "part_id")
     private PartEntity part;
+
+    @Column(nullable = false, name = "account_type")
+    private String accountType;
+
+    private String reason;
 
 }

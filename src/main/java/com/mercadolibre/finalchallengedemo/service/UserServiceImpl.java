@@ -51,7 +51,7 @@ public class UserServiceImpl implements IUserService {
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 600000))
+                .setExpiration(new Date(System.currentTimeMillis() + 600000000))
                 .signWith(SignatureAlgorithm.HS512,
                         secretKey.getBytes()).compact();
 
