@@ -1,22 +1,20 @@
 package com.mercadolibre.finalchallengedemo.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "subsidiaries_stock")
-public class StockSubsidiaryEntity {
+public class StockSubsidiaryEntity implements Serializable {
 
-    // Tengo dudas con el id, es necesario????
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
 
     private Integer quantity;
-
+    @Id
     @ManyToOne
-    @JoinColumn(name = "id_part", nullable = false)
+    @JoinColumn(name = "part_code", nullable = false)
     private PartEntity part;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "id_subsidiary", nullable = false)
     private SubsidiaryEntity subsidiary;

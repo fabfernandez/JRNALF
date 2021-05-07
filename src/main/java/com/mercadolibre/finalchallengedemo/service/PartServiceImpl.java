@@ -7,6 +7,7 @@ import com.mercadolibre.finalchallengedemo.entities.PartsResponseEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IPartRepository;
+import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,7 +59,7 @@ public class PartServiceImpl implements IPartService {
                 if(order != null)
                     response.setParts(getSortedPartsPartialResponse(order,filterDate,currentDate));
                 else
-                    response.setParts(mapListPartsResponse(partRepository.findPartsModifiedSinceDate(filterDate, currentDate, idSubsidiary)));
+                    response.setParts(mapListPartsResponse(partRepository.findPartsModifiedSinceDate(filterDate, currentDate, DecodeToken.location)));
                 break;
             case 'C':
             default:

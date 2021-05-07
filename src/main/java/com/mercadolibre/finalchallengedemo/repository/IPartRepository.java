@@ -1,5 +1,6 @@
 package com.mercadolibre.finalchallengedemo.repository;
 
+import com.mercadolibre.finalchallengedemo.entities.PartEntity;
 import com.mercadolibre.finalchallengedemo.entities.PartsResponseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +12,7 @@ import java.util.List;
 @Repository
 public interface IPartRepository extends JpaRepository<PartsResponseEntity, Integer> {
 
-    @Query("FROM PartsResponseEntity p  LEFT JOIN StockSubsidiaryEntity s ON s.subsidiary.id = :idSubsidiary WHERE p.partCode = s.part.partCode  AND  p.lastModification BETWEEN :filterDate AND :currentDate ")
+   @Query(" FROM PartsResponseEntity p LEFT JOIN StockSubsidiaryEntity s ON s.subsidiary.id = :idSubsidiary WHERE s.part.partCode = p.partCode and p.lastModification BETWEEN :filterDate AND :currentDate ")
     List<PartsResponseEntity> findPartsModifiedSinceDate(Date filterDate, Date currentDate, Integer idSubsidiary);
 
 

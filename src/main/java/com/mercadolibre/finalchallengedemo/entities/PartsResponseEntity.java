@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Table(name = "parts")
-@SecondaryTable(name = "subsidiaries_stock", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id_part"))
+@SecondaryTable(name = "subsidiaries_stock", foreignKey = @ForeignKey(name = "part_code"))
 public class PartsResponseEntity {
 
     @Id

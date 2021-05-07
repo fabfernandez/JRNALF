@@ -17,7 +17,7 @@ public class PartDTO {
     private Integer partCode;
     private String description;
     //private String maker;
-   // private Integer quantity;
+    private Integer quantity;
    // private Double discountType;
     private Double normalPrice;
     //private Double urgentPrice;

@@ -15,8 +15,6 @@ public class UserEntity {
 
     private String password;
 
-    private String role;
-
     @ManyToOne
     @JoinColumn(name = "id_subsidiary", nullable = false)
     private SubsidiaryEntity subsidiary;
