@@ -65,12 +65,14 @@ public class OrderServiceImpl implements IOrderService {
         // Setting response values.
         response.setOrderNumberCE(dealer);
 
-        //configurando modelmapper
-        TypeMap<DealerOrderEntity, OrderResponseDTO> typeMap
-                = modelMapper.createTypeMap(DealerOrderEntity.class, OrderResponseDTO.class);
+        /*
+        Setear desde el resultado de la query orderEntities:
+            response.setOrderDate();
+            response.setOrderStatus();
 
-        typeMap.addMappings(mapper -> mapper.map(order -> order.get))
-        // me falta: orderDate, orderStatus y orderDetails (lista de orderdetail).
+        Setear orderDetails que ya lo hizo Fabri:
+            response.setOrderDetails();
+         */
         return null;
     }
 
@@ -92,8 +94,6 @@ public class OrderServiceImpl implements IOrderService {
         }
 
         //return response
-
-
         return null;
     }
 }
