@@ -7,6 +7,7 @@ import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
 import com.mercadolibre.finalchallengedemo.entities.PartEntity;
 import com.mercadolibre.finalchallengedemo.repository.IPartRepository;
 import com.mercadolibre.finalchallengedemo.repository.IStockRepository;
+import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import com.mercadolibre.finalchallengedemo.service.PartServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +38,7 @@ public class PartServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        this.partService = new PartServiceImpl(partRepository,new ModelMapper(), stockRepository);
+        this.partService = new PartServiceImpl(partRepository, stockRepository,new ModelMapper());
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, 02);
         c.set(Calendar.DATE, 26);
@@ -65,7 +66,7 @@ public class PartServiceTest {
         List<PartEntity> partsEntityList = getList("classpath:allPartsEntities.json",PartEntity.class);
         List<PartDTO> partsDtoList = getList("classpath:allParts.json",PartDTO.class);
 
-        when(this.partRepository.findPartsModifiedSinceDate(any(),any())).thenReturn(partsEntityList);
+        when(this.partRepository.findPartsModifiedSinceDate(any(),any(), DecodeToken.location)).thenReturn(partsEntityList);
 
         PartFilterDTO validFilter = new PartFilterDTO();
         validFilter.setQueryType('P');
@@ -74,7 +75,7 @@ public class PartServiceTest {
         final PartResponseDTO response = partService.getPartsByFilter(validFilter);
 
         assertEquals(partsDtoList.size(), response.getParts().size());
-        verify(partRepository,times(1)).findPartsModifiedSinceDate(any(),any());
+        verify(partRepository,times(1)).findPartsModifiedSinceDate(any(),any(), DecodeToken.location);
     }
 
 

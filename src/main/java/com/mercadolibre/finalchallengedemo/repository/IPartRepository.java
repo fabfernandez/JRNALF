@@ -12,7 +12,7 @@ import java.util.List;
 public interface IPartRepository extends JpaRepository<PartEntity, Integer> {
 
    @Query("FROM PartEntity p WHERE p.lastModification BETWEEN :filterDate AND :currentDate ")
-    List<PartEntity> findPartsModifiedSinceDate(Date filterDate, Date currentDate);
+    List<PartEntity> findPartsModifiedSinceDate(Date filterDate, Date currentDate, Integer location);
 
 
     @Query("FROM PartEntity p WHERE p.lastModification BETWEEN :filterDate AND :currentDate ORDER BY p.description ASC")
