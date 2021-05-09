@@ -1,21 +1,25 @@
 package com.mercadolibre.finalchallengedemo.service;
 
-import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusQueryParamsDTO;
-import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusResponseDTO;
-import com.mercadolibre.finalchallengedemo.dtos.orderstatus.DealerOrderResponseDTO;
+import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
 import com.mercadolibre.finalchallengedemo.entities.DealerOrderEntity;
+import com.mercadolibre.finalchallengedemo.entities.OrderItemEntity;
+import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
+import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IOrderRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements IOrderService {
 
     private final IOrderRepository orderRepository;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public OrderServiceImpl(IOrderRepository orderRepository, ModelMapper modelMapper) {
@@ -24,26 +28,68 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public DealerOrderResponseDTO getOrdersByDealerAndStatus(String dealerNumber,
-                                                              String deliveryStatus,
-                                                              String country) {
+    public DealerOrderResponseDTO getOrdersByDealerNumber(String dealerNumber,
+                                                          String deliveryStatus,
+                                                          Integer country, Integer order) {
+        List<DealerOrderEntity> orderEntities = new ArrayList<>();
 
-        //List<OrderDetailEntity> response = orderRepository.getOrdersByDealerAndStatus(Integer.valueOf(dealerNumber));
+        //get all orders from a dealer
+        if (dealerNumber != null && deliveryStatus == null && order == null)
+            orderEntities = orderRepository.getDealerOrdersByDealer(Integer.valueOf(dealerNumber),country);
+        if (dealerNumber != null && deliveryStatus != null & order == null)
+            orderEntities = orderRepository.getDealerOrdersByDealerOrderStatus(Integer.valueOf(dealerNumber), deliveryStatus,country);
+        if(dealerNumber != null && deliveryStatus != null && order != null){
+            if(order.equals(1)){
+                orderEntities = orderRepository.getDealerOrdersByDealerStatusOrderedAsc(Integer.valueOf(dealerNumber), deliveryStatus,country);
+            } else if(order.equals(2)){
+                orderEntities = orderRepository.getDealerOrdersByDealerStatusOrderedDesc(Integer.valueOf(dealerNumber), deliveryStatus, country);
+            } else
+                throw new InvalidOrderFilterException("Order selected is not valid");
+        }
+        if (dealerNumber != null && deliveryStatus == null && order != null){
+            if(order.equals(1)){
+                orderEntities = orderRepository.getDealerOrdersByDealerAsc(Integer.valueOf(dealerNumber),country);
+            } else if(order.equals(2)){
+                orderEntities = orderRepository.getDealerOrdersByDealerDesc(Integer.valueOf(dealerNumber),country);
+            } else
+                throw new InvalidOrderFilterException("Order selected is not valid");
+        }
 
-        //List<PartOrderDetailDTO> detailDTOS = response.stream()
-        //        .map(entity -> modelMapper.map(entity, PartOrderDetailDTO.class)).collect(Collectors.toList());
 
 
-        List<DealerOrderEntity> queryResult =
-                orderRepository.getDealerOrdersByDealer(Integer.valueOf(dealerNumber));
+        //configurando modelmapper
+        if(modelMapper.getTypeMap(OrderItemEntity.class, PartOrderDetailDTO.class) == null){
+            TypeMap<OrderItemEntity, PartOrderDetailDTO> typeMap = modelMapper.createTypeMap(OrderItemEntity.class, PartOrderDetailDTO.class);
+
+
+            typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getPart().getDescription(),
+                    PartOrderDetailDTO::setDescription));
+
+        typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getAccountType(),
+                PartOrderDetailDTO::setAccountType));
+
+        typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getReason(),
+                PartOrderDetailDTO::setReason));
+            }
+        //build orderDTOs
+        List<OrderDetailsDTO> orders =
+                orderEntities
+                        .stream()
+                        .map(orderEntity -> modelMapper.map(orderEntity,
+                                OrderDetailsDTO.class))
+                        .collect(Collectors.toList());
+
+        //validate if orders is null or empty
+        if(orders.size() == 0 || orders == null){
+            throw new PartsNotFoundException("Parts not found");
+        }
 
         //build response
-        DealerOrderResponseDTO responseDTO = new DealerOrderResponseDTO(
+        return new DealerOrderResponseDTO(
                 Integer.valueOf(dealerNumber),
-                null
+                orders
         );
 
-        return responseDTO;
     }
 
     @Override
@@ -59,19 +105,10 @@ public class OrderServiceImpl implements IOrderService {
         String dealerNumber = params.getDealerNumber();
         String deliveryStatus = params.getDeliveryStatus();
         Integer order = params.getOrder();
-        String country = "Argentina";
-        //todo receive this in params
+        Integer country = 1;
+        //todo receive this from DecodeToken
 
-        //choose what to do with received params
-        if (dealerNumber != null &&
-                deliveryStatus == null &&
-                order == null) {
-            return getOrdersByDealerAndStatus(dealerNumber, deliveryStatus, country);
-        }
-
-        //return response
-
-
-        return null;
+        //send data to method that evaluates params to make
+        return getOrdersByDealerNumber(dealerNumber, deliveryStatus, country, order);
     }
 }

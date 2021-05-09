@@ -10,6 +10,6 @@ public interface IOrderService {
 
     DealerOrderResponseDTO getOrders(PartOrderQueryParamsDTO params);
 
-    public DealerOrderResponseDTO getOrdersByDealerAndStatus(String dealerNumber, String deliveryStatus,String country);
+    public DealerOrderResponseDTO getOrdersByDealerNumber(String dealerNumber, String deliveryStatus, Integer country, Integer order);
     public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO orderStatusCMDTO);
 }
