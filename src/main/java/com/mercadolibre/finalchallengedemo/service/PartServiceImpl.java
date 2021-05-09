@@ -50,7 +50,7 @@ public class PartServiceImpl implements IPartService {
         Integer order = filter.getOrder();
         Date filterDate = filter.getDate();
         Date currentDate = Date.from(Instant.now());
-        PartResponseDTO response = new PartResponseDTO();
+        PartResponseDTO response;
         switch (filter.getQueryType()) {
             case 'V':
                 if(order != null)
@@ -95,6 +95,7 @@ public class PartServiceImpl implements IPartService {
         return modelMapper.map(part.get(), PartDTO.class);
     }
 
+    //Returns all the parts for query type P, from repository, sorted by requested order.
     private PartResponseDTO getSortedPartsPartialResponse(Integer order, Date filterDate, Date currentDate) {
         switch (order) {
             case 1:
@@ -108,6 +109,7 @@ public class PartServiceImpl implements IPartService {
         }
     }
 
+    //Returns all the parts for query type V, from repository, sorted by requested order.
     private PartResponseDTO getSortedPartsWithPriceVariationResponse(Integer order, Date filterDate, Date currentDate) {
         switch (order) {
             case 1:
@@ -121,6 +123,7 @@ public class PartServiceImpl implements IPartService {
         }
     }
 
+    //Prepare response mapping the parts from entities to dtos and assigns the stock for all of them depending of the user subsidiary id.
     private PartResponseDTO mapResponse(List<PartEntity> parts ) {
         PartResponseDTO response = new PartResponseDTO();
         List<PartDTO> responseParts = parts.stream().map(p -> modelMapper.map(p, PartDTO.class)).collect(Collectors.toList());
@@ -129,6 +132,7 @@ public class PartServiceImpl implements IPartService {
         return response;
     }
 
+    //Finds the stock corresponding to the part associated with the subsidiary.
     private Integer getQuantityFromPart(PartDTO p) {
         return this.stockRepository.findStockByPartCodeAndSubsidiary(p.getPartCode(),DecodeToken.location).getQuantity();
     }

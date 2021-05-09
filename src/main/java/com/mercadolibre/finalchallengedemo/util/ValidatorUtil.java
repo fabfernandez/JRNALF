@@ -6,6 +6,16 @@ import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterExceptio
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 
 public class ValidatorUtil {
+
+    //Validations for the filter from req 1
+    //Params will be valid if:
+    //order is 1,2 or 3.
+    //date is past or present
+    //queryType is C, P or V
+    //All the valid filters are:
+    //queryType 'C' with none order and date.
+    //queryType 'P' or 'V', with a date.
+    //queryType 'P' or 'V', with a date and a order.
     public static void validatePartFilter(PartFilterDTO filter) {
         validatePartFilterQueryType(filter);
         validatePartFilterOrder(filter);
