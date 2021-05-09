@@ -89,6 +89,51 @@ public class PartServiceTest {
 
 
     @Test
+    @DisplayName("Given parts, then return filtered parts and sorted by description asc")
+    public void givenParts_thenReturnFilteredPartsAndSortedByDescriptionAsc() {
+        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesAndSortedByDescriptionAsc.json",PartEntity.class);
+        List<PartDTO> partsDtoList = getList("classpath:filteredPartsAndSortedByDescriptionAsc.json",PartDTO.class);
+
+        StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
+
+        when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
+        when(this.partRepository.findPartsModifiedSinceDateSortedByDescriptionAsc(any(),any())).thenReturn(partsEntityList);
+
+        PartFilterDTO validFilter = new PartFilterDTO();
+        validFilter.setQueryType('P');
+        validFilter.setDate(pastDate);
+        validFilter.setOrder(1);
+
+        final PartResponseDTO response = partService.getPartsByFilter(validFilter);
+
+        assertIterableEquals(response.getParts(), partsDtoList);
+        verify(partRepository,times(1)).findPartsModifiedSinceDateSortedByDescriptionAsc(any(),any());
+    }
+
+    @Test
+    @DisplayName("Given parts, then return filtered parts and sorted by description desc")
+    public void givenParts_thenReturnFilteredPartsAndSortedByDescriptionDesc() {
+        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesAndSortedByDescriptionDesc.json",PartEntity.class);
+        List<PartDTO> partsDtoList = getList("classpath:filteredPartsAndSortedByDescriptionDesc.json",PartDTO.class);
+
+        StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
+
+        when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
+        when(this.partRepository.findPartsModifiedSinceDateSortedByDescriptionDesc(any(),any())).thenReturn(partsEntityList);
+
+        PartFilterDTO validFilter = new PartFilterDTO();
+        validFilter.setQueryType('P');
+        validFilter.setDate(pastDate);
+        validFilter.setOrder(2);
+
+        final PartResponseDTO response = partService.getPartsByFilter(validFilter);
+
+        assertIterableEquals(response.getParts(), partsDtoList);
+        verify(partRepository,times(1)).findPartsModifiedSinceDateSortedByDescriptionDesc(any(),any());
+    }
+
+
+    @Test
     @DisplayName("No parts found, then throw NoPartsFoundException")
     public void noPartsFound_thenThrowNoPartsFoundException() {
 
@@ -120,7 +165,7 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("Given part, when find, then return part")
+    @DisplayName("When find by non existent id, then throw not found exception")
     public void whenFindByNonExistentId_thenThrowNotFoundException() {
         when(this.partRepository.findById(any())).thenReturn(Optional.ofNullable(null));
 
