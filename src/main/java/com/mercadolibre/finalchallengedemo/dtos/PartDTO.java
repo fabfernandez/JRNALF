@@ -1,50 +1,50 @@
 package com.mercadolibre.finalchallengedemo.dtos;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Data
+@Validated
 public class PartDTO {
 
+    @NotNull
     private Integer partCode;
+    @Size(max = 100)
     private String description;
-    private Integer quantity;
-    private String discountType;
-    private Integer normalPrice;
-    private Integer urgentPrice;
-    private Integer netWeight;
-    private Integer longDimension;
-    private Integer widthDimension;
-    private Integer tallDimension;
+    @Size(max = 20)
     private String maker;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @Min(0)
+    private Integer widthDimension;
+    @Min(0)
+    private Integer tallDimension;
+    @Min(0)
+    private Integer longDimension;
+    @Min(0)
+    private Integer netWeight;
+    @Min(0)
+    private Double normalPrice;
+    @Min(0)
+    private Double urgentPrice;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date lastModification;
+
     @JsonIgnore
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date lastPriceModification;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate lastPriceModification;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PartDTO partDTO = (PartDTO) o;
-        return partCode.equals(partDTO.partCode) && description.equals(partDTO.description) && normalPrice.equals(partDTO.normalPrice) && netWeight.equals(partDTO.netWeight) && longDimension.equals(partDTO.longDimension) && widthDimension.equals(partDTO.widthDimension) && tallDimension.equals(partDTO.tallDimension) && lastModification.equals(partDTO.lastModification);
-    }
+    @JsonIgnore
+    @Min(0)
+    private Integer quantity;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(partCode, description, normalPrice, netWeight, longDimension, widthDimension, tallDimension, lastModification);
-    }
 }

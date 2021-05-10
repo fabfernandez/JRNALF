@@ -2,15 +2,16 @@ package com.mercadolibre.finalchallengedemo.service;
 
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
 import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
+import com.mercadolibre.finalchallengedemo.dtos.partstock.StockSubsidiaryDTO;
 import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
 import com.mercadolibre.finalchallengedemo.entities.PartEntity;
+import com.mercadolibre.finalchallengedemo.entities.StockSubsidiaryEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IPartRepository;
 import com.mercadolibre.finalchallengedemo.repository.IStockRepository;
 import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,23 +23,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Repository
 public class PartServiceImpl implements IPartService {
 
     private final IPartRepository partRepository;
     private final IStockRepository stockRepository;
-
     private ModelMapper modelMapper;
 
-    public PartServiceImpl(IPartRepository partRepository, ModelMapper modelMapper, IStockRepository stockRepository) {
+    private Integer idSubsidiary = 1;
+
+    public PartServiceImpl(IPartRepository partRepository, IStockRepository stockRepository, ModelMapper modelMapper) {
         this.partRepository = partRepository;
-        this.modelMapper = modelMapper;
         this.stockRepository = stockRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public PartResponseDTO getAll() {
-        PartResponseDTO response = mapResponse(this.partRepository.findAll());
+        PartResponseDTO response = new PartResponseDTO(this.partRepository.findAll().stream().map(p -> modelMapper.map(p, PartDTO.class)).collect(Collectors.toList()));
         if(response.getParts().isEmpty())
             throw new PartsNotFoundException("No parts found with the requested filter.");
         return response;
@@ -54,15 +55,15 @@ public class PartServiceImpl implements IPartService {
         switch (filter.getQueryType()) {
             case 'V':
                 if(order != null)
-                    response = getSortedPartsWithPriceVariationResponse(order,filterDate,currentDate);
+                    response.setParts(getSortedPartsWithPriceVariationResponse(order,filterDate,currentDate));
                 else
-                    response = mapResponse(partRepository.findPartsWithPriceModifiedSinceDate(filterDate, currentDate));
+                    response.setParts(mapListPartsResponse(partRepository.findPartsWithPriceModifiedSinceDate(filterDate, currentDate)));
                 break;
             case 'P':
                 if(order != null)
-                    response = getSortedPartsPartialResponse(order,filterDate,currentDate);
+                    response.setParts(getSortedPartsPartialResponse(order,filterDate,currentDate));
                 else
-                    response = mapResponse(partRepository.findPartsModifiedSinceDate(filterDate, currentDate));
+                    response.setParts(mapListPartsResponse(partRepository.findPartsModifiedSinceDate(filterDate, currentDate, DecodeToken.location)));
                 break;
             case 'C':
             default:
@@ -83,7 +84,15 @@ public class PartServiceImpl implements IPartService {
     @Override
     @Transactional
     public void savePart(PartDTO part) {
+        //REQ 4 Add or update a part.
+        StockSubsidiaryDTO stock = new StockSubsidiaryDTO();
+        stock.setPart(part.getPartCode());
+        stock.setQuantity(part.getQuantity());
+        stock.setSubsidiary(DecodeToken.location);
+
         partRepository.save(modelMapper.map(part, PartEntity.class));
+        stockRepository.save(modelMapper.map(stock, StockSubsidiaryEntity.class));
+
     }
 
     @Override
@@ -99,11 +108,11 @@ public class PartServiceImpl implements IPartService {
     private PartResponseDTO getSortedPartsPartialResponse(Integer order, Date filterDate, Date currentDate) {
         switch (order) {
             case 1:
-                return mapResponse(this.partRepository.findPartsModifiedSinceDateSortedByDescriptionAsc(filterDate,currentDate));
+                return mapListPartsResponse(this.partRepository.findPartsModifiedSinceDateSortedByDescriptionAsc(filterDate,currentDate));
             case 2:
-                return mapResponse(this.partRepository.findPartsModifiedSinceDateSortedByDescriptionDesc(filterDate,currentDate));
+                return mapListPartsResponse(this.partRepository.findPartsModifiedSinceDateSortedByDescriptionDesc(filterDate,currentDate));
             case 3:
-                return mapResponse(this.partRepository.findPartsModifiedSinceDateSortedByLastModified(filterDate,currentDate));
+                return mapListPartsResponse(this.partRepository.findPartsModifiedSinceDateSortedByLastModified(filterDate,currentDate));
             default:
                 throw new InvalidPartFilterException("Order must be 1,2 or 3.");
         }
@@ -113,11 +122,11 @@ public class PartServiceImpl implements IPartService {
     private PartResponseDTO getSortedPartsWithPriceVariationResponse(Integer order, Date filterDate, Date currentDate) {
         switch (order) {
             case 1:
-                return mapResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByDescriptionAsc(filterDate,currentDate));
+                return mapListPartsResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByDescriptionAsc(filterDate,currentDate));
             case 2:
-                return mapResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByDescriptionDesc(filterDate,currentDate));
+                return mapListPartsResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByDescriptionDesc(filterDate,currentDate));
             case 3:
-                return mapResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByLastModified(filterDate,currentDate));
+                return mapListPartsResponse(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByLastModified(filterDate,currentDate));
             default:
                 throw new InvalidPartFilterException("Order must be 1,2 or 3.");
         }
@@ -136,6 +145,5 @@ public class PartServiceImpl implements IPartService {
     private Integer getQuantityFromPart(PartDTO p) {
         return this.stockRepository.findStockByPartCodeAndSubsidiary(p.getPartCode(),DecodeToken.location).getQuantity();
     }
-
 
 }

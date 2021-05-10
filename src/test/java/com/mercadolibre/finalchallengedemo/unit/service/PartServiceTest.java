@@ -41,7 +41,7 @@ public class PartServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        this.partService = new PartServiceImpl(partRepository,new ModelMapper(), stockRepository);
+        this.partService = new PartServiceImpl(partRepository, stockRepository,new ModelMapper());
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, 02);
         c.set(Calendar.DATE, 26);
