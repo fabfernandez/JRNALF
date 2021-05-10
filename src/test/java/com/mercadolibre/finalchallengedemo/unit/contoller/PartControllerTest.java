@@ -126,7 +126,7 @@ public class PartControllerTest {
         part.setLastModification(pastDate);
         part.setLongDimension(11);
         part.setNetWeight(11);
-        part.setNormalPrice(11.00);
+        part.setNormalPrice(11);
         part.setTallDimension(11);
         part.setWidthDimension(11);
 
@@ -145,7 +145,7 @@ public class PartControllerTest {
         part.setLastModification(pastDate);
         part.setLongDimension(11);
         part.setNetWeight(11);
-        part.setNormalPrice(11.00);
+        part.setNormalPrice(11);
         part.setTallDimension(11);
         part.setWidthDimension(11);
 

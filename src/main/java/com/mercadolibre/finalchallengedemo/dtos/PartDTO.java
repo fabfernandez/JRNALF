@@ -3,34 +3,36 @@ package com.mercadolibre.finalchallengedemo.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter @Setter
 public class PartDTO {
 
     private Integer partCode;
     private String description;
-    //private String maker;
     private Integer quantity;
-   // private Double discountType;
-    private Double normalPrice;
-    //private Double urgentPrice;
+    private String discountType;
+    private Integer normalPrice;
+    private Integer urgentPrice;
     private Integer netWeight;
     private Integer longDimension;
     private Integer widthDimension;
     private Integer tallDimension;
+    private String maker;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date lastModification;
     @JsonIgnore
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    @JsonFormat(pattern="yyyy-MM-dd")
     private Date lastPriceModification;
 
     @Override

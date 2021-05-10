@@ -2,6 +2,7 @@ package com.mercadolibre.finalchallengedemo.controller;
 
 import com.mercadolibre.finalchallengedemo.dtos.UserDTO;
 import com.mercadolibre.finalchallengedemo.entities.UserEntity;
+import com.mercadolibre.finalchallengedemo.exceptions.UserNotFoundException;
 import com.mercadolibre.finalchallengedemo.service.IUserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public UserDTO login(@RequestParam("user") String username, @RequestParam("password") String pwd) throws IllegalAccessException {
+    public UserDTO login(@RequestParam("user") String username, @RequestParam("password") String pwd) throws UserNotFoundException {
         String token = service.getJWTToken(username, pwd);
         UserDTO user = new UserDTO();
         user.setUser(username);
