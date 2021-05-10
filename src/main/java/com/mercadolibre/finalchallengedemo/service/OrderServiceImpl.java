@@ -37,42 +37,41 @@ public class OrderServiceImpl implements IOrderService {
 
         //get all orders from a dealer
         if (dealerNumber != null && deliveryStatus == null && order == null)
-            orderEntities = orderRepository.getDealerOrdersByDealer(Integer.valueOf(dealerNumber),country);
+            orderEntities = orderRepository.getDealerOrdersByDealer(Integer.valueOf(dealerNumber), country);
         if (dealerNumber != null && deliveryStatus != null & order == null)
-            orderEntities = orderRepository.getDealerOrdersByDealerOrderStatus(Integer.valueOf(dealerNumber), deliveryStatus,country);
-        if(dealerNumber != null && deliveryStatus != null && order != null){
-            if(order.equals(1)){
-                orderEntities = orderRepository.getDealerOrdersByDealerStatusOrderedAsc(Integer.valueOf(dealerNumber), deliveryStatus,country);
-            } else if(order.equals(2)){
+            orderEntities = orderRepository.getDealerOrdersByDealerOrderStatus(Integer.valueOf(dealerNumber), deliveryStatus, country);
+        if (dealerNumber != null && deliveryStatus != null && order != null) {
+            if (order.equals(1)) {
+                orderEntities = orderRepository.getDealerOrdersByDealerStatusOrderedAsc(Integer.valueOf(dealerNumber), deliveryStatus, country);
+            } else if (order.equals(2)) {
                 orderEntities = orderRepository.getDealerOrdersByDealerStatusOrderedDesc(Integer.valueOf(dealerNumber), deliveryStatus, country);
             } else
                 throw new InvalidOrderFilterException("Order selected is not valid");
         }
-        if (dealerNumber != null && deliveryStatus == null && order != null){
-            if(order.equals(1)){
-                orderEntities = orderRepository.getDealerOrdersByDealerAsc(Integer.valueOf(dealerNumber),country);
-            } else if(order.equals(2)){
-                orderEntities = orderRepository.getDealerOrdersByDealerDesc(Integer.valueOf(dealerNumber),country);
+        if (dealerNumber != null && deliveryStatus == null && order != null) {
+            if (order.equals(1)) {
+                orderEntities = orderRepository.getDealerOrdersByDealerAsc(Integer.valueOf(dealerNumber), country);
+            } else if (order.equals(2)) {
+                orderEntities = orderRepository.getDealerOrdersByDealerDesc(Integer.valueOf(dealerNumber), country);
             } else
                 throw new InvalidOrderFilterException("Order selected is not valid");
         }
 
 
-
         //configurando modelmapper
-        if(modelMapper.getTypeMap(OrderItemEntity.class, PartOrderDetailDTO.class) == null){
+        if (modelMapper.getTypeMap(OrderItemEntity.class, PartOrderDetailDTO.class) == null) {
             TypeMap<OrderItemEntity, PartOrderDetailDTO> typeMap = modelMapper.createTypeMap(OrderItemEntity.class, PartOrderDetailDTO.class);
 
 
             typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getPart().getDescription(),
                     PartOrderDetailDTO::setDescription));
 
-        typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getAccountType(),
-                PartOrderDetailDTO::setAccountType));
+            typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getAccountType(),
+                    PartOrderDetailDTO::setAccountType));
 
-        typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getReason(),
-                PartOrderDetailDTO::setReason));
-            }
+            typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getReason(),
+                    PartOrderDetailDTO::setReason));
+        }
         //build orderDTOs
         List<OrderDetailsDTO> orders =
                 orderEntities
@@ -82,7 +81,7 @@ public class OrderServiceImpl implements IOrderService {
                         .collect(Collectors.toList());
 
         //validate if orders is null or empty
-        if(orders.size() == 0 || orders == null){
+        if (orders.size() == 0 || orders == null) {
             throw new PartsNotFoundException("Parts not found");
         }
 
@@ -96,7 +95,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO
-                                                                         orderStatusCMDTO) {
+                                                                     orderStatusCMDTO) {
         String[] queryArray = orderStatusCMDTO.getOrderNumberCM().split("-");
         String dealer = queryArray[0];
         String orderNumber = queryArray[1];
