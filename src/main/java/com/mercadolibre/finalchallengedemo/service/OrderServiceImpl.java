@@ -1,7 +1,6 @@
 package com.mercadolibre.finalchallengedemo.service;
 
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
-import com.mercadolibre.finalchallengedemo.dtos.response.OrderResponseDTO;
 import com.mercadolibre.finalchallengedemo.entities.DealerOrderEntity;
 import com.mercadolibre.finalchallengedemo.entities.OrderItemEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
@@ -100,7 +99,7 @@ public class OrderServiceImpl implements IOrderService {
         String[] queryArray = orderStatusCMDTO.getOrderNumberCM().split("-");
         String dealer = queryArray[0];
         String orderNumber = queryArray[1];
-        OrderResponseDTO response = new OrderResponseDTO();
+        OrderStatusResponseDTO response = new OrderStatusResponseDTO();
 
         // Get orders that matches subsidiary and order number.
         List<DealerOrderEntity> orderEntities = orderRepository.getOrdersFromDealersStatus(Integer.valueOf(orderNumber), Integer.valueOf(dealer));
@@ -127,6 +126,8 @@ public class OrderServiceImpl implements IOrderService {
         String deliveryStatus = params.getDeliveryStatus();
         Integer order = params.getOrder();
         Integer country = DecodeToken.location;
+
+
 
         //send data to method that evaluates params to make
         return getOrdersByDealerNumber(dealerNumber, deliveryStatus, country, order);
