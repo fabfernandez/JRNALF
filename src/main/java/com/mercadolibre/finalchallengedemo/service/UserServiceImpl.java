@@ -1,13 +1,10 @@
 package com.mercadolibre.finalchallengedemo.service;
 
-import com.mercadolibre.finalchallengedemo.dtos.UserDTO;
 import com.mercadolibre.finalchallengedemo.entities.UserEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.UserNotFoundException;
 import com.mercadolibre.finalchallengedemo.repositories.IUserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
@@ -19,13 +16,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
-    String SECRET = "SECRET";
-    private final String SECRET_VALUE = System.getenv(SECRET);
+    private final String SECRET_VALUE = System.getenv("SECRET");
 
     private final com.mercadolibre.finalchallengedemo.repositories.IUserRepository userRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     public UserServiceImpl(IUserRepository userRepository) {
         this.userRepository = userRepository;
@@ -49,7 +42,8 @@ public class UserServiceImpl implements IUserService {
         String secretKey = SECRET_VALUE;
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList(userEntity.getSubsidiary().getId().toString());
-        String token = Jwts
+
+        return Jwts
                 .builder()
                 .claim("username", userEntity.getUsername())
                 .claim("authorities",
@@ -60,8 +54,6 @@ public class UserServiceImpl implements IUserService {
                 .setExpiration(new Date(System.currentTimeMillis() + 600000000))
                 .signWith(SignatureAlgorithm.HS512,
                         secretKey.getBytes()).compact();
-
-        return "Bearer " + token;
     }
 
 }

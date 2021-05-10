@@ -87,10 +87,4 @@ public class ControllerExceptionHandler {
 	public ResponseEntity userNotFoundException(UserNotFoundException e) {
 		return handle(HttpStatus.NOT_FOUND,e.getMessage());
 	}
-
-	@ExceptionHandler(AuthException.class)
-	public ResponseEntity authException(AuthException e) {
-		return handle(HttpStatus.NOT_FOUND,e.getMessage());
-	}
-
 }

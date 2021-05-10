@@ -21,6 +21,7 @@ import org.springframework.util.ResourceUtils;
 
 import javax.servlet.http.Part;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -153,8 +154,8 @@ public class PartServiceTest {
     @Test
     @DisplayName("Given part, when find, then return part")
     public void givenPart_whenFind_thenReturnPart() {
-        PartDTO partDTO = new PartDTO(1,"test",null,"A",1,1,1,1,1,1,"maker",pastDate,pastDate);
-        PartEntity partEntity = new PartEntity(1,"test",1,1,1,1,1,1,pastDate,pastDate,"maker","A",null);
+        PartDTO partDTO = new PartDTO(1,"test","maker",1,1,1,1,1.00,1.00,pastDate, LocalDate.of(2021, 3, 1), 1);
+        PartEntity partEntity = new PartEntity(1,"test",1,1,1,1,1,1,pastDate,pastDate,"maker","A",null, null);
         Optional<PartEntity> part = Optional.of(partEntity);
 
         when(this.partRepository.findById(any())).thenReturn(part);
