@@ -6,6 +6,7 @@ import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
 import com.mercadolibre.finalchallengedemo.service.PartServiceImpl;
 import com.mercadolibre.finalchallengedemo.util.ValidatorUtil;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,8 +33,9 @@ public class PartController {
         return ResponseEntity.ok(partService.getAll());
     }
 
-    @PostMapping("/save")
-    public ResponseEntity savePart(@RequestBody PartDTO part){
+    @PostMapping("/")
+    public ResponseEntity savePart(@Validated @RequestBody PartDTO part){
+        //This is the REQ 4 endpoint for adding or modifying parts to the database.
         partService.savePart(part);
         return ResponseEntity.ok("Part saved.");
     }

@@ -12,6 +12,7 @@ import java.util.Set;
 @Table(name = "parts")
 @Getter
 public class PartEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "part_code")
@@ -38,15 +39,23 @@ public class PartEntity {
     @Size(max = 5, message = "The net weight of the spare part needs 5 numeric characters.")
     private Integer netWeight;
 
-    @Column(name = "normal_price", nullable = false, length = 5)
-    @Size(max = 5, message = "The net weight of the spare part needs 5 numeric characters.")
+    @Column(name = "normal_price")
     private Integer normalPrice;
+
+    @Column(name = "urgent_price")
+    private Integer urgentPrice;
 
     @Column(name ="last_modification")
     private Date lastModification;
 
     @Column(name ="last_price_modification")
     private Date lastPriceModification;
+
+    @Column(name ="maker")
+    private String maker;
+
+    @Column(name ="discount_type")
+    private String discountType;
 
     @OneToMany(mappedBy = "part")
     private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;

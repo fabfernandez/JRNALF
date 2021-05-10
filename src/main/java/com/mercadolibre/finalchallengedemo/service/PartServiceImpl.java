@@ -2,14 +2,16 @@ package com.mercadolibre.finalchallengedemo.service;
 
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
 import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
+import com.mercadolibre.finalchallengedemo.dtos.partstock.StockSubsidiaryDTO;
 import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
-import com.mercadolibre.finalchallengedemo.entities.PartsResponseEntity;
+import com.mercadolibre.finalchallengedemo.entities.PartEntity;
+import com.mercadolibre.finalchallengedemo.entities.StockSubsidiaryEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IPartRepository;
+import com.mercadolibre.finalchallengedemo.repository.IStockRepository;
 import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,12 +26,14 @@ import java.util.stream.Collectors;
 public class PartServiceImpl implements IPartService {
 
     private final IPartRepository partRepository;
+    private final IStockRepository stockRepository;
     private ModelMapper modelMapper;
 
     private Integer idSubsidiary = 1;
 
-    public PartServiceImpl(IPartRepository partRepository, ModelMapper modelMapper) {
+    public PartServiceImpl(IPartRepository partRepository, IStockRepository stockRepository, ModelMapper modelMapper) {
         this.partRepository = partRepository;
+        this.stockRepository = stockRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -80,13 +84,21 @@ public class PartServiceImpl implements IPartService {
     @Override
     @Transactional
     public void savePart(PartDTO part) {
-        partRepository.save(modelMapper.map(part, PartsResponseEntity.class));
+        //REQ 4 Add or update a part.
+        StockSubsidiaryDTO stock = new StockSubsidiaryDTO();
+        stock.setPart(part.getPartCode());
+        stock.setQuantity(part.getQuantity());
+        stock.setSubsidiary(DecodeToken.location);
+
+        partRepository.save(modelMapper.map(part, PartEntity.class));
+        stockRepository.save(modelMapper.map(stock, StockSubsidiaryEntity.class));
+
     }
 
     @Override
     @Transactional()
     public PartDTO findPart(Integer id) {
-        Optional<PartsResponseEntity> part = partRepository.findById(id);
+        Optional<PartEntity> part = partRepository.findById(id);
         if(!part.isPresent())
             throw new PartsNotFoundException("The part with id " + id + " was not founded.");
         return modelMapper.map(part.get(), PartDTO.class);
@@ -118,7 +130,7 @@ public class PartServiceImpl implements IPartService {
         }
     }
 
-    private List<PartDTO> mapListPartsResponse(List<PartsResponseEntity> parts ) {
+    private List<PartDTO> mapListPartsResponse(List<PartEntity> parts ) {
         return parts.stream().map(p -> modelMapper.map(p, PartDTO.class)).collect(Collectors.toList());
     }
 
