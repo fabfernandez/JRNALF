@@ -2,6 +2,7 @@ package com.mercadolibre.finalchallengedemo.dtos;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,11 +14,27 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Validated
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PartDTO {
+    public PartDTO(Integer partCode, String description, String maker, Integer quantity, String discountType, Integer widthDimension, Integer tallDimension, Integer longDimension, Integer netWeight, Double normalPrice, Double urgentPrice, Date lastModification) {
+        this.partCode = partCode;
+        this.description = description;
+        this.maker = maker;
+        this.quantity = quantity;
+        this.discountType = discountType;
+        this.widthDimension = widthDimension;
+        this.tallDimension = tallDimension;
+        this.longDimension = longDimension;
+        this.netWeight = netWeight;
+        this.normalPrice = normalPrice;
+        this.urgentPrice = urgentPrice;
+        this.lastModification = lastModification;
+    }
 
     @NotNull
     private Integer partCode;
@@ -25,6 +42,10 @@ public class PartDTO {
     private String description;
     @Size(max = 20)
     private String maker;
+    @Min(0)
+    private Integer quantity;
+    //todo validate
+    private String discountType;
     @Min(0)
     private Integer widthDimension;
     @Min(0)
@@ -37,16 +58,11 @@ public class PartDTO {
     private Double normalPrice;
     @Min(0)
     private Double urgentPrice;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date lastModification;
 
     @JsonIgnore
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate lastPriceModification;
-
-    @JsonIgnore
-    @Min(0)
-    private Integer quantity;
 
 }

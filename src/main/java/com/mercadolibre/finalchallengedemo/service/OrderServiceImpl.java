@@ -7,6 +7,7 @@ import com.mercadolibre.finalchallengedemo.entities.OrderItemEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IOrderRepository;
+import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,8 +126,7 @@ public class OrderServiceImpl implements IOrderService {
         String dealerNumber = params.getDealerNumber();
         String deliveryStatus = params.getDeliveryStatus();
         Integer order = params.getOrder();
-        Integer country = 1;
-        //todo receive this from DecodeToken
+        Integer country = DecodeToken.location;
 
         //send data to method that evaluates params to make
         return getOrdersByDealerNumber(dealerNumber, deliveryStatus, country, order);
