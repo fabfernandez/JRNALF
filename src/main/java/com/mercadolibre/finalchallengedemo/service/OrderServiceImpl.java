@@ -3,7 +3,7 @@ package com.mercadolibre.finalchallengedemo.service;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
 import com.mercadolibre.finalchallengedemo.dtos.response.OrderResponseDTO;
 import com.mercadolibre.finalchallengedemo.entities.DealerOrderEntity;
-import com.mercadolibre.finalchallengedemo.entities.OrderItemEntity;
+import com.mercadolibre.finalchallengedemo.entities.DealerOrderItems;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IOrderRepository;
@@ -59,8 +59,8 @@ public class OrderServiceImpl implements IOrderService {
 
 
         //configurando modelmapper
-        if (modelMapper.getTypeMap(OrderItemEntity.class, PartOrderDetailDTO.class) == null) {
-            TypeMap<OrderItemEntity, PartOrderDetailDTO> typeMap = modelMapper.createTypeMap(OrderItemEntity.class, PartOrderDetailDTO.class);
+        if (modelMapper.getTypeMap(DealerOrderItems.class, PartOrderDetailDTO.class) == null) {
+            TypeMap<DealerOrderItems, PartOrderDetailDTO> typeMap = modelMapper.createTypeMap(DealerOrderItems.class, PartOrderDetailDTO.class);
 
 
             typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getPart().getDescription(),

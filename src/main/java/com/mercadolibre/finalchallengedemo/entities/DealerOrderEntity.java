@@ -35,7 +35,7 @@ public class DealerOrderEntity {
 
     @OneToMany(mappedBy = "correspondingOrder")
     // ITEMS
-    private Set<OrderItemEntity> orderDetails;
+    private Set<DealerOrderItems> orderDetails;
 
     @Column(name = "dealer_id", nullable = false)
     private Integer dealerId;
