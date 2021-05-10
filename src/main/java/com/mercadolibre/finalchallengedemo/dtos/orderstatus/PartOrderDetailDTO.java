@@ -9,6 +9,8 @@ import javax.validation.constraints.Size;
 
 @Data
 @Validated
+//req 2
+//respuesta, dentro de cada "orderDetails" del "orders"
 public class PartOrderDetailDTO {
 
     private Integer partCode;
@@ -18,11 +20,9 @@ public class PartOrderDetailDTO {
     private Integer quantity;
 
     @Pattern(regexp = "^[RGrg]$", message = "Invalid order status code. ")
-    private String accountType; //Warranty or Spare Parts account type
+    private String accountType; //Warranty or Spare Parts account type G or R
 
     @Size(max = 100)
     private String reason;     //Why is the order pending
 
-    @Pattern(regexp = "^[NDnd]$", message = "Invalid order status code. ")
-    private String partStatus; //Availability N = Normal, D = Delayed
 }
