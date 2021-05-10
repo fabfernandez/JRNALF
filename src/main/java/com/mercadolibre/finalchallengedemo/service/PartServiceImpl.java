@@ -39,7 +39,7 @@ public class PartServiceImpl implements IPartService {
 
     @Override
     public PartResponseDTO getAll() {
-        PartResponseDTO response = new PartResponseDTO(this.partRepository.findAll().stream().map(p -> modelMapper.map(p, PartDTO.class)).collect(Collectors.toList()));
+        PartResponseDTO response = mapResponse(this.partRepository.findAll());
         if(response.getParts().isEmpty())
             throw new PartsNotFoundException("No parts found with the requested filter.");
         return response;
