@@ -93,8 +93,27 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO orderStatusCMDTO) {
-        //TODO Implement this service
+    public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO
+                                                                         orderStatusCMDTO) {
+        String[] queryArray = orderStatusCMDTO.getOrderNumberCM().split("-");
+        String dealer = queryArray[0];
+        String orderNumber = queryArray[1];
+        OrderResponseDTO response = new OrderResponseDTO();
+
+        // Get orders that matches subsidiary and order number.
+        List<DealerOrderEntity> orderEntities = orderRepository.getOrdersFromDealersStatus(Integer.valueOf(orderNumber), Integer.valueOf(dealer));
+
+        // Setting response values.
+        response.setOrderNumberCE(dealer);
+
+        /*
+        Setear desde el resultado de la query orderEntities:
+            response.setOrderDate();
+            response.setOrderStatus();
+
+        Setear orderDetails que ya lo hizo Fabri:
+            response.setOrderDetails();
+         */
         return null;
     }
 
