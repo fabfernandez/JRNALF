@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -66,5 +65,5 @@ public class PartEntity {
 
     //
     @OneToMany(mappedBy = "")
-    private Set<OrderItemEntity> orderItemEntities;
+    private Set<DealerOrderItems> orderItemEntities;
 }
