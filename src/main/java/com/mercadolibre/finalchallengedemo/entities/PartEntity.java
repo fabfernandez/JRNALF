@@ -12,6 +12,7 @@ import java.util.Set;
 @Table(name = "parts")
 @Getter
 public class PartEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "part_code")
@@ -51,7 +52,7 @@ public class PartEntity {
     @OneToMany(mappedBy = "part")
     private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
 
-
-
-
+    //
+    @OneToMany(mappedBy = "")
+    private Set<OrderItemEntity> orderItemEntities;
 }
