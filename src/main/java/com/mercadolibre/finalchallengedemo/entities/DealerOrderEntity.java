@@ -4,42 +4,54 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "dealer_orders")
 @Getter
 @Setter
-// UNA ORDEN DE UN DEALER ESPECIFICO
+@Table(name = "dealer_orders")
+// Entity of an order from a specific leader.
 public class DealerOrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, name = "order_number")
+    @Column(name = "order_number", nullable = false)
     private Integer orderNumber;
 
-    @Column(nullable = false, name = "order_date")
+    @Column(name = "order_date", nullable = false)
     private Date orderDate;
 
-    @Column(nullable = false, name = "order_status")
+    @Column(name = "order_status", length = 1, nullable = false)
+    @Size(max = 1, message = "The order status must only have an alphanumeric character.")
     private String orderStatus;
 
-    @Column(nullable = false, name = "dealer_id")
-    private Integer dealerId;
-
-    @Column(nullable = false, name = "subsidiary_id")
-    private Integer subsidiaryId;
-
-
-    @Column(nullable = false, name = "delivery_date")
+    @Column(name = "delivery_date", nullable = false)
     private Date deliveryDate;
 
-    @Column(nullable = false, name = "days_delay")
+    @Column(name = "days_delay", nullable = false)
     private Integer daysDelay;
 
     @OneToMany(mappedBy = "correspondingOrder")
     // ITEMS
     private Set<OrderItemEntity> orderDetails;
 
+    @Column(name = "dealer_id", nullable = false)
+    private Integer dealerId;
+    // Create a column called dealer_id made up of a FK referenced to dealers
+    // Crea una columna llamada dealer_id compuesta de una FK referenciada a dealers
+    /*@ManyToOne
+    @JoinColumn(name = "dealer_id", nullable = false)
+    private DealerEntity dealerId;
+    */
+
+    @Column(name = "subsidiary_id", nullable = false)
+    private Integer subsidiaryId;
+    // Create a column called subsidiary_id made up of a FK referenced to subsidiaries
+    // Crea una columna llamada subsidiary_id compuesta de una FK referenciada a subsidiaries
+    /*@ManyToOne
+    @JoinColumn(name = "subsidiary_id", nullable = false)
+    private SubsidiaryEntity subsidiaryId;
+    */
 }

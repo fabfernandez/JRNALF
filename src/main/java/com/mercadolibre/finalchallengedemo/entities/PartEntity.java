@@ -64,7 +64,7 @@ public class PartEntity {
     @OneToMany(mappedBy = "part")
     private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
 
-
-
-
+    //
+    @OneToMany(mappedBy = "")
+    private Set<OrderItemEntity> orderItemEntities;
 }

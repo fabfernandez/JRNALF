@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "subsidiaries_stock")
 @IdClass(RelationshipStockId.class)
 public class StockSubsidiaryEntity implements Serializable {
