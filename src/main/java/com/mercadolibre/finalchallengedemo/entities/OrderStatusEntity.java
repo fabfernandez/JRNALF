@@ -20,9 +20,4 @@ public class OrderStatusEntity {
 
     @Column(nullable = false, name = "order_status")
     private Integer orderStatus;
-
-
-    //TODO: Komo C Ase esto? Juan de las 3 am pregunta
-    //@Column(nullable = false, name = "order_details")
-    //private ArrayList<> orderDetails;
 }
