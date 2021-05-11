@@ -1,9 +1,8 @@
 package com.mercadolibre.finalchallengedemo.service;
 
-import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
 import com.mercadolibre.finalchallengedemo.entities.DealerOrderEntity;
-import com.mercadolibre.finalchallengedemo.entities.OrderItemEntity;
+import com.mercadolibre.finalchallengedemo.entities.DealerOrderItems;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IOrderRepository;
@@ -13,7 +12,6 @@ import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,21 +29,24 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public DealerOrderResponseDTO getOrdersByDealerNumber(String dealerNumber,
-                                                          String deliveryStatus,
-                                                          Integer country, Integer order) {
+    //REQ 2
+    public DealerOrderResponseDTO getOrders(String dealerNumber,
+                                            String deliveryStatus,
+                                            Integer country, Integer order) {
         List<DealerOrderEntity> orderEntities = new ArrayList<>();
 
         //get all orders from a dealer
         if (dealerNumber != null && deliveryStatus == null && order == null)
             orderEntities = orderRepository.getDealerOrdersByDealer(Integer.valueOf(dealerNumber), country);
         if (dealerNumber != null && deliveryStatus != null & order == null)
-            orderEntities = orderRepository.getDealerOrdersByDealerOrderStatus(Integer.valueOf(dealerNumber), deliveryStatus, country);
+            orderEntities = orderRepository.getDealerOrdersByNumberAndStatus(Integer.valueOf(dealerNumber), deliveryStatus, country);
         if (dealerNumber != null && deliveryStatus != null && order != null) {
             if (order.equals(1)) {
-                orderEntities = orderRepository.getDealerOrdersByDealerStatusOrderedAsc(Integer.valueOf(dealerNumber), deliveryStatus, country);
+                orderEntities =
+                        orderRepository.getDealerOrdersByDealerStatusOrderedAsc(Integer.valueOf(dealerNumber), deliveryStatus, country);
             } else if (order.equals(2)) {
-                orderEntities = orderRepository.getDealerOrdersByDealerStatusOrderedDesc(Integer.valueOf(dealerNumber), deliveryStatus, country);
+                orderEntities =
+                        orderRepository.getDealerOrdersByDealerStatusOrderedDesc(Integer.valueOf(dealerNumber), deliveryStatus, country);
             } else
                 throw new InvalidOrderFilterException("Order selected is not valid");
         }
@@ -60,9 +61,12 @@ public class OrderServiceImpl implements IOrderService {
 
 
         //configurando modelmapper
-        if (modelMapper.getTypeMap(OrderItemEntity.class, PartOrderDetailDTO.class) == null) {
-            TypeMap<OrderItemEntity, PartOrderDetailDTO> typeMap = modelMapper.createTypeMap(OrderItemEntity.class, PartOrderDetailDTO.class);
 
+        if (modelMapper.getTypeMap(DealerOrderItems.class, PartOrderDetailDTO.class) == null) {
+
+
+            TypeMap<DealerOrderItems, PartOrderDetailDTO> typeMap
+                    = modelMapper.createTypeMap(DealerOrderItems.class, PartOrderDetailDTO.class);
 
             typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getPart().getDescription(),
                     PartOrderDetailDTO::setDescription));
@@ -72,6 +76,14 @@ public class OrderServiceImpl implements IOrderService {
 
             typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getReason(),
                     PartOrderDetailDTO::setReason));
+        }
+        if (modelMapper.getTypeMap(DealerOrderEntity.class, OrderDetailsDTO.class) == null) {
+
+            TypeMap<DealerOrderEntity, OrderDetailsDTO> typeMap
+                    = modelMapper.createTypeMap(DealerOrderEntity.class, OrderDetailsDTO.class);
+
+            typeMap.addMappings(mapper -> mapper.map(orderEntity -> orderEntity.getOrderStatus(),
+                    OrderDetailsDTO::setDeliveryStatus));
         }
         //build orderDTOs
         List<OrderDetailsDTO> orders =
@@ -83,7 +95,7 @@ public class OrderServiceImpl implements IOrderService {
 
         //validate if orders is null or empty
         if (orders.size() == 0 || orders == null) {
-            throw new PartsNotFoundException("Parts not found");
+            throw new PartsNotFoundException("No orders found.");
         }
 
         //build response
@@ -94,6 +106,7 @@ public class OrderServiceImpl implements IOrderService {
 
     }
 
+    //REQ 3
     @Override
     public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO
                                                                      orderStatusCMDTO) {
@@ -101,10 +114,12 @@ public class OrderServiceImpl implements IOrderService {
         String dealer = queryArray[0];
         String orderNumber = queryArray[1].replaceAll("^0+","");
 
+
         OrderStatusResponseDTO response = new OrderStatusResponseDTO();
 
         // Get orders that matches subsidiary and order number
-        List<OrderItemEntity> orderEntities = orderRepository.getOrderItemsByOrderNumber(Integer.valueOf(orderNumber), DecodeToken.location);
+        List<DealerOrderItems> orderEntities = orderRepository.getOrderItemsByOrderNumber(Integer.valueOf(orderNumber), DecodeToken.location);
+
 
         // Setting response values.
         response.setOrderNumberCE(dealer);
@@ -116,8 +131,8 @@ public class OrderServiceImpl implements IOrderService {
         //orderEntities.stream().map(orderEntities -> OrderStatusResponseDTO.class).collect(Collectors.toList())
 
         //configurando modelmapper
-        if (modelMapper.getTypeMap(OrderItemEntity.class, PartOrderDetailDTO.class) == null) {
-            TypeMap<OrderItemEntity, PartOrderDetailDTO> typeMap = modelMapper.createTypeMap(OrderItemEntity.class, PartOrderDetailDTO.class);
+        if (modelMapper.getTypeMap(DealerOrderItems.class, PartOrderDetailDTO.class) == null) {
+            TypeMap<DealerOrderItems, PartOrderDetailDTO> typeMap = modelMapper.createTypeMap(DealerOrderItems.class, PartOrderDetailDTO.class);
 
 
             typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getPart().getDescription(),
@@ -141,7 +156,7 @@ public class OrderServiceImpl implements IOrderService {
 
 
     @Override
-    public DealerOrderResponseDTO getOrders(PartOrderQueryParamsDTO params) {
+    public DealerOrderResponseDTO process(PartOrderQueryParamsDTO params) {
 
         String dealerNumber = params.getDealerNumber();
         String deliveryStatus = params.getDeliveryStatus();
@@ -151,6 +166,6 @@ public class OrderServiceImpl implements IOrderService {
 
 
         //send data to method that evaluates params to make
-        return getOrdersByDealerNumber(dealerNumber, deliveryStatus, country, order);
+        return getOrders(dealerNumber, deliveryStatus, country, order);
     }
 }

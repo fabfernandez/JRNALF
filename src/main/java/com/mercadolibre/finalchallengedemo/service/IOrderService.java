@@ -8,8 +8,8 @@ import com.mercadolibre.finalchallengedemo.dtos.orderstatus.PartOrderQueryParams
 
 public interface IOrderService {
 
-    DealerOrderResponseDTO getOrders(PartOrderQueryParamsDTO params);
+    DealerOrderResponseDTO process(PartOrderQueryParamsDTO params);
 
-    public DealerOrderResponseDTO getOrdersByDealerNumber(String dealerNumber, String deliveryStatus, Integer country, Integer order);
+    public DealerOrderResponseDTO getOrders(String dealerNumber, String deliveryStatus, Integer country, Integer order);
     public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO orderStatusCMDTO);
 }

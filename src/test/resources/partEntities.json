@@ -1,0 +1,28 @@
+[
+  {
+    "partCode": 5,
+    "description": "Puerta delantera izquierda",
+    "discountType": "DD",
+    "normalPrice": 2500,
+    "urgentPrice": 2800,
+    "netWeight": 92,
+    "longDimension": 100,
+    "widthDimension": 92,
+    "tallDimension": 33,
+    "maker": "Toyota",
+    "lastModification": "2021-03-17"
+  },
+  {
+    "partCode": 1,
+    "description": "Llanta",
+    "discountType": "AA",
+    "normalPrice": 762,
+    "urgentPrice": 900,
+    "netWeight": 100,
+    "longDimension": 100,
+    "widthDimension": 100,
+    "tallDimension": 100,
+    "maker": "Fiat",
+    "lastModification": "2021-03-02"
+  }
+]
