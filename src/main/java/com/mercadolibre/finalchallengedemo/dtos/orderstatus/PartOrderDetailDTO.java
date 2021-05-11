@@ -27,6 +27,5 @@ public class PartOrderDetailDTO {
     @Size(max = 100, message = "The reason for which the spare part is pending must have a maximium of 100 alphanumeric characters.")
     private String reason;     //Why is the order pending
 
-    private
 
 }

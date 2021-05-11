@@ -12,16 +12,13 @@ import java.util.List;
 @Repository
 public interface IOrderRepository extends JpaRepository<OrderItemEntity, Integer> {
 
-    //get subsidiary id by country name
-    //get dealer id with dealerNumber
-    //get order_number (order_id) with the above
-    //get all order_details
+
     @Query("FROM OrderItemEntity orderItem" +
             " LEFT JOIN DealerOrderEntity dealerOrder ON dealerOrder.orderNumber = orderItem.id" +
-            " LEFT JOIN  DealerEntity dealer ON dealer.idDealer = dealerOrder.dealerId" +
             " LEFT JOIN SubsidiaryEntity subsidiary ON subsidiary.id = dealerOrder.subsidiaryId" +
-            " WHERE orderItem.correspondingOrder.dealerId = :dealerNumber")
-    List<OrderItemEntity> getOrderItemsByDealer(Integer dealerNumber);
+            " WHERE dealerOrder.orderNumber  = :orderNumber" +
+            " AND dealerOrder.subsidiaryId = :subsidiaryId")
+    List<OrderItemEntity> getOrderItemsByOrderNumber(Integer orderNumber, Integer subsidiaryId);
 
 
     @Query("FROM DealerOrderEntity dealerOrder" +

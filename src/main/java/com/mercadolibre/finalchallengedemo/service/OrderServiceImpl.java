@@ -98,11 +98,12 @@ public class OrderServiceImpl implements IOrderService {
                                                                          orderStatusCMDTO) {
         String[] queryArray = orderStatusCMDTO.getOrderNumberCM().split("-");
         String dealer = queryArray[0];
-        String orderNumber = queryArray[1];
+        String orderNumber = queryArray[1].replaceAll("^0+","");
+
         OrderStatusResponseDTO response = new OrderStatusResponseDTO();
 
         // Get orders that matches subsidiary and order number.
-        List<DealerOrderEntity> orderEntities = orderRepository.getOrdersFromDealersStatus(Integer.valueOf(orderNumber), Integer.valueOf(dealer));
+        List<OrderItemEntity> orderEntities = orderRepository.getOrderItemsByOrderNumber(Integer.valueOf(orderNumber), DecodeToken.location);
 
         // Setting response values.
         response.setOrderNumberCE(dealer);
