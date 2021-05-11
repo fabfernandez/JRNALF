@@ -63,8 +63,9 @@ public class OrderServiceImpl implements IOrderService {
 
         //configurando modelmapper
         if (modelMapper.getTypeMap(DealerOrderItems.class, PartOrderDetailDTO.class) == null) {
-            TypeMap<DealerOrderItems, PartOrderDetailDTO> typeMap = modelMapper.createTypeMap(DealerOrderItems.class, PartOrderDetailDTO.class);
 
+            TypeMap<DealerOrderItems, PartOrderDetailDTO> typeMap
+                    = modelMapper.createTypeMap(DealerOrderItems.class, PartOrderDetailDTO.class);
 
             typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getPart().getDescription(),
                     PartOrderDetailDTO::setDescription));
@@ -74,6 +75,14 @@ public class OrderServiceImpl implements IOrderService {
 
             typeMap.addMappings(mapper -> mapper.map(itemEntity -> itemEntity.getReason(),
                     PartOrderDetailDTO::setReason));
+        }
+        if (modelMapper.getTypeMap(DealerOrderEntity.class, OrderDetailsDTO.class) == null) {
+
+            TypeMap<DealerOrderEntity, OrderDetailsDTO> typeMap
+                    = modelMapper.createTypeMap(DealerOrderEntity.class, OrderDetailsDTO.class);
+
+            typeMap.addMappings(mapper -> mapper.map(orderEntity -> orderEntity.getOrderStatus(),
+                    OrderDetailsDTO::setDeliveryStatus));
         }
         //build orderDTOs
         List<OrderDetailsDTO> orders =
