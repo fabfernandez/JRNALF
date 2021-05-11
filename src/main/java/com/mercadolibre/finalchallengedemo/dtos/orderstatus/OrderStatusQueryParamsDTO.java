@@ -1,5 +1,6 @@
 package com.mercadolibre.finalchallengedemo.dtos.orderstatus;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.Pattern;
 
 @Data
 @Validated
+@AllArgsConstructor
 public class OrderStatusQueryParamsDTO {
 
     @NotNull(message = "Order number can't be null or empty")

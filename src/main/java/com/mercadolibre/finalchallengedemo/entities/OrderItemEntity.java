@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "dealer_order_items")
 // Entity that represents an item of a dealer's order, contains only a single part and the quantity ordered.
 //esto es UN item de una orden de un dealer, que contiene UNA parte y que cantidad pide.
-public class DealerOrderItems {
+public class OrderItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

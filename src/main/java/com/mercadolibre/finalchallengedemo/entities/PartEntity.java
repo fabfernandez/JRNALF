@@ -74,4 +74,5 @@ public class PartEntity {
             inverseJoinColumns = @JoinColumn(name = "id_subsidiary"))
     private Set<SubsidiaryEntity> subsidiaries;
      */
+
 }

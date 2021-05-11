@@ -29,7 +29,8 @@ public class OrderController {
     //REQ 3 Endpoint
     @GetMapping("/{orderNumberCM}")
     public ResponseEntity<OrderStatusResponseDTO> getOrdersFromDealersStatus(
-            @Validated @PathVariable(value = "orderNumberCM") OrderStatusQueryParamsDTO orderStatusCM){
+            @Validated @PathVariable(value = "orderNumberCM") String orderNumber){
+        OrderStatusQueryParamsDTO orderStatusCM = new OrderStatusQueryParamsDTO(orderNumber);
         return ResponseEntity.ok(orderService.getOrdersFromDealersStatus(orderStatusCM));
     }
 
