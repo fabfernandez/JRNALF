@@ -2,14 +2,15 @@ package com.mercadolibre.finalchallengedemo.service;
 
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
 import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
-import com.mercadolibre.finalchallengedemo.dtos.partstock.StockSubsidiaryDTO;
 import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
 import com.mercadolibre.finalchallengedemo.entities.PartEntity;
 import com.mercadolibre.finalchallengedemo.entities.StockSubsidiaryEntity;
+import com.mercadolibre.finalchallengedemo.entities.SubsidiaryEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IPartRepository;
 import com.mercadolibre.finalchallengedemo.repository.IStockRepository;
+import com.mercadolibre.finalchallengedemo.repository.ISubsidiaryRepository;
 import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -29,13 +30,13 @@ public class PartServiceImpl implements IPartService {
 
     private final IPartRepository partRepository;
     private final IStockRepository stockRepository;
+    private final ISubsidiaryRepository subsidiaryRepository;
     private ModelMapper modelMapper;
 
-    private Integer idSubsidiary = 1;
-
-    public PartServiceImpl(IPartRepository partRepository, IStockRepository stockRepository, ModelMapper modelMapper) {
+    public PartServiceImpl(IPartRepository partRepository, IStockRepository stockRepository, ISubsidiaryRepository subsidiaryRepository, ModelMapper modelMapper) {
         this.partRepository = partRepository;
         this.stockRepository = stockRepository;
+        this.subsidiaryRepository = subsidiaryRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -84,18 +85,24 @@ public class PartServiceImpl implements IPartService {
     }
 
     @Override
-    //@Transactional
+    @Transactional
     public void savePart(PartDTO part) {
         //REQ 4 Add or update a part.
-        StockSubsidiaryDTO stock = new StockSubsidiaryDTO();
-        stock.setPart(part.getPartCode());
-        stock.setQuantity(part.getQuantity());
-        stock.setSubsidiary(1);
-        stock.setStockId(1);
+        PartEntity partFromDB = partRepository.findById(part.getPartCode()).get();
+        if (!part.getNormalPrice().equals(partFromDB.getNormalPrice())){
+            part.setLastPriceModification(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
+        PartEntity partEntity = partRepository.save(modelMapper.map(part, PartEntity.class));
 
-        part.setLastPriceModification(LocalDate.now());
-        partRepository.save(modelMapper.map(part, PartEntity.class));
-        stockRepository.save(modelMapper.map(stock, StockSubsidiaryEntity.class));
+        StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
+        stock.setPart(partEntity);
+        stock.setQuantity(part.getQuantity());
+        //Find by id en subsidiary
+
+        SubsidiaryEntity subsidiaryEntity = subsidiaryRepository.findById(1).get();
+        stock.setSubsidiary(subsidiaryEntity);
+
+        stockRepository.save(stock);
 
     }
 
