@@ -9,6 +9,7 @@ import com.mercadolibre.finalchallengedemo.entities.StockSubsidiaryEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IPartRepository;
 import com.mercadolibre.finalchallengedemo.repository.IStockRepository;
+import com.mercadolibre.finalchallengedemo.repository.ISubsidiaryRepository;
 import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import com.mercadolibre.finalchallengedemo.service.PartServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +35,8 @@ public class PartServiceTest {
     private IPartRepository partRepository;
     @Mock
     private IStockRepository stockRepository;
+    @Mock
+    private ISubsidiaryRepository subsidiaryRepository;
 
     private PartServiceImpl partService;
 
@@ -42,7 +45,7 @@ public class PartServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        this.partService = new PartServiceImpl(partRepository, stockRepository,new ModelMapper());
+        this.partService = new PartServiceImpl(partRepository, stockRepository,subsidiaryRepository,new ModelMapper());
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, 02);
         c.set(Calendar.DATE, 26);
@@ -154,8 +157,8 @@ public class PartServiceTest {
     @Test
     @DisplayName("Given part, when find, then return part")
     public void givenPart_whenFind_thenReturnPart() {
-        PartDTO partDTO = new PartDTO(1,"test","maker",1,"A01",1,1,1,1,1.00, 1.11, pastDate);
-        PartEntity partEntity = new PartEntity(1,"test",1,1,1,1,1,1,pastDate,pastDate,"maker","A",null, null);
+        PartDTO partDTO = new PartDTO(1,"test","maker",1,"A01",1,1,1,1,1.00, 1.11, "2000-01-01");
+        PartEntity partEntity = new PartEntity();
         Optional<PartEntity> part = Optional.of(partEntity);
 
         when(this.partRepository.findById(any())).thenReturn(part);
