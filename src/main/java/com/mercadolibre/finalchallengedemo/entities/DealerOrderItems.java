@@ -1,6 +1,8 @@
 package com.mercadolibre.finalchallengedemo.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -8,14 +10,16 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "order_details")
-// Entity with an item of an order, contains only a part and the quantity that is required.
-//esto es un item de una orden, que contiene UNA parte y que cantidad pide
-public class OrderItemEntity {
+@Table(name = "dealer_order_items")
+@AllArgsConstructor
+@NoArgsConstructor
+// Entity that represents an item of a dealer's order, contains only a single part and the quantity ordered.
+//esto es UN item de una orden de un dealer, que contiene UNA parte y que cantidad pide.
+public class DealerOrderItems {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, name = "id_order_detail")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_dealer_order_item", nullable = false)
     private Integer id;
 
     private Integer quantity;

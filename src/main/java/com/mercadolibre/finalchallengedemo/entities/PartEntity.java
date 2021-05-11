@@ -19,13 +19,19 @@ import java.util.Set;
 public class PartEntity {
 
     @Id
-    @Column(name = "part_code")
+    @Column(name = "id_part")
     //@Size(min = 8, message = "The field needs a minimum of 8 numeric characters")
     private Integer partCode;
 
     @Column(nullable = false, length = 100)
     @Size(max = 100, message = "The field needs a maximium of 100 alphanumeric characters.")
     private String description;
+
+    @Column(name ="maker")
+    private String maker;
+
+    @Column(name ="discount_type")
+    private String discountType;
 
     @Column(nullable = false, length = 4)
     //@Size(max = 4, message = "The width of the spare part needs 4 numeric characters.")
@@ -55,24 +61,8 @@ public class PartEntity {
     @Column(name ="last_price_modification")
     private Date lastPriceModification;
 
-    @Column(name ="maker")
-    private String maker;
-
-    @Column(name ="discount_type")
-    private String discountType;
 
     @OneToMany(mappedBy = "part")
     private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
 
-    //@OneToMany(mappedBy = "")
-    //private Set<OrderItemEntity> orderItemEntities;
-
-    /*
-    @ManyToMany
-    @JoinTable(name = "subsidiaries_stock",
-            joinColumns = @JoinColumn(name = "part_code"),
-            inverseJoinColumns = @JoinColumn(name = "id_subsidiary"))
-    private Set<SubsidiaryEntity> subsidiaries;
-
-     */
 }
