@@ -30,21 +30,24 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public DealerOrderResponseDTO getOrdersByDealerNumber(String dealerNumber,
-                                                          String deliveryStatus,
-                                                          Integer country, Integer order) {
+    //REQ 2
+    public DealerOrderResponseDTO getOrders(String dealerNumber,
+                                            String deliveryStatus,
+                                            Integer country, Integer order) {
         List<DealerOrderEntity> orderEntities = new ArrayList<>();
 
         //get all orders from a dealer
         if (dealerNumber != null && deliveryStatus == null && order == null)
             orderEntities = orderRepository.getDealerOrdersByDealer(Integer.valueOf(dealerNumber), country);
         if (dealerNumber != null && deliveryStatus != null & order == null)
-            orderEntities = orderRepository.getDealerOrdersByDealerOrderStatus(Integer.valueOf(dealerNumber), deliveryStatus, country);
+            orderEntities = orderRepository.getDealerOrdersByNumberAndStatus(Integer.valueOf(dealerNumber), deliveryStatus, country);
         if (dealerNumber != null && deliveryStatus != null && order != null) {
             if (order.equals(1)) {
-                orderEntities = orderRepository.getDealerOrdersByDealerStatusOrderedAsc(Integer.valueOf(dealerNumber), deliveryStatus, country);
+                orderEntities =
+                        orderRepository.getDealerOrdersByDealerStatusOrderedAsc(Integer.valueOf(dealerNumber), deliveryStatus, country);
             } else if (order.equals(2)) {
-                orderEntities = orderRepository.getDealerOrdersByDealerStatusOrderedDesc(Integer.valueOf(dealerNumber), deliveryStatus, country);
+                orderEntities =
+                        orderRepository.getDealerOrdersByDealerStatusOrderedDesc(Integer.valueOf(dealerNumber), deliveryStatus, country);
             } else
                 throw new InvalidOrderFilterException("Order selected is not valid");
         }
@@ -93,6 +96,7 @@ public class OrderServiceImpl implements IOrderService {
 
     }
 
+    //REQ 3
     @Override
     public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO
                                                                      orderStatusCMDTO) {
@@ -102,7 +106,8 @@ public class OrderServiceImpl implements IOrderService {
         OrderResponseDTO response = new OrderResponseDTO();
 
         // Get orders that matches subsidiary and order number.
-        List<DealerOrderEntity> orderEntities = orderRepository.getOrdersFromDealersStatus(Integer.valueOf(orderNumber), Integer.valueOf(dealer));
+        List<DealerOrderEntity> orderEntities =
+                orderRepository.getOrdersFromDealersStatus(Integer.valueOf(orderNumber), Integer.valueOf(dealer));
 
         // Setting response values.
         response.setOrderNumberCE(dealer);
@@ -120,7 +125,7 @@ public class OrderServiceImpl implements IOrderService {
 
 
     @Override
-    public DealerOrderResponseDTO getOrders(PartOrderQueryParamsDTO params) {
+    public DealerOrderResponseDTO process(PartOrderQueryParamsDTO params) {
 
         String dealerNumber = params.getDealerNumber();
         String deliveryStatus = params.getDeliveryStatus();
@@ -128,6 +133,6 @@ public class OrderServiceImpl implements IOrderService {
         Integer country = DecodeToken.location;
 
         //send data to method that evaluates params to make
-        return getOrdersByDealerNumber(dealerNumber, deliveryStatus, country, order);
+        return getOrders(dealerNumber, deliveryStatus, country, order);
     }
 }
