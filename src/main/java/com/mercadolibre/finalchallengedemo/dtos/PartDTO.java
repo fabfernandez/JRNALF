@@ -66,6 +66,6 @@ public class PartDTO {
 
     @JsonIgnore
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate lastPriceModification;
+    private String lastPriceModification;
 
 }
