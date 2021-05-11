@@ -19,7 +19,7 @@ public class StockSubsidiaryEntity implements Serializable{
 
     @Id
     @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    @JoinColumn(name = "part_code")
+    @JoinColumn(name = "part_id")
     private PartEntity part;
 
     @Id
