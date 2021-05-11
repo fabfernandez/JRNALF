@@ -85,7 +85,7 @@ public class OrderServiceImpl implements IOrderService {
 
         //validate if orders is null or empty
         if (orders.size() == 0 || orders == null) {
-            throw new PartsNotFoundException("Parts not found");
+            throw new PartsNotFoundException("No orders found.");
         }
 
         //build response
