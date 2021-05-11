@@ -61,7 +61,7 @@ public class PartEntity {
     @Column(name ="discount_type")
     private String discountType;
 
-    @OneToMany
+    @OneToMany(mappedBy = "part")
     private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
 
     //@OneToMany(mappedBy = "")

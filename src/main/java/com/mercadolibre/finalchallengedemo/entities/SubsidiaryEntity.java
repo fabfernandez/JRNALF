@@ -15,6 +15,7 @@ public class SubsidiaryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_subsidiary")
     private Integer id;
 
     @Column(nullable = false, length = 25)
@@ -34,7 +35,7 @@ public class SubsidiaryEntity {
     private String country;
 
     //
-    @OneToMany
+    @OneToMany(mappedBy = "subsidiary")
     private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
 
     //@ManyToMany(mappedBy = "part_code")

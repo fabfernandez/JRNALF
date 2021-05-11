@@ -12,21 +12,20 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Table(name = "subsidiaries_stock")
-public class StockSubsidiaryEntity {
-
-    @Id
-    //TODO Hacer andar id autoincremental
-    private Integer stockId;
+@IdClass(RelationshipStockId.class)
+public class StockSubsidiaryEntity implements Serializable{
 
     private Integer quantity;
 
-
+    @Id
     @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name = "part_code")
     private PartEntity part;
 
-
+    @Id
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_subsidiary")
     private SubsidiaryEntity subsidiary;
+
+
 }
