@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -82,14 +84,16 @@ public class PartServiceImpl implements IPartService {
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public void savePart(PartDTO part) {
         //REQ 4 Add or update a part.
         StockSubsidiaryDTO stock = new StockSubsidiaryDTO();
         stock.setPart(part.getPartCode());
         stock.setQuantity(part.getQuantity());
-        stock.setSubsidiary(DecodeToken.location);
+        stock.setSubsidiary(1);
+        stock.setStockId(1);
 
+        part.setLastPriceModification(LocalDate.now());
         partRepository.save(modelMapper.map(part, PartEntity.class));
         stockRepository.save(modelMapper.map(stock, StockSubsidiaryEntity.class));
 
