@@ -14,7 +14,8 @@ import java.util.Set;
 public class SubsidiaryEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_subsidiary")
     private Integer id;
 
     @Column(nullable = false, length = 25)
@@ -26,7 +27,7 @@ public class SubsidiaryEntity {
     private String address;
 
     @Column(nullable = false, length = 20)
-    @Size(max = 20, message = "The phone of the subsidiary must have a maximium of 20 numeric characters.")
+    //@Size(max = 20, message = "The phone of the subsidiary must have a maximium of 20 numeric characters.")
     private Integer phone;
 
     @Column(nullable = false, length = 20)
@@ -35,7 +36,10 @@ public class SubsidiaryEntity {
 
     //
     @OneToMany(mappedBy = "subsidiary")
-    private Set<StockSubsidiaryEntity> subsidiaryEntities;
+    private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
+
+    //@ManyToMany(mappedBy = "part_code")
+    //private Set<PartEntity> parts;
 
     /*
     // Create the relationship with user throgh the username(PK of users) column

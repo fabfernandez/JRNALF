@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ResourceUtils;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -123,7 +124,7 @@ public class PartControllerTest {
         PartDTO part = new PartDTO();
         part.setPartCode(1);
         part.setDescription("test");
-        part.setLastModification(pastDate);
+        part.setLastModification("2000-01-01");
         part.setLongDimension(11);
         part.setNetWeight(11);
         part.setNormalPrice(11D);
@@ -142,7 +143,7 @@ public class PartControllerTest {
         PartDTO part = new PartDTO();
         part.setPartCode(1);
         part.setDescription("test");
-        part.setLastModification(pastDate);
+        part.setLastModification("2000-01-01");
         part.setLongDimension(11);
         part.setNetWeight(11);
         part.setNormalPrice(11D);
