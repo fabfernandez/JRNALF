@@ -18,8 +18,8 @@ import javax.persistence.*;
 public class DealerOrderItems {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, name = "id_order_items")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_dealer_order_item", nullable = false)
     private Integer id;
 
     private Integer quantity;
