@@ -15,6 +15,7 @@ import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 
 import java.time.Instant;
@@ -88,11 +89,12 @@ public class PartServiceImpl implements IPartService {
     @Transactional
     public void savePart(PartDTO part) {
         //REQ 4 Add or update a part.
-        PartEntity partFromDB = partRepository.findById(part.getPartCode()).get();
-        if (!part.getNormalPrice().equals(partFromDB.getNormalPrice())){
+        Optional<PartEntity> partFromDB = partRepository.findById(part.getPartCode());
+        if (partFromDB.isPresent() && !part.getNormalPrice().equals(partFromDB.get().getNormalPrice())){
             part.setLastPriceModification(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         }
         PartEntity partEntity = partRepository.save(modelMapper.map(part, PartEntity.class));
+        System.out.println(partEntity.getStockSubsidiaryEntities());
 
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
         stock.setPart(partEntity);
