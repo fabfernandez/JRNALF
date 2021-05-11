@@ -25,7 +25,6 @@ public class PartOrderDetailDTO {
     private String accountType; //Warranty or Spare Parts account type G or R
 
     @Size(max = 100, message = "The reason for which the spare part is pending must have a maximium of 100 alphanumeric characters.")
-    private String reason;     //Why is the order pending
-
+    private String reason;
 
 }

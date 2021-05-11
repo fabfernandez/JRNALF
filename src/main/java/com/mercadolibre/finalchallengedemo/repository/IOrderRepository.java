@@ -13,13 +13,12 @@ public interface IOrderRepository extends JpaRepository<DealerOrderItems, Intege
 
 
 
-    @Query("FROM DealerOrderItems orderItem" +
-            " LEFT JOIN DealerOrderEntity dealerOrder ON dealerOrder.orderNumber = orderItem.id" +
+    @Query("FROM DealerOrderEntity dealerOrder" +
+            " LEFT JOIN  DealerEntity dealer ON dealer.idDealer = dealerOrder.dealerId" +
             " LEFT JOIN SubsidiaryEntity subsidiary ON subsidiary.id = dealerOrder.subsidiaryId" +
-            " WHERE dealerOrder.orderNumber  = :orderNumber" +
+            " WHERE dealerOrder.orderNumber = :orderNumber" +
             " AND dealerOrder.subsidiaryId = :subsidiaryId")
-    List<DealerOrderItems> getOrderItemsByOrderNumber(Integer orderNumber, Integer subsidiaryId);
-
+    DealerOrderEntity getOrder(Integer orderNumber, Integer subsidiaryId);
 
 
     @Query("FROM DealerOrderEntity dealerOrder" +
