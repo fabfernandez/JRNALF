@@ -39,14 +39,14 @@ public class OrderController {
 
     //REQ 5 Endpoint
     @PostMapping
-    public ResponseEntity createOrder(@RequestBody OrderRequestDTO order) {
+    public ResponseEntity createOrder(@Validated @RequestBody OrderRequestDTO order) {
         if(DecodeToken.location == 1)
             throw new ForbiddenAccessException("Only users for the central house are enabled");
         return ResponseEntity.ok(this.orderService.createOrder(order));
     }
 
     @PostMapping("/update_status")
-    public ResponseEntity updateOrder(@RequestBody OrderUpdateRequestDTO orderUpdate) {
+    public ResponseEntity updateOrder(@Validated @RequestBody OrderUpdateRequestDTO orderUpdate) {
         if(DecodeToken.location != 1)
             throw new ForbiddenAccessException("Only users for parent company are enabled");
         this.orderService.updateOrder(orderUpdate.getOrderNumber(),orderUpdate.getStatusCode());
