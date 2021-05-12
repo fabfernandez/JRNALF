@@ -2,14 +2,14 @@ package com.mercadolibre.finalchallengedemo.unit.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mercadolibre.finalchallengedemo.dtos.orderstatus.DealerOrderResponseDTO;
-import com.mercadolibre.finalchallengedemo.dtos.orderstatus.PartOrderQueryParamsDTO;
+import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
 import com.mercadolibre.finalchallengedemo.entities.DealerOrderEntity;
 import com.mercadolibre.finalchallengedemo.entities.DealerOrderItems;
 import com.mercadolibre.finalchallengedemo.entities.PartEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IOrderRepository;
+import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import com.mercadolibre.finalchallengedemo.service.OrderServiceImpl;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.Executable;
@@ -21,6 +21,7 @@ import org.modelmapper.ModelMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,7 @@ class OrderServiceImplTest {
     private static DealerOrderResponseDTO dealerOrderResponseDTO;
     private static List<DealerOrderEntity> dealerOrders;
     private static List<PartEntity> parts;
+    private static DealerOrderEntity dealerOrder;
 
     @BeforeEach
     public void setUp() {
@@ -61,7 +63,7 @@ class OrderServiceImplTest {
                         new TypeReference<>() {
                         });
         //get single order
-        DealerOrderEntity dealerOrder = dealerOrders.get(0);
+        dealerOrder = dealerOrders.get(0);
         //extract items
         List<DealerOrderItems> dealerOrderItems =
                 new ArrayList<>(dealerOrder.getOrderDetails());
@@ -179,5 +181,28 @@ class OrderServiceImplTest {
         Assertions.assertThrows(PartsNotFoundException.class,
                 () -> orderService.getOrders("3", "F", 1, 1));
     }
+
+    @Test
+    @DisplayName("When order number return corresponding order and details")
+    void getOrdersFromDealersStatus() throws IOException {
+
+        when(orderRepository.getOrder(any(),any()))
+                .thenReturn(dealerOrder);
+
+        OrderStatusResponseDTO response = objectMapper.readValue(new File("src/test/resources/orderByOrderNumber.json"),
+                new TypeReference<>() {
+                });
+
+        OrderStatusQueryParamsDTO request = new OrderStatusQueryParamsDTO();
+        request.setOrderNumberCM("0000-0000-00000003");
+        DecodeToken.location = 1;
+        OrderStatusResponseDTO resp2 = orderService.getOrdersFromDealersStatus(request);
+
+
+        Assertions.assertEquals(response,resp2);
+
+
+    }
+
 
 }

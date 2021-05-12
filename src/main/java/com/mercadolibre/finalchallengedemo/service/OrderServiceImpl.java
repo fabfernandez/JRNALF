@@ -113,7 +113,7 @@ public class OrderServiceImpl implements IOrderService {
         String[] queryArray = orderStatusCMDTO.getOrderNumberCM().split("-");
         String orderNumberReq = orderStatusCMDTO.getOrderNumberCM();
         String dealer = queryArray[0];
-        String orderNumber = queryArray[1].replaceAll("^0+","");
+        String orderNumber = queryArray[2].replaceAll("^0+","");
 
 
         OrderStatusResponseDTO response = new OrderStatusResponseDTO();
@@ -154,7 +154,7 @@ public class OrderServiceImpl implements IOrderService {
             throw new PartsNotFoundException("Order Not Found.");
         }
         response = modelMapper.map( dealerOrderEntity, OrderStatusResponseDTO.class);
-        response.setOrderNumberCE(orderNumberReq);
+        response.setOrderNumberCE(queryArray[1]+ queryArray[2]);
 
         return response;
     }
