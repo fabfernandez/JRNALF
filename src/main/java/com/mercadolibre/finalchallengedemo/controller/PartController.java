@@ -36,13 +36,13 @@ public class PartController {
     }
 
     @PostMapping("/")
-    public ResponseEntity savePart(@Validated @RequestBody PartDTO part){
+    public ResponseEntity<String> savePart(@Validated @RequestBody PartDTO part){
         //This is the REQ 4 endpoint for adding or modifying parts to the database.
         if (DecodeToken.location == 1) {
             partService.savePart(part);
             return ResponseEntity.ok("Part saved.");
         }else
-            return new ResponseEntity("Unauthorized.", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Unauthorized.", HttpStatus.FORBIDDEN);
     }
 
     @GetMapping("/find/{id}")

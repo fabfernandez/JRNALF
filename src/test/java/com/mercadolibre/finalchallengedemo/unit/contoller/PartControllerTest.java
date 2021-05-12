@@ -7,6 +7,7 @@ import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
 import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
+import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import com.mercadolibre.finalchallengedemo.service.PartServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -130,11 +131,31 @@ public class PartControllerTest {
         part.setNormalPrice(11D);
         part.setTallDimension(11);
         part.setWidthDimension(11);
-
+        part.setPartStatus("N");
+        DecodeToken.location = 1; //Authorized user
         final ResponseEntity response = partController.savePart(part);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(partService,times(1)).savePart(any());
+    }
+    @Test
+    @DisplayName("When save part, then return FORBIDDEN Response")
+    public void whenSavePart_thenReturnForbiddenResponse() {
+        PartDTO part = new PartDTO();
+        part.setPartCode(1);
+        part.setDescription("test");
+        part.setLastModification("2000-01-01");
+        part.setLongDimension(11);
+        part.setNetWeight(11);
+        part.setNormalPrice(11D);
+        part.setTallDimension(11);
+        part.setWidthDimension(11);
+        part.setPartStatus("N");
+        DecodeToken.location = 2; //Unauthorized token should fail
+        final ResponseEntity response = partController.savePart(part);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        //verify(partService,times(1)).savePart(any());
     }
 
     @Test
