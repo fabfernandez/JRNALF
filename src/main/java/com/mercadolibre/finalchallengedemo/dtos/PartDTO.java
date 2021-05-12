@@ -68,4 +68,6 @@ public class PartDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String lastPriceModification;
 
+    @Size(min = 1, max = 1, message = "This field must be only 1 character in lenght")
+    private String partStatus;
 }

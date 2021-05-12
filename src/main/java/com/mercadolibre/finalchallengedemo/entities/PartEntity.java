@@ -61,6 +61,9 @@ public class PartEntity {
     @Column(name ="last_price_modification")
     private Date lastPriceModification;
 
+    @Column(name = "part_status")
+    private String partStatus;
+
 
     @OneToMany(mappedBy = "part")
     private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
