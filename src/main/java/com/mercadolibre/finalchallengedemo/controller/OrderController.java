@@ -19,10 +19,11 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    //REQ 2
     @GetMapping()
     public ResponseEntity<DealerOrderResponseDTO> getOrdersByDealerAndStatus(
             @Validated PartOrderQueryParamsDTO filter){
-            return ResponseEntity.ok(orderService.getOrders(filter));
+            return ResponseEntity.ok(orderService.process(filter));
     }
 
     //REQ 3 Endpoint

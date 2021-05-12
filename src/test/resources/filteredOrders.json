@@ -1,0 +1,27 @@
+{
+  "dealerNumber": 3,
+  "orders": [
+    {
+      "orderNumber": 3,
+      "orderDate": "2021-04-03T16:00:53Z",
+      "deliveryDate": "2021-05-03T16:00:53Z",
+      "daysDelay": 3,
+      "orderDetails": [
+        {
+          "partCode": 5,
+          "description": "Puerta delantera izquierda",
+          "quantity": 2,
+          "accountType": "R",
+          "reason": "sin motivo"
+        },
+        {
+          "partCode": 1,
+          "description": "Llanta",
+          "quantity": 2,
+          "accountType": "R",
+          "reason": "sin motivo"
+        }
+      ]
+    }
+  ]
+}

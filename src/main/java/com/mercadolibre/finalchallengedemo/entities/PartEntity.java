@@ -19,7 +19,7 @@ import java.util.Set;
 public class PartEntity {
 
     @Id
-    @Column(name = "part_code")
+    @Column(name = "id_part")
     //@Size(min = 8, message = "The field needs a minimum of 8 numeric characters")
     private Integer partCode;
 
@@ -73,6 +73,5 @@ public class PartEntity {
             joinColumns = @JoinColumn(name = "part_code"),
             inverseJoinColumns = @JoinColumn(name = "id_subsidiary"))
     private Set<SubsidiaryEntity> subsidiaries;
-
      */
 }

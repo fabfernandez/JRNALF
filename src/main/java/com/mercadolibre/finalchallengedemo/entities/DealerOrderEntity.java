@@ -16,8 +16,8 @@ import java.util.Set;
 public class DealerOrderEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "order_number", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_dealer_order", nullable = false)
     private Integer orderNumber;
 
     @Column(name = "order_date", nullable = false)
@@ -35,7 +35,7 @@ public class DealerOrderEntity {
 
     @OneToMany(mappedBy = "correspondingOrder")
     // ITEMS
-    private Set<OrderItemEntity> orderDetails;
+    private Set<DealerOrderItems> orderDetails;
 
     @Column(name = "dealer_id", nullable = false)
     private Integer dealerId;
