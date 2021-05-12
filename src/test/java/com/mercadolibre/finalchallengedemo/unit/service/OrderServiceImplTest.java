@@ -2,13 +2,12 @@ package com.mercadolibre.finalchallengedemo.unit.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mercadolibre.finalchallengedemo.dtos.OrderRequestDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
-import com.mercadolibre.finalchallengedemo.entities.DealerOrderEntity;
-import com.mercadolibre.finalchallengedemo.entities.DealerOrderItems;
-import com.mercadolibre.finalchallengedemo.entities.PartEntity;
+import com.mercadolibre.finalchallengedemo.entities.*;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
-import com.mercadolibre.finalchallengedemo.repository.IOrderRepository;
+import com.mercadolibre.finalchallengedemo.repository.*;
 import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import com.mercadolibre.finalchallengedemo.service.OrderServiceImpl;
 import org.junit.jupiter.api.*;
@@ -17,12 +16,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -32,6 +33,14 @@ class OrderServiceImplTest {
 
     @Mock
     private IOrderRepository orderRepository;
+    @Mock
+    private ISubsidiaryOrderRepository subsidiaryOrderRepository;
+    @Mock
+    private IPartRepository partRepository;
+    @Mock
+    private ISubsidiaryOrderItemRepository subsidiaryOrderItemRepository;
+    @Mock
+    private IStockRepository stockRepository;
 
     private OrderServiceImpl orderService;
 
@@ -45,7 +54,7 @@ class OrderServiceImplTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        this.orderService = new OrderServiceImpl(orderRepository, new ModelMapper());
+        this.orderService = new OrderServiceImpl(orderRepository, new ModelMapper(),subsidiaryOrderRepository,partRepository,subsidiaryOrderItemRepository,stockRepository);
     }
 
     @BeforeAll
@@ -220,5 +229,49 @@ class OrderServiceImplTest {
 
     }
 
+
+    @Test
+    @DisplayName("When create order with stock available for the same, then return order created")
+    void whenCreateOrderWithStockAvailableForTheSame_thenReturnOrderCreated() {
+        OrderRequestDTO orderRequestDTO  = getObject("classpath:createOrderRequest.json",OrderRequestDTO.class);
+        Set<SubsidiaryOrderItemsEntity> orderItemsEntities = new HashSet<>();
+        StockSubsidiaryEntity stockSubsidiaryEntity = new StockSubsidiaryEntity(10,
+            new PartEntity(1,"test","test","A1",1,1,1,1,1,1, Date.from(Instant.now().minus(100, ChronoUnit.DAYS)),null,null),
+            new SubsidiaryEntity(1,"test","test",1,"test",null)
+        );
+        SubsidiaryOrderEntity subsidiaryOrderEntity = new SubsidiaryOrderEntity(1,Date.from(Instant.now()),'P',4,Date.from(Instant.now().plus(7,ChronoUnit.DAYS)),0,orderItemsEntities);
+        when(stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stockSubsidiaryEntity);
+        when(subsidiaryOrderRepository.save(any())).thenReturn(subsidiaryOrderEntity);
+        when(subsidiaryOrderItemRepository.save(any())).thenReturn(new SubsidiaryOrderItemsEntity());
+
+
+        OrderDetailsDTO orderResponseDTO = orderService.createOrder(orderRequestDTO);
+
+        Assertions.assertNotNull(orderResponseDTO);
+        Assertions.assertEquals(1,orderResponseDTO.getOrderNumber());
+
+    }
+
+
+
+    private <T> T getList(String filePath, Class<?> target) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(ResourceUtils.getFile(filePath), objectMapper .getTypeFactory().constructCollectionType(List.class, Class.forName(target.getName())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private <T> T getObject(String filePath, Class<?> target) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(ResourceUtils.getFile(filePath), objectMapper .getTypeFactory().constructType(target));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }
