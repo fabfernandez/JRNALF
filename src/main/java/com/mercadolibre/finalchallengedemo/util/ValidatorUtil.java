@@ -2,6 +2,7 @@ package com.mercadolibre.finalchallengedemo.util;
 
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.PartOrderQueryParamsDTO;
+import com.mercadolibre.finalchallengedemo.exceptions.CanNotUpdateException;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 
@@ -62,4 +63,11 @@ public class ValidatorUtil {
         }
     }
 
+    //Validations for all update scenarios
+    public static void validateOrderUpdate(Character actualStatus, Character newStatus) {
+        if (actualStatus.equals(newStatus))
+            throw new CanNotUpdateException("The order to update al ready has " + actualStatus + " status.");
+        if(actualStatus.equals('F') || actualStatus.equals('C'))
+            throw new CanNotUpdateException("Can not update the status from the requested order.");
+    }
 }

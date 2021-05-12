@@ -1,10 +1,8 @@
 package com.mercadolibre.finalchallengedemo.service;
 
 
-import com.mercadolibre.finalchallengedemo.dtos.orderstatus.DealerOrderResponseDTO;
-import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusQueryParamsDTO;
-import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderStatusResponseDTO;
-import com.mercadolibre.finalchallengedemo.dtos.orderstatus.PartOrderQueryParamsDTO;
+import com.mercadolibre.finalchallengedemo.dtos.OrderRequestDTO;
+import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
 
 public interface IOrderService {
 
@@ -12,4 +10,9 @@ public interface IOrderService {
 
     public DealerOrderResponseDTO getOrdersByDealerNumber(String dealerNumber, String deliveryStatus, Integer country, Integer order);
     public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO orderStatusCMDTO);
+
+    OrderDetailsDTO createOrder(OrderRequestDTO order);
+
+    void updateOrder(Integer orderNumber, Character orderStatus);
+
 }

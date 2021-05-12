@@ -23,6 +23,6 @@ public class PartOrderDetailDTO {
     private String accountType; //Warranty or Spare Parts account type G or R
 
     @Size(max = 100)
-    private String reason;     //Why is the order pending
+    private String reason = "sin motivo";     //Why is the order pending
 
 }
