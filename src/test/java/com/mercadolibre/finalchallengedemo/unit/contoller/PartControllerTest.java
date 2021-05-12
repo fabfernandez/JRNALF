@@ -120,7 +120,7 @@ public class PartControllerTest {
     }
 
     @Test
-    @DisplayName("When save part, then return ok Response")
+    @DisplayName("R4: When save part, then return ok Response")
     public void whenSavePart_thenReturnOkResponse() {
         PartDTO part = new PartDTO();
         part.setPartCode(1);
@@ -139,7 +139,7 @@ public class PartControllerTest {
         verify(partService,times(1)).savePart(any());
     }
     @Test
-    @DisplayName("When save part, then return FORBIDDEN Response")
+    @DisplayName("R4: When save part, then return FORBIDDEN Response")
     public void whenSavePart_thenReturnForbiddenResponse() {
         PartDTO part = new PartDTO();
         part.setPartCode(1);
@@ -159,7 +159,7 @@ public class PartControllerTest {
     }
 
     @Test
-    @DisplayName("When update part, then return ok Response")
+    @DisplayName("R4: When update part, then return ok Response")
     public void whenUpdatePart_thenReturnOkResponse() {
         PartDTO part = new PartDTO();
         part.setPartCode(1);
