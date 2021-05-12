@@ -17,5 +17,5 @@ public class OrderUpdateRequestDTO {
 
     @Size(min = 1, max = 1, message = "Status code must be only 1 character.")
     @Pattern(regexp = "^[CFDPcfdp]$", message = "Invalid delivery status code.")
-    private String statusCode;
+    private Character statusCode;
 }

@@ -2,7 +2,6 @@ package com.mercadolibre.finalchallengedemo.service;
 
 import com.mercadolibre.finalchallengedemo.dtos.OrderRequestDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
-import com.mercadolibre.finalchallengedemo.dtos.response.OrderResponseDTO;
 import com.mercadolibre.finalchallengedemo.entities.*;
 import com.mercadolibre.finalchallengedemo.entities.DealerOrderEntity;
 import com.mercadolibre.finalchallengedemo.entities.DealerOrderItems;
@@ -24,7 +23,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,9 +36,18 @@ public class OrderServiceImpl implements IOrderService {
     private final IStockRepository stockRepository;
 
     @Autowired
-    public OrderServiceImpl(IOrderRepository orderRepository, ModelMapper modelMapper, ISubsidiaryOrderRepository subsidiaryOrderRepository, IPartRepository partRepository, ISubsidiaryOrderItemRepository subsidiaryOrderItemRepository, IStockRepository stockRepository) {
+    public OrderServiceImpl(IOrderRepository orderRepository,
+                            ModelMapper modelMapper,
+                            ISubsidiaryOrderRepository subsidiaryOrderRepository,
+                            IPartRepository partRepository,
+                            ISubsidiaryOrderItemRepository subsidiaryOrderItemRepository,
+                            IStockRepository stockRepository) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
+        this.partRepository = partRepository;
+        this.subsidiaryOrderItemRepository = subsidiaryOrderItemRepository;
+        this.stockRepository = stockRepository;
+        this.subsidiaryOrderRepository = subsidiaryOrderRepository;
 
         //CONFIGURANDO MODEL MAPPER
         //DealerOrderItems -> OrderItemDTO
@@ -151,6 +158,10 @@ public class OrderServiceImpl implements IOrderService {
         //send data to method that evaluates params to make
         return getOrders(dealerNumber, deliveryStatus, country, order);
     }
+
+
+    //_________________________________REQ 5___________________________________________
+
 
     @Override
     public OrderDetailsDTO createOrder(OrderRequestDTO order) {
