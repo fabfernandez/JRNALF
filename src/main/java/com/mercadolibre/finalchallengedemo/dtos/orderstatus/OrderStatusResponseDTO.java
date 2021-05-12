@@ -6,7 +6,6 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Data
@@ -23,5 +22,5 @@ public class OrderStatusResponseDTO {
     @Pattern(regexp = "^[PDFCpdfc]$", message = "Invalid order status code. ")
     private String orderStatus;
 
-    private ArrayList<PartOrderDetailDTO> orderDetails;
+    private ArrayList<OrderItemPartStatusDTO> orderDetails;
 }
