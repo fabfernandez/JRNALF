@@ -111,21 +111,13 @@ public class OrderServiceImpl implements IOrderService {
     public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO
                                                                      orderStatusCMDTO) {
         String[] queryArray = orderStatusCMDTO.getOrderNumberCM().split("-");
-        String orderNumberReq = orderStatusCMDTO.getOrderNumberCM();
-        String dealer = queryArray[0];
         String orderNumber = queryArray[2].replaceAll("^0+","");
 
-
-        OrderStatusResponseDTO response = new OrderStatusResponseDTO();
-
         // Get orders that matches subsidiary and order number
-        DealerOrderEntity dealerOrderEntity = orderRepository.getOrder(Integer.valueOf(orderNumber), DecodeToken.location);
+        DealerOrderEntity dealerOrderEntity =
+                orderRepository.getOrder(Integer.valueOf(orderNumber), DecodeToken.location);
 
-
-
-
-        //configurando modelmapper
-
+        //Config ModelMapper
         if (modelMapper.getTypeMap(DealerOrderItems.class, PartOrderDetailDTO.class) == null) {
 
 
@@ -149,11 +141,11 @@ public class OrderServiceImpl implements IOrderService {
             typeMap.addMappings(mapper -> mapper.map(DealerOrderEntity::getOrderStatus,
                     OrderDetailsDTO::setDeliveryStatus));
         }
-        //build orderDTOs
+        //build DTO
         if (dealerOrderEntity == null){
             throw new PartsNotFoundException("Order Not Found.");
         }
-        response = modelMapper.map( dealerOrderEntity, OrderStatusResponseDTO.class);
+        OrderStatusResponseDTO response = modelMapper.map( dealerOrderEntity, OrderStatusResponseDTO.class);
         response.setOrderNumberCE(queryArray[1]+"-"+queryArray[2]);
 
         return response;
