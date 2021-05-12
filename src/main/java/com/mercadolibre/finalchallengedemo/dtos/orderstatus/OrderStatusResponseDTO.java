@@ -17,7 +17,7 @@ public class OrderStatusResponseDTO {
     private String orderNumberCE;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate orderDate;
+    private String orderDate;
 
     @Size(min = 1, max = 1, message = "Order status code must be only one letter.")
     @Pattern(regexp = "^[PDFCpdfc]$", message = "Invalid order status code. ")
