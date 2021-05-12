@@ -56,9 +56,11 @@ public class PartEntity {
     private Integer urgentPrice;
 
     @Column(name ="last_modification")
+    @Temporal(TemporalType.DATE)
     private Date lastModification;
 
     @Column(name ="last_price_modification")
+    @Temporal(TemporalType.DATE)
     private Date lastPriceModification;
 
     @Column(name = "part_status")

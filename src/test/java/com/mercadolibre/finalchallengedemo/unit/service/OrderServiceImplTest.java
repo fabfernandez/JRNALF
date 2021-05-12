@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -236,7 +237,7 @@ class OrderServiceImplTest {
         OrderRequestDTO orderRequestDTO  = getObject("classpath:createOrderRequest.json",OrderRequestDTO.class);
         Set<SubsidiaryOrderItemsEntity> orderItemsEntities = new HashSet<>();
         StockSubsidiaryEntity stockSubsidiaryEntity = new StockSubsidiaryEntity(10,
-            new PartEntity(1,"test","test","A1",1,1,1,1,1,1, Date.from(Instant.now().minus(100, ChronoUnit.DAYS)),null,"A", null),
+            new PartEntity(1,"test","test","A1",1,1,1,1,1,1, java.sql.Date.valueOf(LocalDate.now().minusDays(2)),null,"A", null),
             new SubsidiaryEntity(1,"test","test",1,"test",null)
         );
         SubsidiaryOrderEntity subsidiaryOrderEntity = new SubsidiaryOrderEntity(1,Date.from(Instant.now()),'P',4,Date.from(Instant.now().plus(7,ChronoUnit.DAYS)),0,orderItemsEntities);

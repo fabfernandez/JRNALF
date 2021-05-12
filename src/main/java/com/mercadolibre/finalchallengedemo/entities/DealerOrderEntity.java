@@ -21,6 +21,7 @@ public class DealerOrderEntity {
     private Integer orderNumber;
 
     @Column(name = "order_date", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date orderDate;
 
     @Column(name = "order_status", length = 1, nullable = false)
@@ -28,6 +29,7 @@ public class DealerOrderEntity {
     private String orderStatus;
 
     @Column(name = "delivery_date", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date deliveryDate;
 
     @Column(name = "days_delay", nullable = false)
