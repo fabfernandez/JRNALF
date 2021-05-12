@@ -3,8 +3,7 @@ package com.mercadolibre.finalchallengedemo.service;
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
 import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
 import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
-
-import java.util.List;
+import com.mercadolibre.finalchallengedemo.entities.PartEntity;
 
 public interface IPartService {
     PartResponseDTO getAll();
@@ -13,7 +12,7 @@ public interface IPartService {
 
     void deletePart(Integer id);
 
-    void savePart(PartDTO part);
+    PartEntity savePart(PartDTO part);
 
     PartDTO findPart(Integer id);
 }

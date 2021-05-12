@@ -23,6 +23,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.util.ResourceUtils;
 
 import javax.servlet.http.Part;
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
@@ -40,6 +41,8 @@ public class PartServiceTest {
     @Mock
     private ISubsidiaryRepository subsidiaryRepository;
 
+    private ModelMapper modelMapper = new ModelMapper();
+
     private PartServiceImpl partService;
 
     private Date pastDate;
@@ -47,7 +50,7 @@ public class PartServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        this.partService = new PartServiceImpl(partRepository, stockRepository,subsidiaryRepository,new ModelMapper());
+        this.partService = new PartServiceImpl(partRepository, stockRepository,subsidiaryRepository,modelMapper);
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, 02);
         c.set(Calendar.DATE, 26);
@@ -182,27 +185,49 @@ public class PartServiceTest {
 
     @Test
     @DisplayName("R4: Try to add a new part with correct parameters. ")
-    @Rollback
-    public void whenAddPart_returnOk(){
+    public void whenAddInexistentPart_returnOk(){
         PartDTO newPart = new PartDTO(30,"This is a mock part", "juan", 10, "A00", 10,10,10,15, 100D, 150D,"2021-05-11");
-        PartEntity partFromDb = null;
 
-        SubsidiaryEntity subsidiaryEntity = new SubsidiaryEntity();
-        subsidiaryEntity.setId(1);
-        subsidiaryEntity.setName("Casa Matriz");
-        subsidiaryEntity.setCountry("Brasil");
+        SubsidiaryEntity casaMatriz = getObject("classpath:subsidiaryCasaMatriz.json",SubsidiaryEntity.class);
 
-        //PartEntity partEntity = partRepository.save(newPart,)
+
+        when(subsidiaryRepository.findById(1)).thenReturn(Optional.ofNullable(casaMatriz));
+        when(partRepository.findById(any())).thenReturn(Optional.ofNullable(null));
+
+
+        PartEntity partEntity = getObject("classpath:newPartEntity.json", PartEntity.class);
+        when(partRepository.save(any())).thenReturn(partEntity);
 
         StockSubsidiaryEntity stockSubsidiaryEntity = new StockSubsidiaryEntity();
-        stockSubsidiaryEntity.setSubsidiary(subsidiaryEntity);
-        //stockSubsidiaryEntity.setPart();
+        stockSubsidiaryEntity.setSubsidiary(casaMatriz);
+        stockSubsidiaryEntity.setPart(partEntity);
         stockSubsidiaryEntity.setQuantity(newPart.getQuantity());
 
-        when(partRepository.findById(any())).thenReturn(Optional.of(partFromDb));
-        when(subsidiaryRepository.findById(1).get()).thenReturn(subsidiaryEntity);
+        assertEquals(this.partService.savePart(newPart),partEntity);
+    }
 
-        //assert(this.partService.savePart(newPart));
+    @Test
+    @DisplayName("R4: Try to add a part that already exists with correct parameters. ")
+    public void whenAddExistentPart_returnOkWithChangedLastPriceModification(){
+        PartDTO newPart = new PartDTO(123,"This is a mock part", "juan", 10, "A00", 10,10,10,15, 1000D, 1500D,"2021-05-11");
+
+        SubsidiaryEntity casaMatriz = getObject("classpath:subsidiaryCasaMatriz.json",SubsidiaryEntity.class);
+
+        PartEntity existingPartEntity = getObject("classpath:modifiedPartEntity.json", PartEntity.class);
+
+        when(subsidiaryRepository.findById(1)).thenReturn(Optional.ofNullable(casaMatriz));
+        when(partRepository.findById(any())).thenReturn(Optional.ofNullable(existingPartEntity));
+
+
+        PartEntity partEntity = getObject("classpath:newPartEntityPriceModification.json", PartEntity.class);
+        when(partRepository.save(any())).thenReturn(partEntity);
+
+        StockSubsidiaryEntity stockSubsidiaryEntity = new StockSubsidiaryEntity();
+        stockSubsidiaryEntity.setSubsidiary(casaMatriz);
+        stockSubsidiaryEntity.setPart(partEntity);
+        stockSubsidiaryEntity.setQuantity(newPart.getQuantity());
+
+        assertEquals(this.partService.savePart(newPart).getLastPriceModification(),existingPartEntity.getLastPriceModification());
     }
 
 

@@ -1,0 +1,14 @@
+{
+  "partCode": 123,
+  "description": "Test part entity",
+  "discountType": "A00",
+  "normalPrice": 1000,
+  "urgentPrice": 1500,
+  "netWeight": 100,
+  "longDimension": 100,
+  "widthDimension": 100,
+  "tallDimension": 100,
+  "maker": "new part entity",
+  "lastModification": "2021-03-02",
+  "partStatus": "N"
+}
