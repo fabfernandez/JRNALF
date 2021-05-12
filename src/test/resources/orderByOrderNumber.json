@@ -1,0 +1,21 @@
+{
+  "orderNumberCE": "0000-0000-00000003",
+  "orderDate": "2021-04-03 11:00:53.0",
+  "orderStatus": "F",
+  "orderDetails": [
+    {
+      "partCode": 4,
+      "description": "Puerta delantera derecha",
+      "quantity": 4,
+      "accountType": "G",
+      "reason": "sin motivo"
+    },
+    {
+      "partCode": 5,
+      "description": "Puerta delantera izquierda",
+      "quantity": 2,
+      "accountType": "R",
+      "reason": "sin motivo"
+    }
+  ]
+}

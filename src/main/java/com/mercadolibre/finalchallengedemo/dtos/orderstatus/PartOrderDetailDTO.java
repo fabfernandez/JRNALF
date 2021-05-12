@@ -14,6 +14,8 @@ import javax.validation.constraints.Size;
 public class PartOrderDetailDTO {
 
     private Integer partCode;
+
+    @Size(max = 100, message = "The description of the spare part must have a maximium of 100 alphanumeric characters.")
     private String description;
 
     @Min(value = 0, message = "Quantity must be a positive integer")
@@ -22,7 +24,7 @@ public class PartOrderDetailDTO {
     @Pattern(regexp = "^[RGrg]$", message = "Invalid order status code. ")
     private String accountType; //Warranty or Spare Parts account type G or R
 
-    @Size(max = 100)
-    private String reason;     //Why is the order pending
+    @Size(max = 100, message = "The reason for which the spare part is pending must have a maximium of 100 alphanumeric characters.")
+    private String reason;
 
 }

@@ -36,4 +36,6 @@ public class DealerOrderItems {
     @ManyToOne
     @JoinColumn(name = "part_id" ,nullable = false)
     private PartEntity part;
+
+
 }
