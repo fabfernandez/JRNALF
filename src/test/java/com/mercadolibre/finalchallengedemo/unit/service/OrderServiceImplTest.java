@@ -204,5 +204,21 @@ class OrderServiceImplTest {
 
     }
 
+    @Test
+    @DisplayName("When order number not found , throws exception.")
+    void orderNotFound() {
+
+        when(orderRepository.getOrder(any(), any()))
+                .thenReturn(null);
+
+        OrderStatusQueryParamsDTO request = new OrderStatusQueryParamsDTO();
+        request.setOrderNumberCM("0000-0000-00000003");
+
+
+        Assertions.assertThrows(PartsNotFoundException.class,
+                () -> orderService.getOrdersFromDealersStatus(request));
+
+    }
+
 
 }

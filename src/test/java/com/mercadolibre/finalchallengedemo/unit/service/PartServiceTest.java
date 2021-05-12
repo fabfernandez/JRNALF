@@ -132,7 +132,7 @@ public class PartServiceTest {
 
         final PartResponseDTO response = partService.getPartsByFilter(validFilter);
 
-        assertIterableEquals(response.getParts(), partsDtoList);
+        assertIterableEquals(partsDtoList,response.getParts());
         verify(partRepository,times(1)).findPartsModifiedSinceDateSortedByDescriptionDesc(any(),any());
     }
 
