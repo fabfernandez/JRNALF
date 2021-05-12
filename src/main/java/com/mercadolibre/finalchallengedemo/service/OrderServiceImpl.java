@@ -154,7 +154,7 @@ public class OrderServiceImpl implements IOrderService {
             throw new PartsNotFoundException("Order Not Found.");
         }
         response = modelMapper.map( dealerOrderEntity, OrderStatusResponseDTO.class);
-        response.setOrderNumberCE(queryArray[1]+ queryArray[2]);
+        response.setOrderNumberCE(queryArray[1]+"-"+queryArray[2]);
 
         return response;
     }

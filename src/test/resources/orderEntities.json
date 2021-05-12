@@ -9,7 +9,7 @@
     "subsidiaryId" : 1,
     "orderDetails": [
       {
-        "id": 1,
+        "id": 8,
         "quantity": 2,
         "reason": "sin motivo",
         "accountType": "R",
@@ -17,7 +17,7 @@
         "part": null
       },
       {
-        "id": 1,
+        "id": 9,
         "quantity": 2,
         "reason": "sin motivo",
         "accountType": "R",
