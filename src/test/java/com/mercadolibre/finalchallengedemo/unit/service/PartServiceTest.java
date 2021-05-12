@@ -6,6 +6,7 @@ import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
 import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
 import com.mercadolibre.finalchallengedemo.entities.PartEntity;
 import com.mercadolibre.finalchallengedemo.entities.StockSubsidiaryEntity;
+import com.mercadolibre.finalchallengedemo.entities.SubsidiaryEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IPartRepository;
 import com.mercadolibre.finalchallengedemo.repository.IStockRepository;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.util.ResourceUtils;
 
 import javax.servlet.http.Part;
@@ -132,7 +134,7 @@ public class PartServiceTest {
 
         final PartResponseDTO response = partService.getPartsByFilter(validFilter);
 
-        assertIterableEquals(response.getParts(), partsDtoList);
+        assertIterableEquals(partsDtoList,response.getParts());
         verify(partRepository,times(1)).findPartsModifiedSinceDateSortedByDescriptionDesc(any(),any());
     }
 
@@ -176,6 +178,31 @@ public class PartServiceTest {
         assertThrows(PartsNotFoundException.class,() -> this.partService.findPart(113));
 
         verify(partRepository,times(1)).findById(any());
+    }
+
+    @Test
+    @DisplayName("R4: Try to add a new part with correct parameters. ")
+    @Rollback
+    public void whenAddPart_returnOk(){
+        PartDTO newPart = new PartDTO(30,"This is a mock part", "juan", 10, "A00", 10,10,10,15, 100D, 150D,"2021-05-11");
+        PartEntity partFromDb = null;
+
+        SubsidiaryEntity subsidiaryEntity = new SubsidiaryEntity();
+        subsidiaryEntity.setId(1);
+        subsidiaryEntity.setName("Casa Matriz");
+        subsidiaryEntity.setCountry("Brasil");
+
+        //PartEntity partEntity = partRepository.save(newPart,)
+
+        StockSubsidiaryEntity stockSubsidiaryEntity = new StockSubsidiaryEntity();
+        stockSubsidiaryEntity.setSubsidiary(subsidiaryEntity);
+        //stockSubsidiaryEntity.setPart();
+        stockSubsidiaryEntity.setQuantity(newPart.getQuantity());
+
+        when(partRepository.findById(any())).thenReturn(Optional.of(partFromDb));
+        when(subsidiaryRepository.findById(1).get()).thenReturn(subsidiaryEntity);
+
+        //assert(this.partService.savePart(newPart));
     }
 
 

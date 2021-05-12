@@ -11,16 +11,14 @@ import java.util.List;
 @Repository
 public interface IOrderRepository extends JpaRepository<DealerOrderItems, Integer> {
 
-    //get subsidiary id by country name
-    //get dealer id with dealerNumber
-    //get order_number (order_id) with the above
-    //get all order_details
-    @Query("FROM DealerOrderItems orderItem" +
-            " LEFT JOIN DealerOrderEntity dealerOrder ON dealerOrder.orderNumber = orderItem.id" +
+
+
+    @Query("FROM DealerOrderEntity dealerOrder" +
             " LEFT JOIN  DealerEntity dealer ON dealer.idDealer = dealerOrder.dealerId" +
             " LEFT JOIN SubsidiaryEntity subsidiary ON subsidiary.id = dealerOrder.subsidiaryId" +
-            " WHERE orderItem.correspondingOrder.dealerId = :dealerNumber")
-    List<DealerOrderItems> getOrderItemsByDealer(Integer dealerNumber);
+            " WHERE dealerOrder.orderNumber = :orderNumber" +
+            " AND dealerOrder.subsidiaryId = :subsidiaryId")
+    DealerOrderEntity getOrder(Integer orderNumber, Integer subsidiaryId);
 
 
     @Query("FROM DealerOrderEntity dealerOrder" +
@@ -36,7 +34,7 @@ public interface IOrderRepository extends JpaRepository<DealerOrderItems, Intege
             " WHERE dealerOrder.dealerId = :dealerNumber" +
             " AND dealerOrder.orderStatus = :status" +
             " AND dealerOrder.subsidiaryId = :subsidiaryId")
-    List<DealerOrderEntity> getDealerOrdersByDealerOrderStatus(Integer dealerNumber, String status, Integer subsidiaryId);
+    List<DealerOrderEntity> getDealerOrdersByNumberAndStatus(Integer dealerNumber, String status, Integer subsidiaryId);
 
     @Query("FROM DealerOrderEntity dealerOrder" +
             " LEFT JOIN  DealerEntity dealer ON dealer.idDealer = dealerOrder.dealerId" +

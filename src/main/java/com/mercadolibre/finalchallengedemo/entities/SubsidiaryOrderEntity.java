@@ -1,6 +1,8 @@
 package com.mercadolibre.finalchallengedemo.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +13,8 @@ import java.util.Set;
 @Table(name = "sub_orders")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 // UNA ORDEN DE UN DEALER ESPECIFICO
 public class SubsidiaryOrderEntity {
 

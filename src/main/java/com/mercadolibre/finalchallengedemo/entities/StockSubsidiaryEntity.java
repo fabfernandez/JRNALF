@@ -1,6 +1,8 @@
 package com.mercadolibre.finalchallengedemo.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -11,6 +13,8 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "sub_stock")
 @IdClass(RelationshipStockId.class)
 public class StockSubsidiaryEntity implements Serializable{

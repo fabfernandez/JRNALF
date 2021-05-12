@@ -27,13 +27,14 @@ public class OrderController {
     @GetMapping()
     public ResponseEntity<DealerOrderResponseDTO> getOrdersByDealerAndStatus(
             @Validated PartOrderQueryParamsDTO filter){
-            return ResponseEntity.ok(orderService.getOrders(filter));
+            return ResponseEntity.ok(orderService.process(filter));
     }
 
     //REQ 3 Endpoint
     @GetMapping("/{orderNumberCM}")
     public ResponseEntity<OrderStatusResponseDTO> getOrdersFromDealersStatus(
-            @Validated @PathVariable(value = "orderNumberCM") OrderStatusQueryParamsDTO orderStatusCM){
+            @Validated @PathVariable(value = "orderNumberCM") String orderNumber){
+        OrderStatusQueryParamsDTO orderStatusCM = new OrderStatusQueryParamsDTO(orderNumber);
         return ResponseEntity.ok(orderService.getOrdersFromDealersStatus(orderStatusCM));
     }
 
