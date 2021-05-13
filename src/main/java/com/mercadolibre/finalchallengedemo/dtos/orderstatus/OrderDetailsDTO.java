@@ -26,5 +26,7 @@ public class OrderDetailsDTO {
 
     private String deliveryStatus;
 
+    private Character orderStatus;
+
     private List<PartOrderDetailDTO> orderDetails;
 }

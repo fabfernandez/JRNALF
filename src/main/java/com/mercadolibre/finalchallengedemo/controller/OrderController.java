@@ -50,8 +50,7 @@ public class OrderController {
     public ResponseEntity updateOrder(@RequestBody OrderUpdateRequestDTO orderUpdate) {
         if(DecodeToken.location != 1)
             throw new ForbiddenAccessException("Only users for parent company are enabled");
-        this.orderService.updateOrder(orderUpdate.getOrderNumber(),orderUpdate.getStatusCode());
-        return ResponseEntity.ok("Successfully updated");
+        return ResponseEntity.ok(this.orderService.updateOrder(orderUpdate.getOrderNumber(),orderUpdate.getStatusCode()));
     }
 
 

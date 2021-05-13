@@ -198,7 +198,6 @@ public class OrderServiceImpl implements IOrderService {
         SubsidiaryOrderEntity newSubsidiaryOrder = generateSubsidiaryOrderEntity(order);
         validateStockAvailable(newSubsidiaryOrder);
         SubsidiaryOrderEntity subsidiaryOrderCreated = this.subsidiaryOrderRepository.save(newSubsidiaryOrder);
-
         //Dentro del for se va a crear cada subsidiaryOrderItem, seteandole antes, la subsidiaryOrder creada y asi cumplir con la relacion de ambas entidades.
         for (SubsidiaryOrderItemsEntity s : subsidiaryOrderCreated.getOrderDetails()) {
             s.setSubsidiaryOrder(subsidiaryOrderCreated);
@@ -211,7 +210,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public void updateOrder(Integer orderNumber, Character orderStatus) {
+    public String updateOrder(Integer orderNumber, Character orderStatus) {
         SubsidiaryOrderEntity order = findSubsidiaryOrder(orderNumber);
         ValidatorUtil.validateOrderUpdate(order.getOrderStatus(),orderStatus);
 
@@ -221,6 +220,8 @@ public class OrderServiceImpl implements IOrderService {
         order.setOrderStatus(orderStatus);
 
         subsidiaryOrderRepository.save(order);
+
+        return "Order " + order.getOrderNumber() + " status successfully updated to " + orderStatus;
     }
 
     //Returns a subsidiary order entity from a request, adding default values
