@@ -61,7 +61,7 @@ public class OrderControllerTest {
     @DisplayName("When create order, then return ok response")
     void whenUpdateOrder_thenReturnOkResponse() {
         DecodeToken.location = 1;
-        OrderUpdateRequestDTO updateRequest = new OrderUpdateRequestDTO(1,'F');
+        OrderUpdateRequestDTO updateRequest = new OrderUpdateRequestDTO(1,"F");
         when(orderService.updateOrder(any(),any())).thenReturn("Order 1 status successfully updated to F.");
         assertEquals(HttpStatus.OK, orderController.updateOrder(updateRequest).getStatusCode());
     }
@@ -71,7 +71,7 @@ public class OrderControllerTest {
     @DisplayName("When create order, then return ok response")
     void whenUpdateOrderWithNonParentHouseUser_thenThrowException() {
         DecodeToken.location = 2;
-        OrderUpdateRequestDTO updateRequest = new OrderUpdateRequestDTO(1,'F');
+        OrderUpdateRequestDTO updateRequest = new OrderUpdateRequestDTO(1,"F");
         assertThrows(ForbiddenAccessException.class, () -> orderController.updateOrder(updateRequest).getStatusCode());
     }
 

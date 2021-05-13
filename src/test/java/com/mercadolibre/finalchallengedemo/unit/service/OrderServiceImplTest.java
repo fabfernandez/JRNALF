@@ -240,7 +240,7 @@ class OrderServiceImplTest {
         OrderRequestDTO orderRequestDTO  = getObject("classpath:createOrderRequest.json",OrderRequestDTO.class);
         Set<SubsidiaryOrderItemsEntity> orderItemsEntities = new HashSet<>();
         StockSubsidiaryEntity stockSubsidiaryEntity = new StockSubsidiaryEntity(10,
-            new PartEntity(1,"test","test","A1",1,1,1,1,1,1, java.sql.Date.valueOf(LocalDate.now().minusDays(2)),null,"A", null),
+            new PartEntity(1,"test","test","A1",1,1,1,1,1,1, java.sql.Date.valueOf(LocalDate.now().minusDays(2)),null,"A",null),
             new SubsidiaryEntity(1,"test","test",1,"test",null)
         );
         SubsidiaryOrderEntity subsidiaryOrderEntity = new SubsidiaryOrderEntity(1,Date.from(Instant.now()),'P',4,Date.from(Instant.now().plus(7,ChronoUnit.DAYS)),0,orderItemsEntities);
@@ -263,7 +263,7 @@ class OrderServiceImplTest {
         OrderRequestDTO orderRequestDTO  = getObject("classpath:createOrderRequest.json",OrderRequestDTO.class);
         Set<SubsidiaryOrderItemsEntity> orderItemsEntities = new HashSet<>();
         StockSubsidiaryEntity stockSubsidiaryEntity = new StockSubsidiaryEntity(0,
-                new PartEntity(1,"test","test","A1",1,1,1,1,1,1, Date.from(Instant.now().minus(100, ChronoUnit.DAYS)),null,null),
+                new PartEntity(1,"test","test","A1",1,1,1,1,1,1, Date.from(Instant.now().minus(100, ChronoUnit.DAYS)),null,"A",null),
                 new SubsidiaryEntity(1,"test","test",1,"test",null)
         );
         SubsidiaryOrderEntity subsidiaryOrderEntity = new SubsidiaryOrderEntity(1,Date.from(Instant.now()),'P',4,Date.from(Instant.now().plus(7,ChronoUnit.DAYS)),0,orderItemsEntities);
@@ -278,6 +278,7 @@ class OrderServiceImplTest {
     @Test
     @DisplayName("When update successfully a order, then return the order updated")
     void whenUpdateSuccessfullyAOrder_thenReturnTheOrderUpdated() {
+        DecodeToken.location = 1;
         ModelMapper mapper = new ModelMapper();
         OrderDetailsDTO order = getObject("classpath:subsidiaryOrder.json",OrderDetailsDTO.class);
         SubsidiaryOrderEntity orderEntity = mapper.map(order,SubsidiaryOrderEntity.class);
@@ -291,22 +292,23 @@ class OrderServiceImplTest {
         orderItem.setPart(part);
         orderItem.setQuantity(5);
         StockSubsidiaryEntity stockSubsidiaryEntityParentHouse = new StockSubsidiaryEntity(10,
-                new PartEntity(1,"test","test","A1",1,1,1,1,1,1, Date.from(Instant.now().minus(100, ChronoUnit.DAYS)),null,null),
+                new PartEntity(1,"test","test","A1",1,1,1,1,1,1, Date.from(Instant.now().minus(100, ChronoUnit.DAYS)),null,"A",null),
                 new SubsidiaryEntity(1,"test","test",1,"test",null)
         );when(subsidiaryOrderRepository.findById(any())).thenReturn(Optional.of(orderEntity));
         StockSubsidiaryEntity stockSubsidiaryEntityCentralHouse = new StockSubsidiaryEntity(0,
-                new PartEntity(1,"test","test","A1",1,1,1,1,1,1, Date.from(Instant.now().minus(100, ChronoUnit.DAYS)),null,null),
+                new PartEntity(1,"test","test","A1",1,1,1,1,1,1, Date.from(Instant.now().minus(100, ChronoUnit.DAYS)),null,"A",null),
                 new SubsidiaryEntity(2,"test","test",1,"test",null)
         );
         Set<SubsidiaryOrderItemsEntity> orderItems = new HashSet<>();
         orderItems.add(orderItem);
         orderEntity.setOrderDetails(orderItems);
-        when(stockRepository.findStockByPartCodeAndSubsidiary(1,0)).thenReturn(stockSubsidiaryEntityParentHouse);
+        when(stockRepository.findStockByPartCodeAndSubsidiary(1,1)).thenReturn(stockSubsidiaryEntityParentHouse);
         when(stockRepository.findStockByPartCodeAndSubsidiary(1,2)).thenReturn(stockSubsidiaryEntityCentralHouse);
         when(subsidiaryOrderRepository.findById(any())).thenReturn(Optional.of(orderEntity));
         when(subsidiaryOrderRepository.save(any())).thenReturn(orderEntity);
         when(subsidiaryOrderItemRepository.save(any())).thenReturn(new SubsidiaryOrderItemsEntity());
         String responseMsg = "Order 14 status successfully updated to F";
+
         Assertions.assertEquals(responseMsg,orderService.updateOrder(1,'F'));
 
     }
