@@ -9,10 +9,9 @@ import javax.validation.constraints.Size;
 
 @Data
 @Validated
-//req 2
-//respuesta, dentro de cada "orderDetails" del "orders"
-public class PartOrderDetailDTO {
-
+//REQ 3
+// es un item de una orden, pero con partStatus.
+public class OrderItemPartStatusDTO {
     private Integer partCode;
 
     @Size(max = 100, message = "The description of the spare part must have a maximium of 100 alphanumeric characters.")
@@ -27,4 +26,6 @@ public class PartOrderDetailDTO {
     @Size(max = 100, message = "The reason for which the spare part is pending must have a maximium of 100 alphanumeric characters.")
     private String reason;
 
+    @Size(min = 1, max = 1, message = "This field must be only 1 character in length")
+    private String partStatus;
 }

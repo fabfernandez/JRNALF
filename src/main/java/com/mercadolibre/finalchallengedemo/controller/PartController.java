@@ -3,8 +3,10 @@ package com.mercadolibre.finalchallengedemo.controller;
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
 import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
 import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
+import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import com.mercadolibre.finalchallengedemo.service.PartServiceImpl;
 import com.mercadolibre.finalchallengedemo.util.ValidatorUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,10 +36,13 @@ public class PartController {
     }
 
     @PostMapping("/")
-    public ResponseEntity savePart(@Validated @RequestBody PartDTO part){
+    public ResponseEntity<String> savePart(@Validated @RequestBody PartDTO part){
         //This is the REQ 4 endpoint for adding or modifying parts to the database.
-        partService.savePart(part);
-        return ResponseEntity.ok("Part saved.");
+        if (DecodeToken.location == 1) {
+            partService.savePart(part);
+            return ResponseEntity.ok("Part saved.");
+        }else
+            return new ResponseEntity<>("Unauthorized.", HttpStatus.FORBIDDEN);
     }
 
     @GetMapping("/find/{id}")

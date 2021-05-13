@@ -1,0 +1,14 @@
+{
+  "orderDetails": [
+    {
+      "partCode": 1,
+      "quantity": 1,
+      "accountType": "G"
+    },
+    {
+      "partCode": 2,
+      "quantity": 1,
+      "accountType": "R"
+    }
+  ]
+}

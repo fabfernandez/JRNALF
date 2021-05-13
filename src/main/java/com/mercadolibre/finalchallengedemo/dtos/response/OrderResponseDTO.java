@@ -1,17 +1,15 @@
 package com.mercadolibre.finalchallengedemo.dtos.response;
 
-import com.mercadolibre.finalchallengedemo.dtos.orderstatus.PartOrderDetailDTO;
+import com.mercadolibre.finalchallengedemo.dtos.orderstatus.OrderItemDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -35,5 +33,5 @@ public class OrderResponseDTO {
     @Pattern(regexp = "^[PDFCpdfc]$", message = "Invalid delivery status code.")
     private String orderStatus;
 
-    private List<PartOrderDetailDTO> orderDetails;
+    private List<OrderItemDTO> orderDetails;
 }

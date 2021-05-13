@@ -62,6 +62,12 @@ public class PartEntity {
     @Temporal(TemporalType.DATE)
     private Date lastPriceModification;
 
+<<<<<<< HEAD
+=======
+    @Column(name = "part_status")
+    private String partStatus;
+
+>>>>>>> dev
     @OneToMany(mappedBy = "part")
     private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
 }

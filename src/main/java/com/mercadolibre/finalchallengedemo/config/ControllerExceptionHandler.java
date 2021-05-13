@@ -63,6 +63,26 @@ public class ControllerExceptionHandler {
 		return handle(HttpStatus.NOT_FOUND,e.getMessage());
 	}
 
+	@ExceptionHandler(ForbiddenAccessException.class)
+	public ResponseEntity handleForbiddenAccess(ForbiddenAccessException e) {
+		return handle(HttpStatus.FORBIDDEN,e.getMessage());
+	}
+
+	@ExceptionHandler(CanNotUpdateException.class)
+	public ResponseEntity handleCanNotUpdateException(CanNotUpdateException e) {
+		return handle(HttpStatus.BAD_REQUEST,e.getMessage());
+	}
+
+	@ExceptionHandler(OrderNotFoundException.class)
+	public ResponseEntity handleCanNotUpdateException(OrderNotFoundException e) {
+		return handle(HttpStatus.NOT_FOUND,e.getMessage());
+	}
+
+	@ExceptionHandler(NoStockException.class)
+	public ResponseEntity handleNoStockException(NoStockException e) {
+		return handle(HttpStatus.BAD_REQUEST,e.getMessage());
+	}
+
 	@ExceptionHandler(BindException.class)
 	public ResponseEntity<ApiError> onMethodArgumentNotValidException(BindException ex) {
 		return getResponseEntity(ex);
