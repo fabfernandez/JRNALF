@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -56,13 +55,13 @@ public class PartEntity {
     private Integer urgentPrice;
 
     @Column(name ="last_modification")
+    @Temporal(TemporalType.DATE)
     private Date lastModification;
 
     @Column(name ="last_price_modification")
+    @Temporal(TemporalType.DATE)
     private Date lastPriceModification;
-
 
     @OneToMany(mappedBy = "part")
     private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
-
 }

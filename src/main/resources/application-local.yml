@@ -19,9 +19,10 @@ spring:
     database: mysql
     show-sql: true
     hibernate:
+      jdbc:
+        time_zone: UTC
       ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     ##database-platform: org.hibernate.dialect.MySQL8Dialect
       database-platform: org.hibernate.dialect.MySQL57Dialect
-
