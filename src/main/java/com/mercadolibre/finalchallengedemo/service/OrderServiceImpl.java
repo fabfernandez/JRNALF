@@ -115,7 +115,7 @@ public class OrderServiceImpl implements IOrderService {
 
         //validate if orders is null or empty
         if (orders.isEmpty()) {
-            throw new PartsNotFoundException("No orders found.");
+            throw new OrderNotFoundException("No orders found.");
         }
         //build response
         return new DealerOrderResponseDTO(
@@ -137,7 +137,7 @@ public class OrderServiceImpl implements IOrderService {
 
         //build DTO
         if (dealerOrderEntity == null) {
-            throw new PartsNotFoundException("Order Not Found.");
+            throw new OrderNotFoundException("Order Not Found.");
         }
         OrderStatusResponseDTO response = modelMapper.map(dealerOrderEntity, OrderStatusResponseDTO.class);
         response.setOrderNumberCE(queryArray[1] + "-" + queryArray[2]);
