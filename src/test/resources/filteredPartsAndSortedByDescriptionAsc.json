@@ -16,7 +16,7 @@
   {
     "partCode": 1,
     "description": "Llanta",
-    "quantity": 0,
+    "quantity": 6,
     "discountType": "AA",
     "normalPrice": 762,
     "urgentPrice": 900,
@@ -30,7 +30,7 @@
   {
     "partCode": 2,
     "description": "Puerta trasera derecha",
-    "quantity": 9,
+    "quantity": 6,
     "discountType": "AA",
     "normalPrice": 862,
     "urgentPrice": 900,

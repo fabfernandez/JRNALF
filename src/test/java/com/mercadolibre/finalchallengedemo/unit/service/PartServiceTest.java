@@ -11,7 +11,6 @@ import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IPartRepository;
 import com.mercadolibre.finalchallengedemo.repository.IStockRepository;
 import com.mercadolibre.finalchallengedemo.repository.ISubsidiaryRepository;
-import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import com.mercadolibre.finalchallengedemo.service.PartServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,13 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.util.ResourceUtils;
-
-import javax.servlet.http.Part;
-import javax.transaction.Transactional;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,6 +43,7 @@ public class PartServiceTest {
 
     @BeforeEach
     public void setUp() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         MockitoAnnotations.openMocks(this);
         this.partService = new PartServiceImpl(partRepository, stockRepository,subsidiaryRepository,modelMapper);
         Calendar c = Calendar.getInstance();
@@ -59,12 +54,13 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("Given parts, then return all parts")
+    @DisplayName("R1 Test 1: Given parts, then return all parts")
     public void givenPartsWithoutFilter_thenReturnAllParts() {
         List<PartEntity> partsEntityList = getList("classpath:allPartsEntities.json",PartEntity.class);
         List<PartDTO> partsDtoList = getList("classpath:allParts.json",PartDTO.class);
 
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
+        stock.setQuantity(2);
 
         when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
         when(this.partRepository.findAll()).thenReturn(partsEntityList);
@@ -76,12 +72,13 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("Given parts, then return filtered parts")
+    @DisplayName("R1 Test 2: Given parts, then return filtered parts")
     public void givenParts_thenReturnFilteredParts() {
         List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntities.json",PartEntity.class);
         List<PartDTO> partsDtoList = getList("classpath:filteredParts.json",PartDTO.class);
 
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
+        stock.setQuantity(6);
 
         when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
         when(this.partRepository.findPartsModifiedSinceDate(any(),any())).thenReturn(partsEntityList);
@@ -98,12 +95,13 @@ public class PartServiceTest {
 
 
     @Test
-    @DisplayName("Given parts, then return filtered parts and sorted by description asc")
+    @DisplayName("R1 Test 3: Given parts, then return filtered parts and sorted by description asc")
     public void givenParts_thenReturnFilteredPartsAndSortedByDescriptionAsc() {
         List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesAndSortedByDescriptionAsc.json",PartEntity.class);
         List<PartDTO> partsDtoList = getList("classpath:filteredPartsAndSortedByDescriptionAsc.json",PartDTO.class);
 
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
+        stock.setQuantity(6);
 
         when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
         when(this.partRepository.findPartsModifiedSinceDateSortedByDescriptionAsc(any(),any())).thenReturn(partsEntityList);
@@ -115,17 +113,18 @@ public class PartServiceTest {
 
         final PartResponseDTO response = partService.getPartsByFilter(validFilter);
 
-        assertIterableEquals(response.getParts(), partsDtoList);
+        assertEquals(partsDtoList, response.getParts());
         verify(partRepository,times(1)).findPartsModifiedSinceDateSortedByDescriptionAsc(any(),any());
     }
 
     @Test
-    @DisplayName("Given parts, then return filtered parts and sorted by description desc")
+    @DisplayName("R1 Test 4: Given parts, then return filtered parts and sorted by description desc")
     public void givenParts_thenReturnFilteredPartsAndSortedByDescriptionDesc() {
         List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesAndSortedByDescriptionDesc.json",PartEntity.class);
         List<PartDTO> partsDtoList = getList("classpath:filteredPartsAndSortedByDescriptionDesc.json",PartDTO.class);
 
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
+        stock.setQuantity(9);
 
         when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
         when(this.partRepository.findPartsModifiedSinceDateSortedByDescriptionDesc(any(),any())).thenReturn(partsEntityList);
@@ -143,7 +142,7 @@ public class PartServiceTest {
 
 
     @Test
-    @DisplayName("No parts found, then throw NoPartsFoundException")
+    @DisplayName("R1 Test 5: No parts found, then throw NoPartsFoundException")
     public void noPartsFound_thenThrowNoPartsFoundException() {
 
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
@@ -160,10 +159,10 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("Given part, when find, then return part")
+    @DisplayName("R1 Test 6: Given part, when find, then return part")
     public void givenPart_whenFind_thenReturnPart() {
-        PartDTO partDTO = new PartDTO(1,"test","maker",1,"A01",1,1,1,1,1.00, 1.11, "2000-01-01");
-        PartEntity partEntity = new PartEntity();
+        PartDTO partDTO = getObject("classpath:partDTO.json",PartDTO.class);
+        PartEntity partEntity = getObject("classpath:newPartEntity.json",PartEntity.class);
         Optional<PartEntity> part = Optional.of(partEntity);
 
         when(this.partRepository.findById(any())).thenReturn(part);
@@ -174,7 +173,7 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("When find by non existent id, then throw not found exception")
+    @DisplayName("R1 Test 7: When find by non existent id, then throw not found exception")
     public void whenFindByNonExistentId_thenThrowNotFoundException() {
         when(this.partRepository.findById(any())).thenReturn(Optional.ofNullable(null));
 
@@ -184,12 +183,11 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R4: Try to add a new part with correct parameters. ")
+    @DisplayName("R4 Test 1: Try to add a new part with correct parameters. ")
     public void whenAddInexistentPart_returnOk(){
-        PartDTO newPart = new PartDTO(30,"This is a mock part", "juan", 10, "A00", 10,10,10,15, 100D, 150D,"2021-05-11");
+        PartDTO newPart = getObject("classpath:partDTO.json",PartDTO.class);
 
         SubsidiaryEntity casaMatriz = getObject("classpath:subsidiaryCasaMatriz.json",SubsidiaryEntity.class);
-
 
         when(subsidiaryRepository.findById(1)).thenReturn(Optional.ofNullable(casaMatriz));
         when(partRepository.findById(any())).thenReturn(Optional.ofNullable(null));
@@ -207,9 +205,9 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R4: Try to add a part that already exists with correct parameters. ")
+    @DisplayName("R4 Test 2: Try to add a part that already exists with correct parameters. ")
     public void whenAddExistentPart_returnOkWithChangedLastPriceModification(){
-        PartDTO newPart = new PartDTO(123,"This is a mock part", "juan", 10, "A00", 10,10,10,15, 1000D, 1500D,"2021-05-11");
+        PartDTO newPart = getObject("classpath:partDTO.json",PartDTO.class);
 
         SubsidiaryEntity casaMatriz = getObject("classpath:subsidiaryCasaMatriz.json",SubsidiaryEntity.class);
 
@@ -229,7 +227,6 @@ public class PartServiceTest {
 
         assertEquals(this.partService.savePart(newPart).getLastPriceModification(),existingPartEntity.getLastPriceModification());
     }
-
 
     private static <T> T getList(String filePath, Class<?> target) {
         ObjectMapper objectMapper = new ObjectMapper();
