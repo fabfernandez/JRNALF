@@ -3,9 +3,12 @@ package com.mercadolibre.finalchallengedemo.unit.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.finalchallengedemo.dtos.OrderRequestDTO;
+import com.mercadolibre.finalchallengedemo.dtos.OrderUpdateRequestDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
 import com.mercadolibre.finalchallengedemo.entities.*;
+import com.mercadolibre.finalchallengedemo.exceptions.CanNotUpdateException;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
+import com.mercadolibre.finalchallengedemo.exceptions.NoStockException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.*;
 import com.mercadolibre.finalchallengedemo.security.DecodeToken;
@@ -237,7 +240,7 @@ class OrderServiceImplTest {
         OrderRequestDTO orderRequestDTO  = getObject("classpath:createOrderRequest.json",OrderRequestDTO.class);
         Set<SubsidiaryOrderItemsEntity> orderItemsEntities = new HashSet<>();
         StockSubsidiaryEntity stockSubsidiaryEntity = new StockSubsidiaryEntity(10,
-            new PartEntity(1,"test","test","A1",1,1,1,1,1,1, java.sql.Date.valueOf(LocalDate.now().minusDays(2)),null,"A", null),
+            new PartEntity(1,"test","test","A1",1,1,1,1,1,1, java.sql.Date.valueOf(LocalDate.now().minusDays(2)),null,"A",null),
             new SubsidiaryEntity(1,"test","test",1,"test",null)
         );
         SubsidiaryOrderEntity subsidiaryOrderEntity = new SubsidiaryOrderEntity(1,Date.from(Instant.now()),'P',4,Date.from(Instant.now().plus(7,ChronoUnit.DAYS)),0,orderItemsEntities);
@@ -252,6 +255,77 @@ class OrderServiceImplTest {
         Assertions.assertEquals(1,orderResponseDTO.getOrderNumber());
 
     }
+
+
+    @Test
+    @DisplayName("When create order with non stock available for the same, then throw no stock exception")
+    void whenCreateOrderWithNonStockAvailableForTheSame_thenThrowNoStockException() {
+        OrderRequestDTO orderRequestDTO  = getObject("classpath:createOrderRequest.json",OrderRequestDTO.class);
+        Set<SubsidiaryOrderItemsEntity> orderItemsEntities = new HashSet<>();
+        StockSubsidiaryEntity stockSubsidiaryEntity = new StockSubsidiaryEntity(0,
+                new PartEntity(1,"test","test","A1",1,1,1,1,1,1, Date.from(Instant.now().minus(100, ChronoUnit.DAYS)),null,"A",null),
+                new SubsidiaryEntity(1,"test","test",1,"test",null)
+        );
+        SubsidiaryOrderEntity subsidiaryOrderEntity = new SubsidiaryOrderEntity(1,Date.from(Instant.now()),'P',4,Date.from(Instant.now().plus(7,ChronoUnit.DAYS)),0,orderItemsEntities);
+        when(stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stockSubsidiaryEntity);
+        when(subsidiaryOrderRepository.save(any())).thenReturn(subsidiaryOrderEntity);
+        when(subsidiaryOrderItemRepository.save(any())).thenReturn(new SubsidiaryOrderItemsEntity());
+
+        Assertions.assertThrows(NoStockException.class, () -> orderService.createOrder(orderRequestDTO));
+    }
+
+
+    @Test
+    @DisplayName("When update successfully a order, then return the order updated")
+    void whenUpdateSuccessfullyAOrder_thenReturnTheOrderUpdated() {
+        DecodeToken.location = 1;
+        ModelMapper mapper = new ModelMapper();
+        OrderDetailsDTO order = getObject("classpath:subsidiaryOrder.json",OrderDetailsDTO.class);
+        SubsidiaryOrderEntity orderEntity = mapper.map(order,SubsidiaryOrderEntity.class);
+        orderEntity.setOrderStatus('P');
+        orderEntity.setSubsidiaryId(2);
+        Set<SubsidiaryOrderItemsEntity> orderItemsEntities = new HashSet<>();
+        PartEntity part = new PartEntity();
+        part.setPartCode(1);
+        SubsidiaryOrderItemsEntity orderItem = new SubsidiaryOrderItemsEntity();
+        orderItem.setSubsidiaryOrder(orderEntity);
+        orderItem.setPart(part);
+        orderItem.setQuantity(5);
+        StockSubsidiaryEntity stockSubsidiaryEntityParentHouse = new StockSubsidiaryEntity(10,
+                new PartEntity(1,"test","test","A1",1,1,1,1,1,1, Date.from(Instant.now().minus(100, ChronoUnit.DAYS)),null,"A",null),
+                new SubsidiaryEntity(1,"test","test",1,"test",null)
+        );when(subsidiaryOrderRepository.findById(any())).thenReturn(Optional.of(orderEntity));
+        StockSubsidiaryEntity stockSubsidiaryEntityCentralHouse = new StockSubsidiaryEntity(0,
+                new PartEntity(1,"test","test","A1",1,1,1,1,1,1, Date.from(Instant.now().minus(100, ChronoUnit.DAYS)),null,"A",null),
+                new SubsidiaryEntity(2,"test","test",1,"test",null)
+        );
+        Set<SubsidiaryOrderItemsEntity> orderItems = new HashSet<>();
+        orderItems.add(orderItem);
+        orderEntity.setOrderDetails(orderItems);
+        when(stockRepository.findStockByPartCodeAndSubsidiary(1,1)).thenReturn(stockSubsidiaryEntityParentHouse);
+        when(stockRepository.findStockByPartCodeAndSubsidiary(1,2)).thenReturn(stockSubsidiaryEntityCentralHouse);
+        when(subsidiaryOrderRepository.findById(any())).thenReturn(Optional.of(orderEntity));
+        when(subsidiaryOrderRepository.save(any())).thenReturn(orderEntity);
+        when(subsidiaryOrderItemRepository.save(any())).thenReturn(new SubsidiaryOrderItemsEntity());
+        String responseMsg = "Order 14 status successfully updated to F";
+
+        Assertions.assertEquals(responseMsg,orderService.updateOrder(1,'F'));
+
+    }
+
+    @Test
+    @DisplayName("When update order with the same status, then throw Exception")
+    void whenUpdateOrderWithTheSameStatus_thenThrowException() {
+        ModelMapper mapper = new ModelMapper();
+        OrderDetailsDTO order = getObject("classpath:subsidiaryOrder.json",OrderDetailsDTO.class);
+        SubsidiaryOrderEntity orderEntity = mapper.map(order,SubsidiaryOrderEntity.class);
+        orderEntity.setOrderStatus('P');
+        when(subsidiaryOrderRepository.findById(any())).thenReturn(Optional.of(orderEntity));
+        when(subsidiaryOrderRepository.findById(any())).thenReturn(Optional.of(orderEntity));
+        Assertions.assertThrows(CanNotUpdateException.class, () -> orderService.updateOrder(1,'P'));
+    }
+
+
 
 
 
