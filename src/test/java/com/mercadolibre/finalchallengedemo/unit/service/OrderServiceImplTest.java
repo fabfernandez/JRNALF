@@ -6,10 +6,7 @@ import com.mercadolibre.finalchallengedemo.dtos.OrderRequestDTO;
 import com.mercadolibre.finalchallengedemo.dtos.OrderUpdateRequestDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
 import com.mercadolibre.finalchallengedemo.entities.*;
-import com.mercadolibre.finalchallengedemo.exceptions.CanNotUpdateException;
-import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
-import com.mercadolibre.finalchallengedemo.exceptions.NoStockException;
-import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
+import com.mercadolibre.finalchallengedemo.exceptions.*;
 import com.mercadolibre.finalchallengedemo.repository.*;
 import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import com.mercadolibre.finalchallengedemo.service.OrderServiceImpl;
@@ -192,7 +189,7 @@ class OrderServiceImplTest {
         when(orderRepository.getDealerOrdersByDealerAsc(any(), any()))
                 .thenReturn(null);
 
-        Assertions.assertThrows(PartsNotFoundException.class,
+        Assertions.assertThrows(OrderNotFoundException.class,
                 () -> orderService.getOrders("3", "F", 1, 1));
     }
 
@@ -228,10 +225,8 @@ class OrderServiceImplTest {
         OrderStatusQueryParamsDTO request = new OrderStatusQueryParamsDTO();
         request.setOrderNumberCM("0000-0000-00000003");
 
-
-        Assertions.assertThrows(PartsNotFoundException.class,
+        Assertions.assertThrows(OrderNotFoundException.class,
                 () -> orderService.getOrdersFromDealersStatus(request));
-
     }
 
 
