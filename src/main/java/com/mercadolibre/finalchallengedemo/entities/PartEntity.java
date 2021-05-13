@@ -1,9 +1,11 @@
 package com.mercadolibre.finalchallengedemo.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -57,10 +59,12 @@ public class PartEntity {
 
     @Column(name ="last_modification")
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date lastModification;
 
     @Column(name ="last_price_modification")
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date lastPriceModification;
 
     @Column(name = "part_status")

@@ -16,7 +16,7 @@
   {
     "partCode": 2,
     "description": "Puerta trasera derecha",
-    "quantity": 5,
+    "quantity": 2,
     "discountType": "AA",
     "normalPrice": 862,
     "urgentPrice": 900,
@@ -30,7 +30,7 @@
   {
     "partCode": 3,
     "description": "Puerta trasera izquierda",
-    "quantity": 4,
+    "quantity": 2,
     "discountType": "AA",
     "normalPrice": 962,
     "urgentPrice": 1000,
@@ -44,7 +44,7 @@
   {
     "partCode": 4,
     "description": "Puerta delantera derecha",
-    "quantity": 3,
+    "quantity": 2,
     "discountType": "AA",
     "normalPrice": 2305,
     "urgentPrice": 2400,
@@ -58,7 +58,7 @@
   {
     "partCode": 5,
     "description": "Puerta delantera izquierda",
-    "quantity": 7,
+    "quantity": 2,
     "discountType": "BB",
     "normalPrice": 837,
     "urgentPrice": 900,
@@ -72,7 +72,7 @@
   {
     "partCode": 6,
     "description": "Puerta del maletero",
-    "quantity": 6,
+    "quantity": 2,
     "discountType": "BB",
     "normalPrice": 650,
     "urgentPrice": 700,
@@ -86,7 +86,7 @@
   {
     "partCode": 7,
     "description": "Foco LED delantero",
-    "quantity": 5,
+    "quantity": 2,
     "discountType": "BB",
     "normalPrice": 2243,
     "urgentPrice": 2300,
@@ -100,7 +100,7 @@
   {
     "partCode": 8,
     "description": "Espejo retrovisor",
-    "quantity": 5,
+    "quantity": 2,
     "discountType": "BB",
     "normalPrice": 1236,
     "urgentPrice": 1300,
@@ -114,7 +114,7 @@
   {
     "partCode": 9,
     "description": "Espejo derecho",
-    "quantity": 0,
+    "quantity": 2,
     "discountType": "CC",
     "normalPrice": 1119,
     "urgentPrice": 1200,
@@ -128,7 +128,7 @@
   {
     "partCode": 10,
     "description": "Espejo izquierdo",
-    "quantity": 9,
+    "quantity": 2,
     "discountType": "CC",
     "normalPrice": 1200,
     "urgentPrice": 1300,
@@ -142,7 +142,7 @@
   {
     "partCode": 11,
     "description": "Caja de cambios",
-    "quantity": 4,
+    "quantity": 2,
     "discountType": "CC",
     "normalPrice": 358,
     "urgentPrice": 400,
@@ -156,7 +156,7 @@
   {
     "partCode": 12,
     "description": "Asiento delantero",
-    "quantity": 3,
+    "quantity": 2,
     "discountType": "CC",
     "normalPrice": 2223,
     "urgentPrice": 2400,
@@ -170,7 +170,7 @@
   {
     "partCode": 13,
     "description": "Asiento trasero",
-    "quantity": 3,
+    "quantity": 2,
     "discountType": "CC",
     "normalPrice": 2200,
     "urgentPrice": 2300,
@@ -184,7 +184,7 @@
   {
     "partCode": 14,
     "description": "Apoyacabezas",
-    "quantity": 6,
+    "quantity": 2,
     "discountType": "DD",
     "normalPrice": 2500,
     "urgentPrice": 2800,
