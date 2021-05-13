@@ -24,6 +24,7 @@ public class SubsidiaryOrderEntity {
     private Integer orderNumber;
 
     @Column(nullable = false, name = "order_date")
+    @Temporal(TemporalType.DATE)
     private Date orderDate;
 
     @Column(nullable = false, name = "order_status")
@@ -34,6 +35,7 @@ public class SubsidiaryOrderEntity {
 
 
     @Column(nullable = false, name = "delivery_date")
+    @Temporal(TemporalType.DATE)
     private Date deliveryDate;
 
     @Column(nullable = false, name = "days_delay")

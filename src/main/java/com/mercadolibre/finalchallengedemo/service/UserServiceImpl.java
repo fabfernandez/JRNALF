@@ -2,9 +2,10 @@ package com.mercadolibre.finalchallengedemo.service;
 
 import com.mercadolibre.finalchallengedemo.entities.UserEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.UserNotFoundException;
-import com.mercadolibre.finalchallengedemo.repositories.IUserRepository;
+import com.mercadolibre.finalchallengedemo.repository.IUserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,12 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements IUserService {
     private final String SECRET_VALUE = System.getenv("SECRET");
 
-    private final com.mercadolibre.finalchallengedemo.repositories.IUserRepository userRepository;
+    private final IUserRepository userRepository;
 
+    @Autowired
     public UserServiceImpl(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
 
     @Override
     public UserEntity checkUser(String username, String password) throws UserNotFoundException {
