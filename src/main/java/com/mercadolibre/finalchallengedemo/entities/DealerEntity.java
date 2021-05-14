@@ -32,11 +32,4 @@ public class DealerEntity {
     @Column(name = "dealer_country", nullable = false, length = 20)
     @Size(max = 20, message = "The country must not have more than 20 characters.")
     private String country;
-
-    // Create the relationship with dealer_orders through the field called dealerId
-    // crea la realacion con dealers a traves del campo llamado dealerId
-    /*
-    @OneToMany(mappedBy = "dealerId", fetch = FetchType.LAZY)
-    private DealerOrderEntity dealerOder;
-    */
 }

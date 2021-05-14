@@ -37,17 +37,7 @@ public class SubsidiaryEntity {
     @Column(name = "sub_country", nullable = false, length = 20)
     @Size(max = 20, message = "The country of the subsidiary must have a maximium of 20 characters.")
     private String country;
-    
+
     @OneToMany(mappedBy = "subsidiary")
     private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
-
-    //@ManyToMany(mappedBy = "part_code")
-    //private Set<PartEntity> parts;
-
-    /*
-    // Create the relationship with user throgh the username(PK of users) column
-    // crea una relacion con user a traves de la columna de username
-    @OneToMany(mappedBy = "subsidiary", fetch = FetchType.LAZY)
-    private UserEntity users;
-    */
 }
