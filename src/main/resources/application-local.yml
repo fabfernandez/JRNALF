@@ -5,23 +5,30 @@
 
 spring:
   datasource:
+    #platform: mysql
+    host: proxysql.master.meliseginf.com:6612
+    db: testfinal
+
     #initialization-mode: always
     #data: classpath:/data.sql
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/automotriz_delux?useSSL=true&serverTimezone=UTC&characterEncoding=UTF-8
-    ##username: ${LOCAL_DB_USER}
-    ##password: ${LOCAL_DB_PASSWORD}
-    username: root
-    password: root1234
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://localhost:3306/automotriz_delux?useSSL=true&serverTimezone=UTC&characterEncoding=UTF-8
+    #url: jdbc:mysql://proxysql.master.meliseginf.com:6612/testfinal?useSSL=true&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${LOCAL_DB_USER}
+    password: ${LOCAL_DB_PASSWORD}
+    initialization-mode: always
+    ##username: root
+    ##password: root1234
 
   jpa:
-    open-in-view: true
+    #open-in-view: true
     database: mysql
     show-sql: true
     hibernate:
+      sql: debug
       ddl-auto: none
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    ##database-platform: org.hibernate.dialect.MySQL8Dialect
-      database-platform: org.hibernate.dialect.MySQL57Dialect
+      ##naming:
+        ## physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      database-platform: org.hibernate.dialect.MySQL8Dialect
+      ##database-platform: org.hibernate.dialect.MySQL57Dialect
 

@@ -35,15 +35,15 @@ public class PartEntity {
     @Column(name ="discount_type")
     private String discountType;
 
-    @Column(nullable = false, length = 4)
+    @Column(nullable = false, length = 4, name= "width_dimension")
     //@Size(max = 4, message = "The width of the spare part needs 4 numeric characters.")
     private Integer widthDimension;
 
-    @Column(nullable = false, length = 4)
+    @Column(nullable = false, length = 4, name= "tall_dimension")
     //@Size(max = 4, message = "The height of the spare part needs 4 numeric characters.")
     private Integer tallDimension;
 
-    @Column(nullable = false, length = 4)
+    @Column(nullable = false, length = 4,name = "long_dimension")
     //@Size(max = 4, message = "The length of the spare part needs 4 numeric characters.")
     private Integer longDimension;
 

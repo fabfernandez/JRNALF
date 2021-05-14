@@ -18,18 +18,18 @@ public class DealerEntity {
     @Column(nullable = false, length = 1, name = "id_dealer")
     private Integer idDealer;
 
-    @Column(nullable = false, length = 25)
+    @Column(nullable = false, length = 25, name = "dealer_name")
     @Size(max = 25, message = "The country must not have more than 20 characters.")
     private String name;
 
-    @Column(nullable = false, length = 40)
+    @Column(nullable = false, length = 40, name= "dealer_address")
     @Size(max = 40, message = "The address must not have more than 20 characters.")
     private String address;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name= "dealer_phone")
     private Integer phone;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, name = "dealer_country")
     @Size(max = 20, message = "The country must not have more than 20 characters.")
     private String country;
 
