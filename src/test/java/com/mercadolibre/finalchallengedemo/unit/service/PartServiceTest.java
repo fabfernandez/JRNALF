@@ -139,7 +139,7 @@ public class PartServiceTest {
         assertIterableEquals(partsDtoList,response.getParts());
         verify(partRepository,times(1)).findPartsModifiedSinceDateSortedByDescriptionDesc(any(),any());
     }
-    /*
+
     @Test
     @DisplayName("R1 Test 5: Given parts, then return filtered parts and sorted by description desc")
     public void givenParts_thenReturnFilteredPartsAndSortedByByLastModified() {
@@ -147,22 +147,21 @@ public class PartServiceTest {
         List<PartDTO> partsDtoList = getList("classpath:filteredPartsAndSortedByLastModified.json",PartDTO.class);
 
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
-        stock.setQuantity(9);
+        stock.setQuantity(6);
 
         when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
-        when(this.partRepository.findPartsModifiedSinceDateSortedByDescriptionDesc(any(),any())).thenReturn(partsEntityList);
+        when(this.partRepository.findPartsModifiedSinceDateSortedByLastModified(any(),any())).thenReturn(partsEntityList);
 
         PartFilterDTO validFilter = new PartFilterDTO();
         validFilter.setQueryType('P');
         validFilter.setDate(pastDate);
-        validFilter.setOrder(2);
+        validFilter.setOrder(3);
 
         final PartResponseDTO response = partService.getPartsByFilter(validFilter);
 
         assertIterableEquals(partsDtoList,response.getParts());
-        verify(partRepository,times(1)).findPartsModifiedSinceDateSortedByDescriptionDesc(any(),any());
+        verify(partRepository,times(1)).findPartsModifiedSinceDateSortedByLastModified(any(),any());
     }
-    */
 
     @Test
     @DisplayName("R1 Test 6: No parts found, then throw NoPartsFoundException")

@@ -8,7 +8,6 @@ import com.mercadolibre.finalchallengedemo.entities.DealerOrderItems;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.NoStockException;
 import com.mercadolibre.finalchallengedemo.exceptions.OrderNotFoundException;
-import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.*;
 import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import com.mercadolibre.finalchallengedemo.util.ValidatorUtil;

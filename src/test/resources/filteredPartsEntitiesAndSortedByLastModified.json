@@ -1,0 +1,41 @@
+[
+  {
+    "partCode": 14,
+    "description": "Apoyacabezas",
+    "maker": "Toyota",
+    "discountType": "DD",
+    "widthDimension": 92,
+    "tallDimension": 33,
+    "longDimension": 100,
+    "netWeight": 92,
+    "normalPrice": 2500.0,
+    "urgentPrice": 2800.0,
+    "lastModification": "2021-03-17"
+  },
+  {
+    "partCode": 1,
+    "description": "Llanta",
+    "maker": "Fiat",
+    "discountType": "AA",
+    "widthDimension": 100,
+    "tallDimension": 100,
+    "longDimension": 100,
+    "netWeight": 100,
+    "normalPrice": 762.0,
+    "urgentPrice": 900.0,
+    "lastModification": "2021-03-02"
+  },
+  {
+    "partCode": 2,
+    "description": "Puerta trasera derecha",
+    "maker": "Fiat",
+    "discountType": "AA",
+    "widthDimension": 30,
+    "tallDimension": 40,
+    "longDimension": 30,
+    "netWeight": 40,
+    "normalPrice": 862.0,
+    "urgentPrice": 900.0,
+    "lastModification": "2021-03-02"
+  }
+]

@@ -21,8 +21,6 @@ import javax.transaction.Transactional;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -46,8 +44,6 @@ public class PartServiceImpl implements IPartService {
         typeMap.addMappings(mapper -> mapper.map(itemEntity ->
                 dateFormat.format(itemEntity.getLastModification()), PartDTO::setLastModification));
     }
-
-    // new SimpleDateFormat("yyyy-MM-dd").format(parts.get(0).getLastModification())
 
     @Override
     public PartResponseDTO getAll() {
@@ -80,7 +76,6 @@ public class PartServiceImpl implements IPartService {
             case 'C':
             default:
                 response = getAll();
-
         }
         if(response.getParts().isEmpty())
             throw new PartsNotFoundException("No parts founded with the requested filter.");
@@ -96,18 +91,14 @@ public class PartServiceImpl implements IPartService {
     @Override
     @Transactional
     public PartEntity savePart(PartDTO part) {
-        //REQ 4 Add or update a part.
-        Optional<PartEntity> partFromDB = partRepository.findById(part.getPartCode());
-        /*if (partFromDB.isPresent() && !part.getNormalPrice().equals(partFromDB.get().getNormalPrice())){
-            part.setLastPriceModification(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        }*/
-        PartEntity partEntity = partRepository.save(modelMapper.map(part, PartEntity.class));
 
+        //REQ 4 Add or update a part.
+        PartEntity partEntity = partRepository.save(modelMapper.map(part, PartEntity.class));
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
         stock.setPart(partEntity);
         stock.setQuantity(part.getQuantity());
-        //Find by id en subsidiary
 
+        //Find by id en subsidiary
         SubsidiaryEntity subsidiaryEntity = subsidiaryRepository.findById(1).get();
         stock.setSubsidiary(subsidiaryEntity);
 

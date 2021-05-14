@@ -26,7 +26,6 @@ public class PartController {
 
     @GetMapping("/list")
     public ResponseEntity<PartResponseDTO> getParts(@Valid PartFilterDTO filter) {
-
         if(filter.hasFilters()) {
             ValidatorUtil.validatePartFilter(filter);
             return ResponseEntity.ok(this.partService.getPartsByFilter(filter));
