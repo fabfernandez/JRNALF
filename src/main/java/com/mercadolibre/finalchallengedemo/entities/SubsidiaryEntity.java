@@ -22,23 +22,22 @@ public class SubsidiaryEntity {
     @Column(name = "id_subsidiary")
     private Integer id;
 
-    @Column(nullable = false, length = 25)
+    @Column(name = "sub_name", nullable = false, length = 25)
     @Size(max = 25, message = "The name of the subsidiary must have a maximium of 25 alphanumeric characters.")
     private String name;
 
-    @Column(nullable = false, length = 40)
+    @Column(name = "sub_address", nullable = false, length = 40)
     @Size(max = 40, message = "The address of the subsidiary must have a maximium of 40 alphanumeric characters.")
     private String address;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "sub_phone", nullable = false, length = 20)
     //@Size(max = 20, message = "The phone of the subsidiary must have a maximium of 20 numeric characters.")
     private Integer phone;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "sub_country", nullable = false, length = 20)
     @Size(max = 20, message = "The country of the subsidiary must have a maximium of 20 characters.")
     private String country;
-
-    //
+    
     @OneToMany(mappedBy = "subsidiary")
     private Set<StockSubsidiaryEntity> stockSubsidiaryEntities;
 

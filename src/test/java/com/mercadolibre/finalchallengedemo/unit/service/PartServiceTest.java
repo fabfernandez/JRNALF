@@ -139,10 +139,33 @@ public class PartServiceTest {
         assertIterableEquals(partsDtoList,response.getParts());
         verify(partRepository,times(1)).findPartsModifiedSinceDateSortedByDescriptionDesc(any(),any());
     }
+    /*
+    @Test
+    @DisplayName("R1 Test 5: Given parts, then return filtered parts and sorted by description desc")
+    public void givenParts_thenReturnFilteredPartsAndSortedByByLastModified() {
+        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesAndSortedByLastModified.json",PartEntity.class);
+        List<PartDTO> partsDtoList = getList("classpath:filteredPartsAndSortedByLastModified.json",PartDTO.class);
 
+        StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
+        stock.setQuantity(9);
+
+        when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
+        when(this.partRepository.findPartsModifiedSinceDateSortedByDescriptionDesc(any(),any())).thenReturn(partsEntityList);
+
+        PartFilterDTO validFilter = new PartFilterDTO();
+        validFilter.setQueryType('P');
+        validFilter.setDate(pastDate);
+        validFilter.setOrder(2);
+
+        final PartResponseDTO response = partService.getPartsByFilter(validFilter);
+
+        assertIterableEquals(partsDtoList,response.getParts());
+        verify(partRepository,times(1)).findPartsModifiedSinceDateSortedByDescriptionDesc(any(),any());
+    }
+    */
 
     @Test
-    @DisplayName("R1 Test 5: No parts found, then throw NoPartsFoundException")
+    @DisplayName("R1 Test 6: No parts found, then throw NoPartsFoundException")
     public void noPartsFound_thenThrowNoPartsFoundException() {
 
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
@@ -159,7 +182,7 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R1 Test 6: Given part, when find, then return part")
+    @DisplayName("R1 Test 7: Given part, when find, then return part")
     public void givenPart_whenFind_thenReturnPart() {
         PartDTO partDTO = getObject("classpath:partDTO.json",PartDTO.class);
         PartEntity partEntity = getObject("classpath:newPartEntity.json",PartEntity.class);
@@ -173,7 +196,7 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R1 Test 7: When find by non existent id, then throw not found exception")
+    @DisplayName("R1 Test 8: When find by non existent id, then throw not found exception")
     public void whenFindByNonExistentId_thenThrowNotFoundException() {
         when(this.partRepository.findById(any())).thenReturn(Optional.ofNullable(null));
 
@@ -186,12 +209,10 @@ public class PartServiceTest {
     @DisplayName("R4 Test 1: Try to add a new part with correct parameters. ")
     public void whenAddInexistentPart_returnOk(){
         PartDTO newPart = getObject("classpath:partDTO.json",PartDTO.class);
-
         SubsidiaryEntity casaMatriz = getObject("classpath:subsidiaryCasaMatriz.json",SubsidiaryEntity.class);
 
         when(subsidiaryRepository.findById(1)).thenReturn(Optional.ofNullable(casaMatriz));
         when(partRepository.findById(any())).thenReturn(Optional.ofNullable(null));
-
 
         PartEntity partEntity = getObject("classpath:newPartEntity.json", PartEntity.class);
         when(partRepository.save(any())).thenReturn(partEntity);
@@ -215,7 +236,6 @@ public class PartServiceTest {
 
         when(subsidiaryRepository.findById(1)).thenReturn(Optional.ofNullable(casaMatriz));
         when(partRepository.findById(any())).thenReturn(Optional.ofNullable(existingPartEntity));
-
 
         PartEntity partEntity = getObject("classpath:newPartEntityPriceModification.json", PartEntity.class);
         when(partRepository.save(any())).thenReturn(partEntity);

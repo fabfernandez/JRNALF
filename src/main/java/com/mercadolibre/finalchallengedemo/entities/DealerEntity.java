@@ -18,18 +18,18 @@ public class DealerEntity {
     @Column(nullable = false, length = 1, name = "id_dealer")
     private Integer idDealer;
 
-    @Column(nullable = false, length = 25)
+    @Column(name = "dealer_name", nullable = false, length = 25)
     @Size(max = 25, message = "The country must not have more than 20 characters.")
     private String name;
 
-    @Column(nullable = false, length = 40)
+    @Column(name = "dealer_address", nullable = false, length = 40)
     @Size(max = 40, message = "The address must not have more than 20 characters.")
     private String address;
 
-    @Column(nullable = false)
+    @Column(name = "dealer_phone", nullable = false)
     private Integer phone;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "dealer_country", nullable = false, length = 20)
     @Size(max = 20, message = "The country must not have more than 20 characters.")
     private String country;
 
@@ -39,6 +39,4 @@ public class DealerEntity {
     @OneToMany(mappedBy = "dealerId", fetch = FetchType.LAZY)
     private DealerOrderEntity dealerOder;
     */
-
-
 }
