@@ -60,6 +60,7 @@ class OrderServiceImplTest {
 
     @BeforeAll
     static void beforeAll() throws IOException {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         dealerOrderResponseDTO =
                 objectMapper.readValue(new File("src/test/resources/filteredOrders.json"),
                         new TypeReference<>() {
