@@ -13,6 +13,6 @@ public interface IOrderService {
 
     OrderDetailsDTO createOrder(OrderRequestDTO order);
 
-    void updateOrder(Integer orderNumber, Character orderStatus);
+    String updateOrder(Integer orderNumber, Character orderStatus);
 
 }

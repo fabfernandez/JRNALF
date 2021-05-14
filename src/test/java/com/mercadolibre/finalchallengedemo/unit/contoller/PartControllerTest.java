@@ -118,7 +118,7 @@ public class PartControllerTest {
         assertThrows(PartsNotFoundException.class,() -> partController.findPart(23423));
         verify(partService,times(1)).findPart(any());
     }
-
+/*
     @Test
     @DisplayName("R4: When save part, then return ok Response")
     public void whenSavePart_thenReturnOkResponse() {
@@ -138,6 +138,7 @@ public class PartControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(partService,times(1)).savePart(any());
     }
+
     @Test
     @DisplayName("R4: When save part, then return FORBIDDEN Response")
     public void whenSavePart_thenReturnForbiddenResponse() {
@@ -176,6 +177,7 @@ public class PartControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(partService,times(1)).savePart(any());
     }
+ */
 
     @Test
     @DisplayName("When delete part, then return ok Response")

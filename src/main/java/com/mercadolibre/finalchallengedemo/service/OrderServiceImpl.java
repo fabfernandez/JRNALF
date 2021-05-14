@@ -115,7 +115,7 @@ public class OrderServiceImpl implements IOrderService {
 
         //validate if orders is null or empty
         if (orders.isEmpty()) {
-            throw new PartsNotFoundException("No orders found.");
+            throw new OrderNotFoundException("No orders found.");
         }
         //build response
         return new DealerOrderResponseDTO(
@@ -137,7 +137,7 @@ public class OrderServiceImpl implements IOrderService {
 
         //build DTO
         if (dealerOrderEntity == null) {
-            throw new PartsNotFoundException("Order Not Found.");
+            throw new OrderNotFoundException("Order Not Found.");
         }
         OrderStatusResponseDTO response = modelMapper.map(dealerOrderEntity, OrderStatusResponseDTO.class);
         response.setOrderNumberCE(queryArray[1] + "-" + queryArray[2]);
@@ -168,7 +168,6 @@ public class OrderServiceImpl implements IOrderService {
         SubsidiaryOrderEntity newSubsidiaryOrder = generateSubsidiaryOrderEntity(order);
         validateStockAvailable(newSubsidiaryOrder);
         SubsidiaryOrderEntity subsidiaryOrderCreated = this.subsidiaryOrderRepository.save(newSubsidiaryOrder);
-
         //Dentro del for se va a crear cada subsidiaryOrderItem, seteandole antes, la subsidiaryOrder creada y asi cumplir con la relacion de ambas entidades.
         for (SubsidiaryOrderItemsEntity s : subsidiaryOrderCreated.getOrderDetails()) {
             s.setSubsidiaryOrder(subsidiaryOrderCreated);
@@ -181,7 +180,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public void updateOrder(Integer orderNumber, Character orderStatus) {
+    public String updateOrder(Integer orderNumber, Character orderStatus) {
         SubsidiaryOrderEntity order = findSubsidiaryOrder(orderNumber);
         ValidatorUtil.validateOrderUpdate(order.getOrderStatus(),orderStatus);
 
@@ -191,6 +190,8 @@ public class OrderServiceImpl implements IOrderService {
         order.setOrderStatus(orderStatus);
 
         subsidiaryOrderRepository.save(order);
+
+        return "Order " + order.getOrderNumber() + " status successfully updated to " + orderStatus;
     }
 
     //Returns a subsidiary order entity from a request, adding default values

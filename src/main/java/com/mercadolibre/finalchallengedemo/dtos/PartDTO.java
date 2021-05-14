@@ -14,8 +14,10 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,7 +25,7 @@ import java.time.format.DateTimeFormatter;
 @Validated
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PartDTO {
-    public PartDTO(Integer partCode, String description, String maker, Integer quantity, String discountType, Integer widthDimension, Integer tallDimension, Integer longDimension, Integer netWeight, Double normalPrice, Double urgentPrice, String lastModification) {
+    public PartDTO(Integer partCode, String description, String maker, Integer quantity, String discountType, Integer widthDimension, Integer tallDimension, Integer longDimension, Integer netWeight, Double normalPrice, Double urgentPrice, Date lastModification) {
         this.partCode = partCode;
         this.description = description;
         this.maker = maker;
@@ -61,13 +63,13 @@ public class PartDTO {
     @Min(0)
     private Double urgentPrice;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private String lastModification;
+    //@JsonFormat(pattern = "yyyy-MM-dd")
+    private Date lastModification;
 
     @JsonIgnore
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private String lastPriceModification;
+    private Date lastPriceModification;
 
-    @Size(min = 1, max = 1, message = "This field must be only 1 character in lenght")
+    @Size(min = 1, max = 1, message = "This field must be only 1 character in length.")
     private String partStatus;
 }
