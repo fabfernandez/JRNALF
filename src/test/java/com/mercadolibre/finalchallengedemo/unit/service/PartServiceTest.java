@@ -7,6 +7,7 @@ import com.mercadolibre.finalchallengedemo.dtos.response.PartResponseDTO;
 import com.mercadolibre.finalchallengedemo.entities.PartEntity;
 import com.mercadolibre.finalchallengedemo.entities.StockSubsidiaryEntity;
 import com.mercadolibre.finalchallengedemo.entities.SubsidiaryEntity;
+import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.PartsNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IPartRepository;
 import com.mercadolibre.finalchallengedemo.repository.IStockRepository;
@@ -54,7 +55,7 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R1 Test 1: Given parts, then return all parts")
+    @DisplayName("R1 findAll(): Ask for parts. Return all parts.")
     public void givenPartsWithoutFilter_thenReturnAllParts() {
         List<PartEntity> partsEntityList = getList("classpath:allPartsEntities.json",PartEntity.class);
         List<PartDTO> partsDtoList = getList("classpath:allParts.json",PartDTO.class);
@@ -72,8 +73,19 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R1 Test 2: Given parts, then return filtered parts")
-    public void givenParts_thenReturnFilteredParts() {
+    @DisplayName("R1 findAll(): Ask for parts. Throw PartsNotFoundException.")
+    public void sentEmptyParts_thenThrowPartsNotFoundException() {
+        List<PartEntity> partsEntityList = new ArrayList<>();
+
+        when(this.partRepository.findAll()).thenReturn(partsEntityList);
+
+        assertThrows(PartsNotFoundException.class, () -> partService.getAll());
+        verify(partRepository,times(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("R1 getPartsByFilter(): Case 'P' Order 'null'. Return parts modified since date.")
+    public void givenParts_thenReturnFilteredPartsCaseP() {
         List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntities.json",PartEntity.class);
         List<PartDTO> partsDtoList = getList("classpath:filteredParts.json",PartDTO.class);
 
@@ -93,12 +105,11 @@ public class PartServiceTest {
         verify(partRepository,times(1)).findPartsModifiedSinceDate(any(),any());
     }
 
-
     @Test
-    @DisplayName("R1 Test 3: Given parts, then return filtered parts and sorted by description asc")
-    public void givenParts_thenReturnFilteredPartsAndSortedByDescriptionAsc() {
-        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesAndSortedByDescriptionAsc.json",PartEntity.class);
-        List<PartDTO> partsDtoList = getList("classpath:filteredPartsAndSortedByDescriptionAsc.json",PartDTO.class);
+    @DisplayName("R1 getPartsByFilter(): Case 'P' Order '1'. Return parts modified since date ordered by description asc.")
+    public void givenParts_thenReturnFilteredPartsCasePAndSortedByDescriptionAsc() {
+        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesCasePAndSortedByDescriptionAsc.json",PartEntity.class);
+        List<PartDTO> partsDtoList = getList("classpath:filteredPartsCasePAndSortedByDescriptionAsc.json",PartDTO.class);
 
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
         stock.setQuantity(6);
@@ -118,10 +129,33 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R1 Test 4: Given parts, then return filtered parts and sorted by description desc")
-    public void givenParts_thenReturnFilteredPartsAndSortedByDescriptionDesc() {
-        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesAndSortedByDescriptionDesc.json",PartEntity.class);
-        List<PartDTO> partsDtoList = getList("classpath:filteredPartsAndSortedByDescriptionDesc.json",PartDTO.class);
+    @DisplayName("R1 getPartsByFilter(): Case 'V' Order '1'. Return parts with price modified since date ordered by description asc.")
+    public void givenParts_thenReturnFilteredPartsCaseVAndSortedByDescriptionAsc() {
+        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesCaseVAndSortedByDescriptionAsc.json",PartEntity.class);
+        List<PartDTO> partsDtoList = getList("classpath:filteredPartsCaseVAndSortedByDescriptionAsc.json",PartDTO.class);
+
+        StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
+        stock.setQuantity(6);
+
+        when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
+        when(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByDescriptionAsc(any(),any())).thenReturn(partsEntityList);
+
+        PartFilterDTO validFilter = new PartFilterDTO();
+        validFilter.setQueryType('V');
+        validFilter.setDate(pastDate);
+        validFilter.setOrder(1);
+
+        final PartResponseDTO response = partService.getPartsByFilter(validFilter);
+
+        assertEquals(partsDtoList, response.getParts());
+        verify(partRepository,times(1)).findPartsWithPriceModifiedSinceDateSortedByDescriptionAsc(any(),any());
+    }
+
+    @Test
+    @DisplayName("R1 getPartsByFilter(): Case 'P' Order '2'. Return parts modified since date ordered by description desc.")
+    public void givenParts_thenReturnFilteredPartsCasePAndSortedByDescriptionDesc() {
+        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesCasePAndSortedByDescriptionDesc.json",PartEntity.class);
+        List<PartDTO> partsDtoList = getList("classpath:filteredPartsCasePAndSortedByDescriptionDesc.json",PartDTO.class);
 
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
         stock.setQuantity(9);
@@ -141,10 +175,33 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R1 Test 5: Given parts, then return filtered parts and sorted by description desc")
-    public void givenParts_thenReturnFilteredPartsAndSortedByByLastModified() {
-        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesAndSortedByLastModified.json",PartEntity.class);
-        List<PartDTO> partsDtoList = getList("classpath:filteredPartsAndSortedByLastModified.json",PartDTO.class);
+    @DisplayName("R1 getPartsByFilter(): Case 'V' Order '2'. Return parts with price modified since date ordered by description desc.")
+    public void givenParts_thenReturnFilteredPartsCaseVAndSortedByDescriptionDesc() {
+        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesCaseVAndSortedByDescriptionDesc.json",PartEntity.class);
+        List<PartDTO> partsDtoList = getList("classpath:filteredPartsCaseVAndSortedByDescriptionDesc.json",PartDTO.class);
+
+        StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
+        stock.setQuantity(9);
+
+        when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
+        when(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByDescriptionDesc(any(),any())).thenReturn(partsEntityList);
+
+        PartFilterDTO validFilter = new PartFilterDTO();
+        validFilter.setQueryType('V');
+        validFilter.setDate(pastDate);
+        validFilter.setOrder(2);
+
+        final PartResponseDTO response = partService.getPartsByFilter(validFilter);
+
+        assertIterableEquals(partsDtoList,response.getParts());
+        verify(partRepository,times(1)).findPartsWithPriceModifiedSinceDateSortedByDescriptionDesc(any(),any());
+    }
+
+    @Test
+    @DisplayName("R1 getPartsByFilter(): Case 'P' Order '3'. Return parts modified since date ordered by last modified desc.")
+    public void givenParts_thenReturnFilteredPartsCasePAndSortedByByLastModified() {
+        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesCasePAndSortedByLastModified.json",PartEntity.class);
+        List<PartDTO> partsDtoList = getList("classpath:filteredPartsCasePAndSortedByLastModified.json",PartDTO.class);
 
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
         stock.setQuantity(6);
@@ -164,9 +221,53 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R1 Test 6: No parts found, then throw NoPartsFoundException")
-    public void noPartsFound_thenThrowNoPartsFoundException() {
+    @DisplayName("R1 getPartsByFilter(): Case 'V' Order '3'. Return parts modified since date ordered by last modified desc.")
+    public void givenParts_thenReturnFilteredPartsCaseVAndSortedByByLastModified() {
+        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesCaseVAndSortedByLastModified.json",PartEntity.class);
+        List<PartDTO> partsDtoList = getList("classpath:filteredPartsCaseVAndSortedByLastModified.json",PartDTO.class);
 
+        StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
+        stock.setQuantity(6);
+
+        when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
+        when(this.partRepository.findPartsWithPriceModifiedSinceDateSortedByLastModified(any(),any())).thenReturn(partsEntityList);
+
+        PartFilterDTO validFilter = new PartFilterDTO();
+        validFilter.setQueryType('V');
+        validFilter.setDate(pastDate);
+        validFilter.setOrder(3);
+
+        final PartResponseDTO response = partService.getPartsByFilter(validFilter);
+
+        assertIterableEquals(partsDtoList,response.getParts());
+        verify(partRepository,times(1)).findPartsWithPriceModifiedSinceDateSortedByLastModified(any(),any());
+    }
+
+    @Test
+    @DisplayName("R1 getPartsByFilter(): Case 'P' Wrong order. Throw InvalidPartFilterException.")
+    public void wrongOrderCaseP_thenThrowInvalidPartFilterException() {
+        PartFilterDTO validFilter = new PartFilterDTO();
+        validFilter.setQueryType('P');
+        validFilter.setDate(pastDate);
+        validFilter.setOrder(4);
+
+        assertThrows(InvalidPartFilterException.class, () -> partService.getPartsByFilter(validFilter));
+    }
+
+    @Test
+    @DisplayName("R1 getPartsByFilter(): Case 'V' Wrong order. Throw InvalidPartFilterException.")
+    public void wrongOrderCaseV_thenThrowInvalidPartFilterException() {
+        PartFilterDTO validFilter = new PartFilterDTO();
+        validFilter.setQueryType('V');
+        validFilter.setDate(pastDate);
+        validFilter.setOrder(4);
+
+        assertThrows(InvalidPartFilterException.class, () -> partService.getPartsByFilter(validFilter));
+    }
+
+    @Test
+    @DisplayName("R1 getPartsByFilter(): No parts found (response has parts empty), then throw NoPartsFoundException")
+    public void noPartsFound_thenThrowNoPartsFoundException() {
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
 
         when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
@@ -181,7 +282,7 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R1 Test 7: Given part, when find, then return part")
+    @DisplayName("R1 findPart(Integer id): Recieve id. Return part.")
     public void givenPart_whenFind_thenReturnPart() {
         PartDTO partDTO = getObject("classpath:partDTO.json",PartDTO.class);
         PartEntity partEntity = getObject("classpath:newPartEntity.json",PartEntity.class);
@@ -195,7 +296,7 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R1 Test 8: When find by non existent id, then throw not found exception")
+    @DisplayName("R1 findPart(Integer id): Recieve not existing id. Throw PartsNotFoundException.")
     public void whenFindByNonExistentId_thenThrowNotFoundException() {
         when(this.partRepository.findById(any())).thenReturn(Optional.ofNullable(null));
 
@@ -205,7 +306,7 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R4 Test 1: Try to add a new part with correct parameters. ")
+    @DisplayName("R4 savePart(PartDTO part): Recieve PartDTO. Return 'Saved'.")
     public void whenAddInexistentPart_returnOk(){
         PartDTO newPart = getObject("classpath:partDTO.json",PartDTO.class);
         SubsidiaryEntity casaMatriz = getObject("classpath:subsidiaryCasaMatriz.json",SubsidiaryEntity.class);
@@ -225,7 +326,7 @@ public class PartServiceTest {
     }
 
     @Test
-    @DisplayName("R4 Test 2: Try to add a part that already exists with correct parameters. ")
+    @DisplayName("R4 savePart(PartDTO part): Recieve PartDTO. Return 'Modified'.")
     public void whenAddExistentPart_returnOkWithChangedLastPriceModification(){
         PartDTO newPart = getObject("classpath:partDTO.json",PartDTO.class);
 

@@ -45,6 +45,7 @@ public class PartServiceImpl implements IPartService {
                 dateFormat.format(itemEntity.getLastModification()), PartDTO::setLastModification));
     }
 
+    // Tested
     @Override
     public PartResponseDTO getAll() {
         PartResponseDTO response = mapResponse(this.partRepository.findAll());
@@ -78,7 +79,7 @@ public class PartServiceImpl implements IPartService {
                 response = getAll();
         }
         if(response.getParts().isEmpty())
-            throw new PartsNotFoundException("No parts founded with the requested filter.");
+            throw new PartsNotFoundException("No parts found with the requested filter.");
         return response;
     }
 
@@ -112,7 +113,7 @@ public class PartServiceImpl implements IPartService {
     public PartDTO findPart(Integer id) {
         Optional<PartEntity> part = partRepository.findById(id);
         if(!part.isPresent())
-            throw new PartsNotFoundException("The part with id " + id + " was not founded.");
+            throw new PartsNotFoundException("The part with id " + id + " was not found.");
         return modelMapper.map(part.get(), PartDTO.class);
     }
 
