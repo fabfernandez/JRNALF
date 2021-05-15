@@ -63,7 +63,7 @@ public class PartDTO {
     @Min(0)
     private Double urgentPrice;
 
-    //@JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date lastModification;
 
     @JsonIgnore
