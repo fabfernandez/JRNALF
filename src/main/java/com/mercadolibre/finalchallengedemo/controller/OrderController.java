@@ -42,14 +42,14 @@ public class OrderController {
     @PostMapping
     public ResponseEntity createOrder(@Validated @RequestBody OrderRequestDTO order) {
         if(DecodeToken.location == 1)
-            throw new ForbiddenAccessException("Only users for the central house are enabled");
+            throw new ForbiddenAccessException("'Casa Matriz' users are not allowed.");
         return ResponseEntity.ok(this.orderService.createOrder(order));
     }
 
     @PostMapping("/update_status")
     public ResponseEntity updateOrder(@Validated @RequestBody OrderUpdateRequestDTO orderUpdate) {
         if(DecodeToken.location != 1)
-            throw new ForbiddenAccessException("Only users for parent company are enabled");
+            throw new ForbiddenAccessException("Only 'Casa Matriz' user allowed.");
         return ResponseEntity.ok(this.orderService.updateOrder(orderUpdate.getOrderNumber(),orderUpdate.getStatusCode().charAt(0)));
     }
 
