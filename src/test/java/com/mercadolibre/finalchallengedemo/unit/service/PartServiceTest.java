@@ -83,6 +83,29 @@ public class PartServiceTest {
         verify(partRepository,times(1)).findAll();
     }
 
+
+    @Test
+    @DisplayName("R1 getPartsByFilter(): Case 'C'.")
+    public void givenParts_thenReturnFilteredPartsCaseC() {
+        List<PartEntity> partsEntityList = getList("classpath:filteredPartsEntitiesCaseC.json",PartEntity.class);
+        List<PartDTO> partsDtoList = getList("classpath:filteredPartsCaseC.json",PartDTO.class);
+
+        StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
+        stock.setQuantity(6);
+
+        when(this.stockRepository.findStockByPartCodeAndSubsidiary(any(),any())).thenReturn(stock);
+        when(this.partRepository.findAll()).thenReturn(partsEntityList);
+
+        PartFilterDTO validFilter = new PartFilterDTO();
+        validFilter.setQueryType('C');
+
+        final PartResponseDTO response = partService.getAll();
+
+        assertEquals(partsDtoList, response.getParts());
+        verify(partRepository,times(1)).findAll();
+    }
+
+
     @Test
     @DisplayName("R1 getPartsByFilter(): Case 'P' Order 'null'. Return parts modified since date.")
     public void givenParts_thenReturnFilteredPartsCaseP() {
