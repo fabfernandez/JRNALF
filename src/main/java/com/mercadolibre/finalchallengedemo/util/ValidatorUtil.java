@@ -8,15 +8,8 @@ import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException
 
 public class ValidatorUtil {
 
-    //Validations for the filter from req 1
-    //Params will be valid if:
-    //order is 1,2 or 3.
-    //date is past or present
-    //queryType is C, P or V
-    //All the valid filters are:
-    //queryType 'C' with none order and date.
-    //queryType 'P' or 'V', with a date.
-    //queryType 'P' or 'V', with a date and a order.
+    // Validating filter parameters for Req 1.
+
     public static void validatePartFilter(PartFilterDTO filter) {
         validatePartFilterQueryType(filter);
         validatePartFilterOrder(filter);
@@ -48,18 +41,6 @@ public class ValidatorUtil {
                 default:
                     throw new InvalidPartFilterException("Query type must be C, P or V.");
             }
-        }
-    }
-
-    // Validations for the input parameters of requirement 2
-    public static void validateQueryParamFilter(PartOrderQueryParamsDTO filter) {
-        validateQueryParamDealer(filter);
-    }
-
-
-    private static void validateQueryParamDealer(PartOrderQueryParamsDTO filter) {
-        if (filter.getDealerNumber() == null || filter.getDeliveryStatus() != null) {
-            throw new InvalidOrderFilterException("The Dealer Number cannot be null");
         }
     }
 

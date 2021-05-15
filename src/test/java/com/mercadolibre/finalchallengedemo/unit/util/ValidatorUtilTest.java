@@ -1,6 +1,7 @@
 package com.mercadolibre.finalchallengedemo.unit.util;
 
 import com.mercadolibre.finalchallengedemo.dtos.PartFilterDTO;
+import com.mercadolibre.finalchallengedemo.exceptions.CanNotUpdateException;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException;
 import com.mercadolibre.finalchallengedemo.util.ValidatorUtil;
 import org.junit.jupiter.api.DisplayName;
@@ -29,5 +30,17 @@ public class ValidatorUtilTest {
         assertThrows(InvalidPartFilterException.class, () -> ValidatorUtil.validatePartFilter(filter));
     }
 
+    @Test
+    @DisplayName("Given filter with date but non query type, then throw invalid filter exception")
+    public void givenFilterWithOrderButNotDateQueryType_thenThrowInvalidFilterException() {
+        PartFilterDTO filter = new PartFilterDTO();
+        filter.setOrder(1);
+        assertThrows(InvalidPartFilterException.class, () -> ValidatorUtil.validatePartFilter(filter));
+    }
 
+    @Test
+    @DisplayName("Given filter with date but non query type, then throw invalid filter exception")
+    public void validateOrderUpdateWrongActualStatus() {
+        assertThrows(CanNotUpdateException.class, () -> ValidatorUtil.validateOrderUpdate('F', 'C'));
+    }
 }
