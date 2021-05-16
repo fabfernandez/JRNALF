@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
-    private final String SECRET_VALUE = System.getenv("SECRET");
+    private final String SECRET_VALUE = "ASDJKASHD";
 
     private final IUserRepository userRepository;
 
