@@ -1,10 +1,9 @@
-package com.mercadolibre.finalchallengedemo.entities;
+package com.mercadolibre.finalchallengedemo.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 @Data

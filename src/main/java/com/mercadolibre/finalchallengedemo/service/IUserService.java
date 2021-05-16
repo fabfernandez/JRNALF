@@ -1,6 +1,6 @@
 package com.mercadolibre.finalchallengedemo.service;
 
-import com.mercadolibre.finalchallengedemo.entities.UserEntity;
+import com.mercadolibre.finalchallengedemo.model.UserEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.UserNotFoundException;
 
 public interface IUserService {

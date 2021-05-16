@@ -76,7 +76,7 @@
                 <!-- </configuration> -->
             </plugin>
 
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <executions>
@@ -98,7 +98,7 @@
                         <DependencyConvergence/>
                     </rules>
                 </configuration>
-            </plugin>
+            </plugin>-->
 
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -106,10 +106,12 @@
                 <version>0.8.5</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/com/mercadolibre/**/dto/**</exclude>
+                        <exclude>**/com/mercadolibre/**/dtos/**</exclude>
                         <exclude>**/com/mercadolibre/**/api/**</exclude>
                         <exclude>**/com/mercadolibre/**/model/**</exclude>
                         <exclude>**/com/mercadolibre/**/exceptions/**</exclude>
+                        <exclude>**/com/mercadolibre/**/security/**</exclude>
+                        <exclude>**/com/mercadolibre/**/config/**</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -469,6 +471,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.fury</groupId>
+            <artifactId>furyutils</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
 </project>

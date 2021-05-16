@@ -1,6 +1,6 @@
 package com.mercadolibre.finalchallengedemo.repository;
 
-import com.mercadolibre.finalchallengedemo.entities.UserEntity;
+import com.mercadolibre.finalchallengedemo.model.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

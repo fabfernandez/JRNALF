@@ -1,6 +1,6 @@
 package com.mercadolibre.finalchallengedemo.repository;
 
-import com.mercadolibre.finalchallengedemo.entities.SubsidiaryOrderEntity;
+import com.mercadolibre.finalchallengedemo.model.SubsidiaryOrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

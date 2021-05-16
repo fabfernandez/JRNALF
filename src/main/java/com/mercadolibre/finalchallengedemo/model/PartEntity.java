@@ -1,6 +1,5 @@
-package com.mercadolibre.finalchallengedemo.entities;
+package com.mercadolibre.finalchallengedemo.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
