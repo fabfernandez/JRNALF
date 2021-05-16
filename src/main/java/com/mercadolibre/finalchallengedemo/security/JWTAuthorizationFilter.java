@@ -25,7 +25,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final String HEADER = "Authorization";
     String SECRET = "SECRET";
     private final String PREFIX = "Bearer ";
-    private final String SECRET_VALUE = System.getenv(SECRET);
+    private final String SECRET_VALUE = "ASDJKASHD";
     private ObjectMapper objectMapper = new ObjectMapper();
 
 

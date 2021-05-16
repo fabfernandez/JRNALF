@@ -39,6 +39,8 @@ public class Application {
 					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 					.authorizeRequests()
 					.antMatchers(HttpMethod.POST, "/login").permitAll()
+					.antMatchers(HttpMethod.GET, "/ping").permitAll()
+					.antMatchers(HttpMethod.GET, "/v3/api-docs").permitAll()
 					.anyRequest().authenticated();
 		}
 	}

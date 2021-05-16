@@ -1,6 +1,6 @@
 package com.mercadolibre.finalchallengedemo.service;
 
-import com.mercadolibre.finalchallengedemo.entities.UserEntity;
+import com.mercadolibre.finalchallengedemo.model.UserEntity;
 import com.mercadolibre.finalchallengedemo.exceptions.UserNotFoundException;
 import com.mercadolibre.finalchallengedemo.repository.IUserRepository;
 import io.jsonwebtoken.Jwts;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
-    private final String SECRET_VALUE = System.getenv("SECRET");
+    private final String SECRET_VALUE = "ASDJKASHD";
 
     private final IUserRepository userRepository;
 

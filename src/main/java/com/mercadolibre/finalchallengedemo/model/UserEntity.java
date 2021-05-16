@@ -1,4 +1,4 @@
-package com.mercadolibre.finalchallengedemo.entities;
+package com.mercadolibre.finalchallengedemo.model;
 
 import lombok.Data;
 

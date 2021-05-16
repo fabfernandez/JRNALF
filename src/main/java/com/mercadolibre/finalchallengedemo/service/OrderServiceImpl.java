@@ -2,9 +2,9 @@ package com.mercadolibre.finalchallengedemo.service;
 
 import com.mercadolibre.finalchallengedemo.dtos.OrderRequestDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
-import com.mercadolibre.finalchallengedemo.entities.*;
-import com.mercadolibre.finalchallengedemo.entities.DealerOrderEntity;
-import com.mercadolibre.finalchallengedemo.entities.DealerOrderItems;
+import com.mercadolibre.finalchallengedemo.model.*;
+import com.mercadolibre.finalchallengedemo.model.DealerOrderEntity;
+import com.mercadolibre.finalchallengedemo.model.DealerOrderItems;
 import com.mercadolibre.finalchallengedemo.exceptions.InvalidOrderFilterException;
 import com.mercadolibre.finalchallengedemo.exceptions.NoStockException;
 import com.mercadolibre.finalchallengedemo.exceptions.OrderNotFoundException;
@@ -132,7 +132,7 @@ public class OrderServiceImpl implements IOrderService {
 
         // Get orders that matches subsidiary and order number
         DealerOrderEntity dealerOrderEntity =
-                orderRepository.getOrder(Integer.valueOf(orderNumber), DecodeToken.location);
+                    orderRepository.getOrder(Integer.valueOf(orderNumber), DecodeToken.location);
 
         //build DTO
         if (dealerOrderEntity == null) {

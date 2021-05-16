@@ -7,10 +7,14 @@ spring:
   datasource:
     #initialization-mode: always
     #data: classpath:/data.sql
+    # Use host and db when connecting to Fury db, host is the same, db is the name of your schema
+    ##host: proxysql.master.meliseginf.com:6612
+      ##db: testfinal
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/automotriz_delux?useSSL=true&serverTimezone=UTC&characterEncoding=UTF-8
     ##username: ${LOCAL_DB_USER}
-    ##password: ${LOCAL_DB_PASSWORD}
+    ##password: ${LOCAL_DB_PASS}
+    ##initialization-mode: always
     username: root
     password: root1234
 
