@@ -56,7 +56,7 @@ public class DataSourceConfig {
     @Profile("integration_test")
     public DataSource getDataSourceTest() {
         return DataSourceBuilder.create()
-                .url("jdbc:h2:mem:testdb")
+                .url("jdbc:h2:mem:testfinal")
                 .username("sa")
                 .build();
     }

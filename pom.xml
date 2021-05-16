@@ -110,6 +110,8 @@
                         <exclude>**/com/mercadolibre/**/api/**</exclude>
                         <exclude>**/com/mercadolibre/**/model/**</exclude>
                         <exclude>**/com/mercadolibre/**/exceptions/**</exclude>
+                        <exclude>**/com/mercadolibre/**/security/**</exclude>
+                        <exclude>**/com/mercadolibre/**/config/**</exclude>
                     </excludes>
                 </configuration>
                 <executions>
