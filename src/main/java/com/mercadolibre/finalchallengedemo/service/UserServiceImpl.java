@@ -30,10 +30,10 @@ public class UserServiceImpl implements IUserService {
     public UserEntity checkUser(String username, String password) throws UserNotFoundException {
         UserEntity userEntity = userRepository.findById(username).orElse(null);
         if(userEntity == null){
-            throw new UserNotFoundException("User not found");
+            throw new UserNotFoundException("User not found.");
         }
         if (!username.equals(userEntity.getUsername()) || !password.equals(userEntity.getPassword()))
-            throw new UserNotFoundException(" Incorrect user or password ");
+            throw new UserNotFoundException("Incorrect username or password.");
         return userEntity;
     }
 

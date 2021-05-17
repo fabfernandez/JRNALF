@@ -9,7 +9,6 @@ import com.mercadolibre.finalchallengedemo.exceptions.InvalidPartFilterException
 public class ValidatorUtil {
 
     // Validating filter parameters for Req 1.
-
     public static void validatePartFilter(PartFilterDTO filter) {
         validatePartFilterQueryType(filter);
         validatePartFilterOrder(filter);
@@ -47,7 +46,7 @@ public class ValidatorUtil {
     //Validations for all update scenarios
     public static void validateOrderUpdate(Character actualStatus, Character newStatus) {
         if (actualStatus.equals(newStatus))
-            throw new CanNotUpdateException("The order to update al ready has " + actualStatus + " status.");
+            throw new CanNotUpdateException("The order you are trying to update already has " + actualStatus + " status.");
         if (actualStatus.equals('F') || actualStatus.equals('C'))
             throw new CanNotUpdateException("Can not update the status from the requested order.");
     }

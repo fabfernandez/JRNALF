@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
-public class PartServiceTest {
+public class PartServiceImplTest {
     @Mock
     private IPartRepository partRepository;
     @Mock
@@ -104,7 +104,6 @@ public class PartServiceTest {
         assertEquals(partsDtoList, response.getParts());
         verify(partRepository,times(1)).findAll();
     }
-
 
     @Test
     @DisplayName("R1 getPartsByFilter(): Case 'P' Order 'null'. Return parts modified since date.")

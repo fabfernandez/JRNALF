@@ -1,4 +1,4 @@
-package com.mercadolibre.finalchallengedemo.unit.contoller;
+package com.mercadolibre.finalchallengedemo.unit.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.finalchallengedemo.controller.OrderController;

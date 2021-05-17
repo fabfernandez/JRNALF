@@ -71,11 +71,10 @@ public class OrderServiceImpl implements IOrderService {
                 = modelMapper.createTypeMap(DealerOrderEntity.class, OrderDetailsDTO.class);
         typeMap2.addMappings(mapper -> mapper.map(DealerOrderEntity::getOrderStatus,
                 OrderDetailsDTO::setDeliveryStatus));
-
     }
 
     @Override
-    //REQ 2
+    // REQ 2
     public DealerOrderResponseDTO getOrders(String dealerNumber,
                                             String deliveryStatus,
                                             Integer country, Integer order) {
@@ -94,7 +93,7 @@ public class OrderServiceImpl implements IOrderService {
                 orderEntities =
                         orderRepository.getDealerOrdersByDealerStatusOrderedDesc(Integer.valueOf(dealerNumber), deliveryStatus, country);
             } else
-                throw new InvalidOrderFilterException("Order selected is not valid");
+                throw new InvalidOrderFilterException("Selected order is not valid");
         }
         if (dealerNumber != null && deliveryStatus == null && order != null) {
             if (order.equals(1)) {
@@ -102,7 +101,7 @@ public class OrderServiceImpl implements IOrderService {
             } else if (order.equals(2)) {
                 orderEntities = orderRepository.getDealerOrdersByDealerDesc(Integer.valueOf(dealerNumber), country);
             } else
-                throw new InvalidOrderFilterException("Order selected is not valid");
+                throw new InvalidOrderFilterException("Selected order is not valid");
         }
 
         //build orderDTOs
@@ -126,8 +125,7 @@ public class OrderServiceImpl implements IOrderService {
 
     //REQ 3
     @Override
-    public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO
-                                                                     orderStatusCMDTO) {
+    public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO orderStatusCMDTO) {
         String[] queryArray = orderStatusCMDTO.getOrderNumberCM().split("-");
         String orderNumber = queryArray[2].replaceAll("^0+", "");
 
@@ -137,7 +135,7 @@ public class OrderServiceImpl implements IOrderService {
 
         //build DTO
         if (dealerOrderEntity == null) {
-            throw new OrderNotFoundException("Order Not Found.");
+            throw new OrderNotFoundException("Order not found.");
         }
         OrderStatusResponseDTO response = modelMapper.map(dealerOrderEntity, OrderStatusResponseDTO.class);
         response.setOrderNumberCE(queryArray[1] + "-" + queryArray[2]);
@@ -145,35 +143,18 @@ public class OrderServiceImpl implements IOrderService {
         return response;
     }
 
-    // req 6
-    @Override
-    public List<DealerOrdersDTO> getAllOrders() {
-        List<DealerOrderEntity> orderEntities = this.orderRepository.getAllOrders();
-        List<DealerOrdersDTO> orderDetails = orderEntities.stream()
-                .map(orders -> modelMapper
-                .map(orders,DealerOrdersDTO.class)).collect(Collectors.toList());
-
-        return orderDetails;
-    }
-
-
     @Override
     public DealerOrderResponseDTO process(PartOrderQueryParamsDTO params) {
-
         String dealerNumber = params.getDealerNumber();
         String deliveryStatus = params.getDeliveryStatus();
         Integer order = params.getOrder();
         Integer country = DecodeToken.location;
 
-
         //send data to method that evaluates params to make
         return getOrders(dealerNumber, deliveryStatus, country, order);
     }
 
-
-    //_________________________________REQ 5___________________________________________
-
-
+    // REQ 5
     @Override
     public OrderDetailsDTO createOrder(OrderRequestDTO order) {
         SubsidiaryOrderEntity newSubsidiaryOrder = generateSubsidiaryOrderEntity(order);
@@ -182,12 +163,10 @@ public class OrderServiceImpl implements IOrderService {
         //Dentro del for se va a crear cada subsidiaryOrderItem, seteandole antes, la subsidiaryOrder creada y asi cumplir con la relacion de ambas entidades.
         for (SubsidiaryOrderItemsEntity s : subsidiaryOrderCreated.getOrderDetails()) {
             s.setSubsidiaryOrder(subsidiaryOrderCreated);
-            s.setReason("Sin motivo");
+            s.setReason("Sin motivo.");
             this.subsidiaryOrderItemRepository.save(s);
         }
-
         return modelMapper.map(subsidiaryOrderCreated,OrderDetailsDTO.class);
-
     }
 
     @Override
@@ -197,12 +176,21 @@ public class OrderServiceImpl implements IOrderService {
 
         if (orderStatus.equals('F'))
             finalizeOrder(order);
-
         order.setOrderStatus(orderStatus);
-
         subsidiaryOrderRepository.save(order);
 
-        return "Order " + order.getOrderNumber() + " status successfully updated to " + orderStatus;
+        return "Order no." + order.getOrderNumber() + " status successfully updated to: " + orderStatus;
+    }
+
+    // REQ 6
+    @Override
+    public List<DealerOrdersDTO> getAllOrders() {
+        List<DealerOrderEntity> orderEntities = this.orderRepository.getAllOrders();
+        List<DealerOrdersDTO> orderDetails = orderEntities.stream()
+                .map(orders -> modelMapper
+                        .map(orders,DealerOrdersDTO.class)).collect(Collectors.toList());
+
+        return orderDetails;
     }
 
     //Returns a subsidiary order entity from a request, adding default values
@@ -215,7 +203,6 @@ public class OrderServiceImpl implements IOrderService {
         subsidiaryOrder.setSubsidiaryId(DecodeToken.location);
         return subsidiaryOrder;
     }
-
 
     private void finalizeOrder(SubsidiaryOrderEntity order) {
         for ( SubsidiaryOrderItemsEntity orderItem :order.getOrderDetails()) {
@@ -248,12 +235,10 @@ public class OrderServiceImpl implements IOrderService {
             quantity = orderItem.getQuantity();
             if(getAvailableStockFromParentHouseByPartCode(partCode) - quantity < 0)
                 partCodesWithoutStock += partCode + ",";
-
         }
         if(!partCodesWithoutStock.equals(""))
-            throw new NoStockException("Parts with code: " + partCodesWithoutStock + " don't have stock");
+            throw new NoStockException("Parts with code: " + partCodesWithoutStock + " doesn't have stock");
     }
-
 
     //Returns the stock reserved available from the parent house
     private Integer getAvailableStockFromParentHouseByPartCode(Integer partCode) {
@@ -275,7 +260,6 @@ public class OrderServiceImpl implements IOrderService {
         List<SubsidiaryOrderItemsEntity> orderItemsByPartCode = getAllPendingOrderItems().stream().filter( orderItem -> orderItem.getPart().getPartCode() == partCode).collect(Collectors.toList());
         return orderItemsByPartCode.stream().mapToInt(orderItem -> orderItem.getQuantity()).sum();
     }
-
 
     private SubsidiaryOrderEntity findSubsidiaryOrder(Integer id) {
         Optional<SubsidiaryOrderEntity> order = this.subsidiaryOrderRepository.findById(id);

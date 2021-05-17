@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Table(name = "sub_order_items")
 @Getter
 @Setter
-//esto es un item de una orden, que contiene UNA parte y que cantidad pide
 public class SubsidiaryOrderItemsEntity {
 
     @Id
@@ -33,5 +32,4 @@ public class SubsidiaryOrderItemsEntity {
 
     @Column(name="reason")
     private String reason;
-
 }

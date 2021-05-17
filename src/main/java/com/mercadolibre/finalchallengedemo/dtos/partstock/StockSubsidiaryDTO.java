@@ -13,5 +13,4 @@ public class StockSubsidiaryDTO {
     private Integer part;
     private Integer quantity;
     private Integer subsidiary;
-
 }

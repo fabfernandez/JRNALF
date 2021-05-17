@@ -16,18 +16,14 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Validated
-// Deberia ser el order response del req 3
 
-// Este en teoria deberia volar!!!!!!!!
 public class OrderResponseDTO {
-
-    // Chequear response
     @Size(min = 12, max = 12, message = "12 numeric characters are required.")
     @Pattern(regexp = "^\\d{4}-\\d{8}$", message = "Order number does not match the required pattern.")
-    private String orderNumber; // lo reemplace por orderNumber
+    private String orderNumber;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate orderDate; // LocalDate???????????
+    private LocalDate orderDate;
 
     @Size(min = 1, max = 1, message = "Order status code must be only 1 character.")
     @Pattern(regexp = "^[PDFCpdfc]$", message = "Invalid delivery status code.")

@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
-
-
     private final IUserService service;
 
     public UserController(IUserService service) {
@@ -24,8 +22,5 @@ public class UserController {
         user.setUser(username);
         user.setToken(token);
         return user;
-
     }
-
-
 }

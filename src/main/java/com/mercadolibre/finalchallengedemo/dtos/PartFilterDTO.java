@@ -18,7 +18,6 @@ import java.util.Date;
 @Validated
 @Data
 public class PartFilterDTO {
-    //@Pattern(regexp = "CPV",message = "The queryType must be C, P or V")
     private Character queryType;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @PastOrPresent(message = "The date must be past or equals to current date")
@@ -31,5 +30,4 @@ public class PartFilterDTO {
     public boolean hasFilters() {
         return (getDate() != null || getOrder() != null || getQueryType() != null);
     }
-
 }

@@ -48,7 +48,7 @@ public class PartDTO {
     private String maker;
     @Min(0)
     private Integer quantity;
-    //todo validate
+
     private String discountType;
     @Min(0)
     private Integer widthDimension;

@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DealerOrderResponseDTO {
-
     private Integer dealerNumber;
     private List<OrderDetailsDTO> orders;
 }

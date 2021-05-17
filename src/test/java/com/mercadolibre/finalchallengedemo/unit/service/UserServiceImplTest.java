@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class UserServiceTest {
+public class UserServiceImplTest {
 
     IUserRepository userRepository = Mockito.mock(IUserRepository.class);
     UserServiceImpl userService;
@@ -40,7 +40,6 @@ public class UserServiceTest {
 
     @Test
     void invalidCredentials() throws IOException, UserNotFoundException {
-
         SubsidiaryEntity subsidiaryEntity = objectMapper.readValue(new File("src/test/resources/subsidiaryCasaMatriz.json"),
                 new TypeReference<>() {});
         UserEntity userEntity = new UserEntity();
@@ -53,7 +52,6 @@ public class UserServiceTest {
 
     @Test
     void loginOk() throws IOException, UserNotFoundException {
-
         SubsidiaryEntity subsidiaryEntity = objectMapper.readValue(new File("src/test/resources/subsidiaryCasaMatriz.json"),
                 new TypeReference<>() {});
         UserEntity userEntity = new UserEntity();
@@ -64,5 +62,4 @@ public class UserServiceTest {
         String res = userService.getJWTToken("gembleton0","IH4YH7kAk");
         assertTrue(!res.isEmpty());
     }
-
 }

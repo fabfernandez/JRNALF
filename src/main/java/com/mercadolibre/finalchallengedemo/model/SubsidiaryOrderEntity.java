@@ -15,7 +15,6 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-// UNA ORDEN DE UN DEALER ESPECIFICO
 public class SubsidiaryOrderEntity {
 
     @Id
@@ -33,7 +32,6 @@ public class SubsidiaryOrderEntity {
     @Column(nullable = false, name = "subsidiary_id")
     private Integer subsidiaryId;
 
-
     @Column(nullable = false, name = "delivery_date")
     @Temporal(TemporalType.DATE)
     private Date deliveryDate;
@@ -42,7 +40,5 @@ public class SubsidiaryOrderEntity {
     private Integer daysDelay;
 
     @OneToMany(mappedBy = "subsidiaryOrder", fetch = FetchType.LAZY, orphanRemoval = true )
-    // ITEMS
     private Set<SubsidiaryOrderItemsEntity> orderDetails;
-
 }

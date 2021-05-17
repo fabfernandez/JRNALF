@@ -55,11 +55,9 @@ public class PartController {
         return ResponseEntity.ok("Part updated.");
     }
 
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deletePart(@PathVariable Integer id){
         partService.deletePart(id);
         return ResponseEntity.ok("Part eliminated.");
     }
-
 }

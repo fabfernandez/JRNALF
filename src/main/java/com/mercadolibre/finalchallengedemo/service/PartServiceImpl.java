@@ -76,10 +76,9 @@ public class PartServiceImpl implements IPartService {
             case 'C':
             default:
                 response = getAll();
-
         }
         if(response.getParts().isEmpty())
-            throw new PartsNotFoundException("No parts founded with the requested filter.");
+            throw new PartsNotFoundException("No parts found with the requested filter.");
         return response;
     }
 
@@ -92,7 +91,7 @@ public class PartServiceImpl implements IPartService {
     @Override
     @Transactional
     public PartEntity savePart(PartDTO part) {
-        //REQ 4 Add or update a part.
+        // REQ 4: Add or update a part.
         Optional<PartEntity> partFromDB = partRepository.findById(part.getPartCode());
 
         PartEntity partEntity = partRepository.save(modelMapper.map(part, PartEntity.class));
@@ -100,8 +99,6 @@ public class PartServiceImpl implements IPartService {
         StockSubsidiaryEntity stock = new StockSubsidiaryEntity();
         stock.setPart(partEntity);
         stock.setQuantity(part.getQuantity());
-        //Find by id en subsidiary
-
         SubsidiaryEntity subsidiaryEntity = subsidiaryRepository.findById(1).get();
         stock.setSubsidiary(subsidiaryEntity);
 
@@ -114,7 +111,7 @@ public class PartServiceImpl implements IPartService {
     public PartDTO findPart(Integer id) {
         Optional<PartEntity> part = partRepository.findById(id);
         if(!part.isPresent())
-            throw new PartsNotFoundException("The part with id " + id + " was not founded.");
+            throw new PartsNotFoundException("The part with id " + id + " not found.");
         return modelMapper.map(part.get(), PartDTO.class);
     }
 

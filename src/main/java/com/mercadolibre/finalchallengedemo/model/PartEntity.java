@@ -18,10 +18,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PartEntity {
-
     @Id
     @Column(name = "id_part")
-    //@Size(min = 8, message = "The field needs a minimum of 8 numeric characters")
     private Integer partCode;
 
     @Column(nullable = false, length = 100)
@@ -35,19 +33,15 @@ public class PartEntity {
     private String discountType;
 
     @Column(name="width_dimension", nullable = false, length = 4)
-    //@Size(max = 4, message = "The width of the spare part needs 4 numeric characters.")
     private Integer widthDimension;
 
     @Column(name="tall_dimension", nullable = false, length = 4)
-    //@Size(max = 4, message = "The height of the spare part needs 4 numeric characters.")
     private Integer tallDimension;
 
     @Column(name="long_dimension", nullable = false, length = 4)
-    //@Size(max = 4, message = "The length of the spare part needs 4 numeric characters.")
     private Integer longDimension;
 
     @Column(name="net_weight", nullable = false, length = 5)
-    //@Size(max = 5, message = "The net weight of the spare part needs 5 numeric characters.")
     private Integer netWeight;
 
     @Column(name = "normal_price")

@@ -28,6 +28,4 @@ public class StockSubsidiaryEntity implements Serializable{
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_subsidiary")
     private SubsidiaryEntity subsidiary;
-
-
 }

@@ -31,7 +31,6 @@ public class SubsidiaryEntity {
     private String address;
 
     @Column(name = "sub_phone", nullable = false, length = 20)
-    //@Size(max = 20, message = "The phone of the subsidiary must have a maximium of 20 numeric characters.")
     private Integer phone;
 
     @Column(name = "sub_country", nullable = false, length = 20)

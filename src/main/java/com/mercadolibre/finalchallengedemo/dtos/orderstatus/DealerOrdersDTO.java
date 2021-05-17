@@ -10,7 +10,6 @@ import java.util.Set;
 
 @Data
 public class DealerOrdersDTO {
-
     private Integer orderNumber;
     private Date orderDate;
     private String orderStatus;
@@ -19,6 +18,4 @@ public class DealerOrdersDTO {
     private Set<OrderItemDTO> orderDetails;
     private Integer dealerId;
     private Integer subsidiaryId;
-
-
 }

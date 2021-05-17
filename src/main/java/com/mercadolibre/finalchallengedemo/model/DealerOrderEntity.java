@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "dealer_orders")
-// Entity of an order from a specific leader.
+// Entity of an order from a specific dealer.
 public class DealerOrderEntity {
 
     @Id
@@ -36,24 +36,11 @@ public class DealerOrderEntity {
     private Integer daysDelay;
 
     @OneToMany(mappedBy = "correspondingOrder")
-    // ITEMS
     private Set<DealerOrderItems> orderDetails;
 
     @Column(name = "dealer_id", nullable = false)
     private Integer dealerId;
-    // Create a column called dealer_id made up of a FK referenced to dealers
-    // Crea una columna llamada dealer_id compuesta de una FK referenciada a dealers
-    /*@ManyToOne
-    @JoinColumn(name = "dealer_id", nullable = false)
-    private DealerEntity dealerId;
-    */
 
     @Column(name = "subsidiary_id", nullable = false)
     private Integer subsidiaryId;
-    // Create a column called subsidiary_id made up of a FK referenced to subsidiaries
-    // Crea una columna llamada subsidiary_id compuesta de una FK referenciada a subsidiaries
-    /*@ManyToOne
-    @JoinColumn(name = "subsidiary_id", nullable = false)
-    private SubsidiaryEntity subsidiaryId;
-    */
 }
