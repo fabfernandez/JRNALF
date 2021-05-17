@@ -72,4 +72,9 @@ public interface IOrderRepository extends JpaRepository<DealerOrderItems, Intege
     @Query("FROM DealerOrderEntity dealerOrder " +
             "WHERE dealerOrder.dealerId = :dealerNumber AND dealerOrder.subsidiaryId = :subsidiaryId")
     List<DealerOrderEntity> getOrdersFromDealersStatus(Integer dealerNumber, Integer subsidiaryId);
+
+    @Query("FROM DealerOrderEntity dealerOrder" +
+            " LEFT JOIN  DealerEntity dealer ON dealer.idDealer = dealerOrder.dealerId" +
+            " LEFT JOIN SubsidiaryEntity subsidiary ON subsidiary.id = dealerOrder.subsidiaryId")
+    List<DealerOrderEntity> getAllOrders();
 }

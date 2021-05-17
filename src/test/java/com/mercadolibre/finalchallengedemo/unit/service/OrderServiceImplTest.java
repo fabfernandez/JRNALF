@@ -3,6 +3,7 @@ package com.mercadolibre.finalchallengedemo.unit.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.finalchallengedemo.dtos.OrderRequestDTO;
+import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
 import com.mercadolibre.finalchallengedemo.model.*;
 import com.mercadolibre.finalchallengedemo.exceptions.*;
@@ -317,6 +318,28 @@ class OrderServiceImplTest {
         when(subsidiaryOrderRepository.findById(any())).thenReturn(Optional.of(orderEntity));
         Assertions.assertThrows(CanNotUpdateException.class, () -> orderService.updateOrder(1,'P'));
     }
+
+    @Test
+    @DisplayName("Req 6 test 1: get all orders OK")
+    void whenGetAllOrders_Ok() throws IOException {
+        ModelMapper mapper = new ModelMapper();
+
+        when(this.orderRepository.getAllOrders()).thenReturn(dealerOrders);
+        List<OrderDetailsDTO> listica = dealerOrders.stream().map(order -> mapper.map(order,OrderDetailsDTO.class)).collect(Collectors.toList());
+        List<OrderDetailsDTO> orderDetailsDTOS = orderService.getAllOrders();
+
+        for (OrderDetailsDTO orderDetail:orderDetailsDTOS){
+            orderDetail.setDeliveryStatus(null);
+            List<OrderItemDTO> parts = orderDetail.getOrderDetails();
+            for (OrderItemDTO part: parts){
+                part.setDescription(null);
+            }
+        }
+        Assertions.assertEquals(listica,orderDetailsDTOS);
+
+
+    }
+
 
 
 

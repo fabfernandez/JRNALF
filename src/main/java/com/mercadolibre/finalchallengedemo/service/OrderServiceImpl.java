@@ -2,6 +2,7 @@ package com.mercadolibre.finalchallengedemo.service;
 
 import com.mercadolibre.finalchallengedemo.dtos.OrderRequestDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
+import com.mercadolibre.finalchallengedemo.exceptions.ForbiddenAccessException;
 import com.mercadolibre.finalchallengedemo.model.*;
 import com.mercadolibre.finalchallengedemo.model.DealerOrderEntity;
 import com.mercadolibre.finalchallengedemo.model.DealerOrderItems;
@@ -142,6 +143,15 @@ public class OrderServiceImpl implements IOrderService {
         response.setOrderNumberCE(queryArray[1] + "-" + queryArray[2]);
 
         return response;
+    }
+
+    @Override
+    public List<OrderDetailsDTO> getAllOrders() {
+        List<DealerOrderEntity> orderEntities = this.orderRepository.getAllOrders();
+        List<OrderDetailsDTO> ret = orderEntities.stream()
+                .map(order -> modelMapper.map(order, OrderDetailsDTO.class))
+                .collect(Collectors.toList());
+        return ret;
     }
 
 
