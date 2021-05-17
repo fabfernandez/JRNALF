@@ -3,12 +3,14 @@ package com.mercadolibre.finalchallengedemo.unit.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.finalchallengedemo.dtos.OrderRequestDTO;
+import com.mercadolibre.finalchallengedemo.dtos.PartDTO;
 import com.mercadolibre.finalchallengedemo.dtos.orderstatus.*;
 import com.mercadolibre.finalchallengedemo.model.*;
 import com.mercadolibre.finalchallengedemo.exceptions.*;
 import com.mercadolibre.finalchallengedemo.repository.*;
 import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import com.mercadolibre.finalchallengedemo.service.OrderServiceImpl;
+import org.hibernate.validator.constraints.Range;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -317,6 +319,18 @@ class OrderServiceImplTest {
         when(subsidiaryOrderRepository.findById(any())).thenReturn(Optional.of(orderEntity));
         Assertions.assertThrows(CanNotUpdateException.class, () -> orderService.updateOrder(1,'P'));
     }
+
+    @Test
+    @DisplayName("Req 6 test 1: get all orders OK")
+    void whenGetAllOrders_Ok() throws IOException {
+
+        when(this.orderRepository.getAllOrders()).thenReturn(dealerOrders);
+        List<DealerOrdersDTO> listica = getList("classpath:allOrders.json", DealerOrdersDTO.class);
+
+        Assertions.assertEquals(listica,orderService.getAllOrders());
+
+    }
+
 
 
 
