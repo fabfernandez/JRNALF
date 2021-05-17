@@ -28,7 +28,6 @@ public class OrderControllerTest {
     private static OrderServiceImpl orderService;
     private static OrderController orderController;
 
-
     @BeforeEach
     public void beforeEach() {
         openMocks(this);
@@ -56,7 +55,6 @@ public class OrderControllerTest {
         assertThrows(ForbiddenAccessException.class, () -> orderController.createOrder(new OrderRequestDTO()).getStatusCode());
     }
 
-
     @Test
     @DisplayName("When create order, then return ok response")
     void whenUpdateOrder_thenReturnOkResponse() {
@@ -66,7 +64,6 @@ public class OrderControllerTest {
         assertEquals(HttpStatus.OK, orderController.updateOrder(updateRequest).getStatusCode());
     }
 
-
     @Test
     @DisplayName("When create order, then return ok response")
     void whenUpdateOrderWithNonParentHouseUser_thenThrowException() {
@@ -74,8 +71,6 @@ public class OrderControllerTest {
         OrderUpdateRequestDTO updateRequest = new OrderUpdateRequestDTO(1,"F");
         assertThrows(ForbiddenAccessException.class, () -> orderController.updateOrder(updateRequest).getStatusCode());
     }
-
-
 
     private static <T> T getObject(String filePath, Class<?> target) {
         ObjectMapper objectMapper = new ObjectMapper();

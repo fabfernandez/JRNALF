@@ -32,7 +32,6 @@ public class PartControllerTest {
     @Mock
     private PartServiceImpl partService;
     private PartController partController;
-
     private Date pastDate;
 
     @BeforeEach
@@ -118,66 +117,6 @@ public class PartControllerTest {
         assertThrows(PartsNotFoundException.class,() -> partController.findPart(23423));
         verify(partService,times(1)).findPart(any());
     }
-/*
-    @Test
-    @DisplayName("R4: When save part, then return ok Response")
-    public void whenSavePart_thenReturnOkResponse() {
-        PartDTO part = new PartDTO();
-        part.setPartCode(1);
-        part.setDescription("test");
-        part.setLastModification("2000-01-01");
-        part.setLongDimension(11);
-        part.setNetWeight(11);
-        part.setNormalPrice(11D);
-        part.setTallDimension(11);
-        part.setWidthDimension(11);
-        part.setPartStatus("N");
-        DecodeToken.location = 1; //Authorized user
-        final ResponseEntity response = partController.savePart(part);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(partService,times(1)).savePart(any());
-    }
-
-    @Test
-    @DisplayName("R4: When save part, then return FORBIDDEN Response")
-    public void whenSavePart_thenReturnForbiddenResponse() {
-        PartDTO part = new PartDTO();
-        part.setPartCode(1);
-        part.setDescription("test");
-        part.setLastModification("2000-01-01");
-        part.setLongDimension(11);
-        part.setNetWeight(11);
-        part.setNormalPrice(11D);
-        part.setTallDimension(11);
-        part.setWidthDimension(11);
-        part.setPartStatus("N");
-        DecodeToken.location = 2; //Unauthorized token should fail
-        final ResponseEntity response = partController.savePart(part);
-
-        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
-        //verify(partService,times(1)).savePart(any());
-    }
-
-    @Test
-    @DisplayName("R4: When update part, then return ok Response")
-    public void whenUpdatePart_thenReturnOkResponse() {
-        PartDTO part = new PartDTO();
-        part.setPartCode(1);
-        part.setDescription("test");
-        part.setLastModification("2000-01-01");
-        part.setLongDimension(11);
-        part.setNetWeight(11);
-        part.setNormalPrice(11D);
-        part.setTallDimension(11);
-        part.setWidthDimension(11);
-
-        final ResponseEntity response = partController.update(part);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(partService,times(1)).savePart(any());
-    }
- */
 
     @Test
     @DisplayName("When delete part, then return ok Response")
@@ -185,9 +124,6 @@ public class PartControllerTest {
         assertEquals(HttpStatus.OK, partController.deletePart(2).getStatusCode());
         verify(partService,times(1)).deletePart(any());
     }
-
-
-
 
     private static <T> T getList(String filePath, Class<?> target) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -198,15 +134,4 @@ public class PartControllerTest {
         }
         return null;
     }
-
-    private static <T> T getObject(String filePath, Class<?> target) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(ResourceUtils.getFile(filePath), objectMapper .getTypeFactory().constructType(target));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 }
