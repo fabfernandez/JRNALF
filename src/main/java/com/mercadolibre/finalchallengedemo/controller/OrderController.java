@@ -52,4 +52,20 @@ public class OrderController {
             throw new ForbiddenAccessException("Only 'Casa Matriz' user allowed.");
         return ResponseEntity.ok(this.orderService.updateOrder(orderUpdate.getOrderNumber(),orderUpdate.getStatusCode().charAt(0)));
     }
+
+
+    /*
+    @PostMapping("/save")
+    public ResponseEntity saveOrder(@RequestBody OrderResponseDTO order){
+        orderService.saveOrder(order);
+        return ResponseEntity.ok("Order created.");
+    }*/
+
+    /*
+    @PutMapping("/update")
+    public ResponseEntity<String> updateOrder(@RequestBody OrderResponseDTO order){
+        orderService.saveOrder(order);
+        return ResponseEntity.ok("Order updated.");
+    }*/
+
 }
