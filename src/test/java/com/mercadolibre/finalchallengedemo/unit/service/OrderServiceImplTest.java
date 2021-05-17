@@ -299,7 +299,7 @@ class OrderServiceImplTest {
         when(subsidiaryOrderRepository.findById(any())).thenReturn(Optional.of(orderEntity));
         when(subsidiaryOrderRepository.save(any())).thenReturn(orderEntity);
         when(subsidiaryOrderItemRepository.save(any())).thenReturn(new SubsidiaryOrderItemsEntity());
-        String responseMsg = "Order no.14 status successfully updated to:    F";
+        String responseMsg = "Order no.14 status successfully updated to: F";
 
         Assertions.assertEquals(responseMsg,orderService.updateOrder(1,'F'));
 
