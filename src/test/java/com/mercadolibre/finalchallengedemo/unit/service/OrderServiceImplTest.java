@@ -208,14 +208,11 @@ class OrderServiceImplTest {
         DecodeToken.location = 1;
         OrderStatusResponseDTO resp2 = orderService.getOrdersFromDealersStatus(request);
 
-
         Assertions.assertEquals(response,resp2);
-
-
     }
 
     @Test
-    @DisplayName("When order number not found , throws exception.")
+    @DisplayName("When order number not found, throws exception.")
     void orderNotFound() {
 
         when(orderRepository.getOrder(any(), any()))
@@ -302,7 +299,7 @@ class OrderServiceImplTest {
         when(subsidiaryOrderRepository.findById(any())).thenReturn(Optional.of(orderEntity));
         when(subsidiaryOrderRepository.save(any())).thenReturn(orderEntity);
         when(subsidiaryOrderItemRepository.save(any())).thenReturn(new SubsidiaryOrderItemsEntity());
-        String responseMsg = "Order 14 status successfully updated to F";
+        String responseMsg = "Order no.14 status successfully updated to:    F";
 
         Assertions.assertEquals(responseMsg,orderService.updateOrder(1,'F'));
 
@@ -325,9 +322,9 @@ class OrderServiceImplTest {
     void whenGetAllOrders_Ok() throws IOException {
 
         when(this.orderRepository.getAllOrders()).thenReturn(dealerOrders);
-        List<DealerOrdersDTO> listica = getList("classpath:allOrders.json", DealerOrdersDTO.class);
+        List<DealerOrdersDTO> orders = getList("classpath:allOrders.json", DealerOrdersDTO.class);
 
-        Assertions.assertEquals(listica,orderService.getAllOrders());
+        Assertions.assertEquals(orders,orderService.getAllOrders());
 
     }
 

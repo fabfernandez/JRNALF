@@ -3,8 +3,8 @@
   "orders": [
     {
       "orderNumber": 3,
-      "orderDate": "2021-04-03T16:00:53Z",
-      "deliveryDate": "2021-05-03T16:00:53Z",
+      "orderDate": "2021-04-03",
+      "deliveryDate": "2021-05-03",
       "deliveryStatus": "F",
       "daysDelay": 3,
       "orderDetails": [
