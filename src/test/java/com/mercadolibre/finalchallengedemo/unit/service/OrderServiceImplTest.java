@@ -10,6 +10,7 @@ import com.mercadolibre.finalchallengedemo.exceptions.*;
 import com.mercadolibre.finalchallengedemo.repository.*;
 import com.mercadolibre.finalchallengedemo.security.DecodeToken;
 import com.mercadolibre.finalchallengedemo.service.OrderServiceImpl;
+import org.hibernate.validator.constraints.Range;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -322,21 +323,11 @@ class OrderServiceImplTest {
     @Test
     @DisplayName("Req 6 test 1: get all orders OK")
     void whenGetAllOrders_Ok() throws IOException {
-        ModelMapper mapper = new ModelMapper();
 
         when(this.orderRepository.getAllOrders()).thenReturn(dealerOrders);
-        List<OrderDetailsDTO> listica = dealerOrders.stream().map(order -> mapper.map(order,OrderDetailsDTO.class)).collect(Collectors.toList());
-        List<OrderDetailsDTO> orderDetailsDTOS = orderService.getAllOrders();
+        List<DealerOrdersDTO> listica = getList("classpath:allOrders.json", DealerOrdersDTO.class);
 
-        for (OrderDetailsDTO orderDetail:orderDetailsDTOS){
-            orderDetail.setDeliveryStatus(null);
-            List<OrderItemDTO> parts = orderDetail.getOrderDetails();
-            for (OrderItemDTO part: parts){
-                part.setDescription(null);
-            }
-        }
-        Assertions.assertEquals(listica,orderDetailsDTOS);
-
+        Assertions.assertEquals(listica,orderService.getAllOrders());
 
     }
 

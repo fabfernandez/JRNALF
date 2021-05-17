@@ -145,13 +145,15 @@ public class OrderServiceImpl implements IOrderService {
         return response;
     }
 
+    // req 6
     @Override
-    public List<OrderDetailsDTO> getAllOrders() {
+    public List<DealerOrdersDTO> getAllOrders() {
         List<DealerOrderEntity> orderEntities = this.orderRepository.getAllOrders();
-        List<OrderDetailsDTO> ret = orderEntities.stream()
-                .map(order -> modelMapper.map(order, OrderDetailsDTO.class))
-                .collect(Collectors.toList());
-        return ret;
+        List<DealerOrdersDTO> orderDetails = orderEntities.stream()
+                .map(orders -> modelMapper
+                .map(orders,DealerOrdersDTO.class)).collect(Collectors.toList());
+
+        return orderDetails;
     }
 
 

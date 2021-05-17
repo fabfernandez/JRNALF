@@ -45,8 +45,8 @@ public class OrderController {
         return ResponseEntity.ok(this.orderService.createOrder(order));
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<OrderDetailsDTO>> getAllOrders(){
+    @GetMapping("/dealers")
+    public ResponseEntity<List<DealerOrdersDTO>> getAllOrders(){
         if(DecodeToken.location != 1)
             throw new ForbiddenAccessException("'Only casa matriz users are allowed.");
         else

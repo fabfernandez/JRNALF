@@ -14,7 +14,7 @@ public interface IOrderService {
     public DealerOrderResponseDTO getOrders(String dealerNumber, String deliveryStatus, Integer country, Integer order);
     public OrderStatusResponseDTO getOrdersFromDealersStatus(OrderStatusQueryParamsDTO orderStatusCMDTO);
 
-    public List<OrderDetailsDTO> getAllOrders();
+    public List<DealerOrdersDTO> getAllOrders();
 
     OrderDetailsDTO createOrder(OrderRequestDTO order);
 
