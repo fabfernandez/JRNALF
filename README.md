@@ -4,28 +4,30 @@ Development of an API RESTful with the purpose of updating marketing processes a
 
 
 ## 🚀 Postman Collection
-
-- Import this collection into Postman.
-- Set environment variables.
-  - {{token}} - Leave empty.
-  - {{hostname}} : localhost:8080/ - or Fury URL.
-  
+Collection link:
 _https://www.getpostman.com/collections/50b92cd36c867030dd98_
 
-# To access the app it is necessary to authenticate.
+- Import this collection into Postman. 
+- Set environment variables IN POSTMAN.
+  - **token** : Leave empty, automatically fills with Bearer token after login.
+  - **hostname** : ```localhost:8080/``` - or Fury URL.
+  - (if you are consuming this api from its fury instance set **furytoken** )
+  
+- This collection includes login data to login as the "Casa Matriz" or a "Casa Central".
+  
+
+
+## To access the app it is necessary to authenticate.
 > **POST /api/v1/login**
+> 
+> This endpoint returns a JWT Bearer token in it's body
 
-_Request params:_ - (Needed to access)
+_Query parameters_
 
-- username
-- password
+* user
+* password
 
-_Query parameters example_
-
-* "user" : "gembleton0"
-* "password" : "*******"
-
-_Response body:_
+_Response body example:_
 
 ```json
 {
@@ -34,12 +36,15 @@ _Response body:_
 }
 ```
 
-### ⌨️ Application endpoints 
+### ⌨️ Application endpoints (Use Bearer Token to access these)
 
-### ml-parts-01
+ml-parts-01
+--------------
 > **GET /api/v1/parts/list**
 
-_You can get a list of all the parts._
+_List all the parts._
+
+Response body example:
 ```
 {
     "parts": [
@@ -77,9 +82,8 @@ _You can get a list of all the parts._
 }
 ```
 _It also has access through input parameters with the following filters:_
--if required date and qurytype are required.
 
-* queryType: 
+* queryType (required): 
   - P - Spare parts modified from the date of consultation to the current.
     - order:
       - 1 - Alphabetically ascending by description.
@@ -91,13 +95,17 @@ _It also has access through input parameters with the following filters:_
       - 2 - Alphabetically descending by description.
       - 3 - Alphabetically descending by last price modification.
   - C - Complete.
-* date: 01/01/2021 (dd/MM/yyyy)
+* date (required for P and V): 01/01/2021 (dd/MM/yyyy)
 
 
-### ml-parts-02
+ml-parts-02
+--------------
 > **GET api/v1/parts/orders?dealerNumber=3**
 
-_You can get a list of all orders through your number._
+_Get all orders from a specific dealer_
+______
+
+Response body example:
 ```
 {
     "dealerNumber": 3,
@@ -127,22 +135,27 @@ _You can get a list of all orders through your number._
     }
 }
 ```
-_It also has access through input parameters with the following filters:_
--if required dealer number are required.
+_Query params:_
 
-* dealerNumber: number.
-* deliveryStatus:
+
+* dealerNumber (required): number.
+* deliveryStatus (optional):
   - P - Pending delivery.
   - D - Delayed.
   - F - Finalized.
   - C - Cancelled.
-* order:
-  - 1 - sort in ascending order.
+* order (optional, sorts by order date):
+  - 1 - ascending order.
+  - 2 - descending order.
 
-### ml-parts-03
+ml-parts-03
+--------------
 > **GET api/v1/parts/orders/0000-0000-00000003**
 
-_You can get a list of all orders through your order number._
+_Get details from a specific order_
+___
+
+Response body example:
 
 ```json
 {
@@ -170,12 +183,15 @@ _You can get a list of all orders through your order number._
 }
 ```
 
-### ml-parts-04
+ ml-parts-04
+--------------
 > **POST api/v1/parts/**
 
-_You can add a part to stock through a payload in the body._
+_Add a part. Only accesible by "Casa Matriz"_
 
-_Request body:_ - (Needed to save)
+___
+
+_Request body example:_
 
 ```json
 {
@@ -201,12 +217,13 @@ _Response body:_
   Part saved.
 ```
 
-### ml-parts-05
-> **POST api/v1/parts/**
+ ml-parts-05
+--------------
+> **POST api/v1/parts/orders**
 
-_You, as a country central subsidiary, can make orders to the 'Casa Matriz' sending a payload through the body._
+_Make an order to the "Casa Matriz", only accesible by "Casas Centrales"._
 
-_Request body:_ - (Needed to make order)
+_Request body example:_
 
 ```json
 {
@@ -227,7 +244,7 @@ _Request body:_ - (Needed to make order)
 }
 ```
 
-_Response body:_
+_Response body example:_
 
 ```json
 {
@@ -252,12 +269,32 @@ _Response body:_
 }
 ```
 
-### ml-parts-06
+> **POST api/v1/parts/orders/update_status** 
+
+Update order status. Only accesible by "Casa Matriz".
+___
+Request Body example:
+```json
+{
+  "orderNumber": 10,
+  "statusCode" : "F"
+}
+```
+
+Response Body example:
+```json
+Order 10 status successfully updated to F
+```
+
+ml-parts-06
+--------------
 > **GET api/v1/parts/orders/dealers**
 
-_You can get a list order details._
+_Get all **dealer** orders._ Only accesible by "Casa Matriz".
 
-_Response body:_
+
+---
+_Response body example:_
 
 ```json
 [
@@ -303,33 +340,7 @@ _Response body:_
         ],
         "dealerId": 2,
         "subsidiaryId": 5
-    },
-    {
-        "orderNumber": 3,
-        "orderDate": "2021-04-03",
-        "orderStatus": "F",
-        "deliveryDate": "2021-05-03",
-        "daysDelay": 3,
-        "orderDetails": [
-            {
-                "partCode": 4,
-                "description": "Puerta delantera derecha",
-                "quantity": 4,
-                "accountType": "G",
-                "reason": "sin motivo"
-            },
-            {
-                "partCode": 5,
-                "description": "Puerta delantera izquierda",
-                "quantity": 2,
-                "accountType": "R",
-                "reason": "sin motivo"
-            }
-        ],
-        "dealerId": 3,
-        "subsidiaryId": 1
-    }
-]
+    }...
 ```
 
 ## 🛠️ Built with 
@@ -361,6 +372,6 @@ Project is under the Mercado Libre SRL License.
 * Tell others about this project. 📢
 * Invite a beer 🍺 or a coffee ☕ someone from the team.
 * Give thanks publicly 🤓.
-* etc.
+
 
 ---
