@@ -1,68 +1,377 @@
-# finalchallengedemo
+# Final Challenge Demo
 
-# Spring Boot App model for Java 11
+Development of an API RESTful with the purpose of updating marketing processes and the requirements imposed by the international company "Delux", dedicated to the distribution of luxury vehicles, buses, trucks and their respective spare parts. This company has its headquarters in Brazil, and has different headquarters in different countries.
 
-We provide a basic model for JDK 11 / Spring based web applications.
 
-Please address any questions and comments to [Fury Issue Tracker](https://github.com/mercadolibre/fury/issues).
+## 🚀 Postman Collection
+Collection link:
+_https://www.getpostman.com/collections/50b92cd36c867030dd98_
 
-## Usage
+- Import this collection into Postman. 
+- Set environment variables IN POSTMAN.
+  - **token** : Leave empty, automatically fills with Bearer token after login.
+  - **hostname** : ```localhost:8080/``` - or Fury URL.
+  - (if you are consuming this api from its fury instance set **furytoken** )
+  
+- This collection includes login data to login as the "Casa Matriz" or a "Casa Central".
+  
 
-### SCOPE
 
-The suffix of each Fury **SCOPE** is used to know which properties file to use, it is identified from the last '-' of the name of the scope.
+## To access the app it is necessary to authenticate.
+> **POST /api/v1/login**
+> 
+> This endpoint returns a JWT Bearer token in it's body
 
-If you want to run the application from your development IDE, you need to configure the environment variable **SCOPE=local** in the app luncher.
+_Query parameters_
 
-The properties of **application.yml** are always loaded and at the same time they are complemented with **application-<SCOPE_SUFFIX>.yml** properties. If a property is in both files, the one that is configured in **application-<SCOPE_SUFFIX>.yml** has preference over the property of **application.yml**.
+* user
+* password
 
-For example, for the **SCOPE** 'items-loader-test' the **SCOPE_SUFFIX** would be 'test' and the loaded property files will be **application.yml** and **application-test.yml**
+_Response body example:_
 
-### Web Server
-
-Each Spring Boot web application includes an embedded web server. For servlet stack applications, Its supports three web Servers:
-  * Tomcat (maven dependency: `spring-boot-starter-tomcat`)
-  * Jetty (maven dependency: `spring-boot-starter-jetty`)
-  * Undertow (maven dependency: `spring-boot-starter-undertow`)
-
-This project is configured with Jetty, but to exchange WebServer, it is enough to configure the dependencies mentioned above in the pom.xml file.
-
-### Main
-
-The main class for this app is Application, where Spring context is initialized and SCOPE_SUFFIX is generated.
-
-### Error Handling
-
-We also provide basic handling for exceptions in ControllerExceptionHandler class.
-
-## Api Documentation
-
-This project uses Springfox to automate the generation of machine and human readable specifications for JSON APIs written using Spring. Springfox works by examining an application, once, at runtime to infer API semantics based on spring configurations, class structure and various compile time java Annotations.
-
-You can change this configuration in SpringfoxConfig class.
-
-## [Release Process](https://release-process.furycloud.io/#/)
-
-### Usage
-
-1. Specify the correct tag for your app in your `Dockerfile` and `Dockerfile.runtime`, according to the desired Java runtime version.
-
-```
-# Dockerfile
-FROM hub.furycloud.io/mercadolibre/java:1.11-mini
+```json
+{
+  "user": "gembleton0",
+  "token": "6GllcyI6WyIxIl0sImlhdCITk5NywiZXhwIjoxNjIxODg5OTk3fQ.GHxo79uiFTwI0yQ33GCUbB..."
+}
 ```
 
-You can find all available tags for your `Dockerfile` [here](https://github.com/mercadolibre/fury_java-mini#supported-tags)
+### ⌨️ Application endpoints (Use Bearer Token to access these)
+
+ml-parts-01
+--------------
+> **GET /api/v1/parts/list**
+
+_List all the parts._
+
+Response body example:
+```
+{
+    "parts": [
+        {
+            "partCode": 1,
+            "description": "Llanta",
+            "maker": "Fiat",
+            "quantity": 12,
+            "discountType": "AA",
+            "widthDimension": 100,
+            "tallDimension": 100,
+            "longDimension": 100,
+            "netWeight": 100,
+            "normalPrice": 762.0,
+            "urgentPrice": 900.0,
+            "lastModification": "2021-03-02",
+            "partStatus": "N"
+        },
+        {
+            "partCode": 2,
+            "description": "Puerta trasera derecha",
+            "maker": "Fiat",
+            "quantity": 5,
+            "discountType": "AA",
+            "widthDimension": 30,
+            "tallDimension": 40,
+            "longDimension": 30,
+            "netWeight": 40,
+            "normalPrice": 862.0,
+            "urgentPrice": 900.0,
+            "lastModification": "2021-03-02",
+            "partStatus": "N"
+        },
+    ]
+}
+```
+_It also has access through input parameters with the following filters:_
+
+* queryType (required): 
+  - P - Spare parts modified from the date of consultation to the current.
+    - order:
+      - 1 - Alphabetically ascending by description.
+      - 2 - Alphabetically descending by description.
+      - 3 - Alphabetically descending by last modification.
+  - V - Spare parts that varied in price from the consultation date to the current one.
+    - order:
+      - 1 - Alphabetically ascending by description.
+      - 2 - Alphabetically descending by description.
+      - 3 - Alphabetically descending by last price modification.
+  - C - Complete.
+* date (required for P and V): 01/01/2021 (dd/MM/yyyy)
+
+
+ml-parts-02
+--------------
+> **GET api/v1/parts/orders?dealerNumber=3**
+
+_Get all orders from a specific dealer_
+______
+
+Response body example:
+```
+{
+    "dealerNumber": 3,
+    "orders": [
+        {
+            "orderNumber": 3,
+            "orderDate": "2021-04-03",
+            "deliveryDate": "2021-05-03",
+            "daysDelay": 3,
+            "deliveryStatus": "F",
+            "orderDetails": [
+                {
+                    "partCode": 4,
+                    "description": "Puerta delantera derecha",
+                    "quantity": 4,
+                    "accountType": "G",
+                    "reason": "sin motivo"
+                },
+                {
+                    "partCode": 5,
+                    "description": "Puerta delantera izquierda",
+                    "quantity": 2,
+                    "accountType": "R",
+                    "reason": "sin motivo"
+                }
+            ]
+    }
+}
+```
+_Query params:_
+
+
+* dealerNumber (required): number.
+* deliveryStatus (optional):
+  - P - Pending delivery.
+  - D - Delayed.
+  - F - Finalized.
+  - C - Cancelled.
+* order (optional, sorts by order date):
+  - 1 - ascending order.
+  - 2 - descending order.
+
+ml-parts-03
+--------------
+> **GET api/v1/parts/orders/0000-0000-00000003**
+
+_Get details from a specific order_
+___
+
+Response body example:
+
+```json
+{
+    "orderNumberCE": "0000-00000003",
+    "orderDate": "2021-04-03",
+    "orderStatus": "F",
+    "orderDetails": [
+        {
+            "partCode": 5,
+            "description": "Puerta delantera izquierda",
+            "quantity": 2,
+            "accountType": "R",
+            "reason": "sin motivo",
+            "partStatus": "N"
+        },
+        {
+            "partCode": 4,
+            "description": "Puerta delantera derecha",
+            "quantity": 4,
+            "accountType": "G",
+            "reason": "sin motivo",
+            "partStatus": "N"
+        }
+    ]
+}
+```
+
+ ml-parts-04
+--------------
+> **POST api/v1/parts/**
+
+_Add a part. Only accesible by "Casa Matriz"_
+
+___
+
+_Request body example:_
+
+```json
+{
+  "partCode": 123,
+  "description": "Test part entity",
+  "discountType": "A00",
+  "normalPrice": 762,
+  "quantity": 45,
+  "urgentPrice": 900,
+  "netWeight": 100,
+  "longDimension": 100,
+  "widthDimension": 100,
+  "tallDimension": 100,
+  "maker": "new part entity",
+  "lastModification": "2021-03-02",
+  "partStatus": "N"
+}
+```
+
+_Response body:_
 
 ```
-# Dockerfile.runtime
-FROM hub.furycloud.io/mercadolibre/java:1.11-runtime-mini
+  Part saved.
 ```
 
-You can find all available tags for your `Dockerfile.runtime` [here](https://github.com/mercadolibre/fury_java-mini-runtime#supported-tags)
+ ml-parts-05
+--------------
+> **POST api/v1/parts/orders**
 
-2. Start coding!
+_Make an order to the "Casa Matriz", only accesible by "Casas Centrales"._
 
-### Questions
+_Request body example:_
 
-[Release Process Issue Tracker](https://github.com/mercadolibre/fury_release-process/issues)
+```json
+{
+    "orderDetails": [
+        {
+            "partCode": 3,
+            "description": "Puerta delantera derecha",
+            "quantity": 1,
+            "accountType": "G"
+        },
+        {
+            "partCode": 2,
+            "description": "Puerta delantera izquierda",
+            "quantity": 1,
+            "accountType": "Z"
+        }
+    ]
+}
+```
+
+_Response body example:_
+
+```json
+{
+  "orderNumber": 10,
+  "orderDate": "2021-05-18",
+  "deliveryDate": "2021-05-25",
+  "daysDelay": 0,
+  "orderDetails": [
+    {
+      "partCode": 3,
+      "quantity": 1,
+      "accountType": "G",
+      "reason": "Sin motivo"
+    },
+    {
+      "partCode": 2,
+      "quantity": 1,
+      "accountType": "Z",
+      "reason": "Sin motivo"
+    }
+  ]
+}
+```
+
+> **POST api/v1/parts/orders/update_status** 
+
+Update order status. Only accesible by "Casa Matriz".
+___
+Request Body example:
+```json
+{
+  "orderNumber": 10,
+  "statusCode" : "F"
+}
+```
+
+Response Body example:
+```json
+Order 10 status successfully updated to F
+```
+
+ml-parts-06
+--------------
+> **GET api/v1/parts/orders/dealers**
+
+_Get all **dealer** orders._ Only accesible by "Casa Matriz".
+
+
+---
+_Response body example:_
+
+```json
+[
+    {
+        "orderNumber": 1,
+        "orderDate": "2021-04-30",
+        "orderStatus": "P",
+        "deliveryDate": "2021-05-15",
+        "daysDelay": 0,
+        "orderDetails": [
+            {
+                "partCode": 1,
+                "description": "Llanta",
+                "quantity": 2,
+                "accountType": "G",
+                "reason": "sin motivo"
+            }
+        ],
+        "dealerId": 7,
+        "subsidiaryId": 5
+    },
+    {
+        "orderNumber": 2,
+        "orderDate": "2020-09-15",
+        "orderStatus": "D",
+        "deliveryDate": "2020-09-20",
+        "daysDelay": 0,
+        "orderDetails": [
+            {
+                "partCode": 2,
+                "description": "Puerta trasera derecha",
+                "quantity": 2,
+                "accountType": "R",
+                "reason": "sin motivo"
+            },
+            {
+                "partCode": 3,
+                "description": "Puerta trasera izquierda",
+                "quantity": 1,
+                "accountType": "G",
+                "reason": "sin motivo"
+            }
+        ],
+        "dealerId": 2,
+        "subsidiaryId": 5
+    }...
+```
+
+## 🛠️ Built with 
+
+_The tools used to carry out the project were:_
+
+* [SPRING-BOOT](https://spring.io/projects/spring-boot) - The framework used.
+* [Maven](https://maven.apache.org/) - Dependency manager.
+* [JWT](https://jwt.io/) - Authentication methods.
+* [Swagger](https://swagger.io/) - Project documentation.
+
+## ✒️ Authors 
+
+_This project was carried out by the collaboration of:_
+
+* **Romy Caicedo Molano** - [romycaicedo](https://github.com/romycaicedo)
+* **Fabrizio Fernandez** - [fabfernandez](https://github.com/fabfernandez)
+* **Juan Ignacio Aguirre** - [juan-aguirre-ml](https://github.com/juan-aguirre-ml)
+* **Lucas Martin Klassen** - [klassenlucas](https://github.com/klassenlucas)
+* **Nicolas Martin Sogliano Suarez** - [sogliano](https://github.com/sogliano)
+* **Alexis Gabriel Barrientos** - [alebarrientos](https://github.com/alebarrientos)
+
+## 📄 License 
+
+Project is under the Mercado Libre SRL License.
+
+## 🎁 Expressions of Gratitude 
+
+* Tell others about this project. 📢
+* Invite a beer 🍺 or a coffee ☕ someone from the team.
+* Give thanks publicly 🤓.
+
+
+---

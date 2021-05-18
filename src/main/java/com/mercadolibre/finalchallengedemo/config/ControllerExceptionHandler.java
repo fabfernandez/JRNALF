@@ -1,16 +1,20 @@
 package com.mercadolibre.finalchallengedemo.config;
 
-import com.mercadolibre.finalchallengedemo.exceptions.ApiError;
-import com.mercadolibre.finalchallengedemo.exceptions.ApiException;
+import com.mercadolibre.finalchallengedemo.exceptions.*;
 import com.newrelic.api.agent.NewRelic;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -47,5 +51,60 @@ public class ControllerExceptionHandler {
 		ApiError apiError = new ApiError("internal_error", "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR.value());
 		return ResponseEntity.status(apiError.getStatus())
 				.body(apiError);
+	}
+
+	@ExceptionHandler(InvalidPartFilterException.class)
+	public ResponseEntity handleInvalidDateException(InvalidPartFilterException e) {
+		return handle(HttpStatus.BAD_REQUEST,e.getMessage());
+	}
+
+	@ExceptionHandler(PartsNotFoundException.class)
+	public ResponseEntity handlePartsNotFoundedException(PartsNotFoundException e) {
+		return handle(HttpStatus.NOT_FOUND,e.getMessage());
+	}
+
+	@ExceptionHandler(ForbiddenAccessException.class)
+	public ResponseEntity handleForbiddenAccess(ForbiddenAccessException e) {
+		return handle(HttpStatus.FORBIDDEN,e.getMessage());
+	}
+
+	@ExceptionHandler(CanNotUpdateException.class)
+	public ResponseEntity handleCanNotUpdateException(CanNotUpdateException e) {
+		return handle(HttpStatus.BAD_REQUEST,e.getMessage());
+	}
+
+	@ExceptionHandler(OrderNotFoundException.class)
+	public ResponseEntity handleCanNotUpdateException(OrderNotFoundException e) {
+		return handle(HttpStatus.NOT_FOUND,e.getMessage());
+	}
+
+	@ExceptionHandler(NoStockException.class)
+	public ResponseEntity handleNoStockException(NoStockException e) {
+		return handle(HttpStatus.BAD_REQUEST,e.getMessage());
+	}
+
+	@ExceptionHandler(BindException.class)
+	public ResponseEntity<ApiError> onMethodArgumentNotValidException(BindException ex) {
+		return getResponseEntity(ex);
+	}
+
+	private ResponseEntity<ApiError> getResponseEntity(BindException ex) {
+		Map<String, String> errors = new LinkedHashMap<>();
+		ex.getBindingResult().getAllErrors().forEach((error) -> {
+			String fieldName = ((FieldError) error).getField();
+			String errorMessage = error.getDefaultMessage();
+			errors.put(fieldName, errorMessage);
+		});
+
+		ApiError apiError = new ApiError("BAD_REQUEST", errors.toString(), HttpStatus.BAD_REQUEST.value());
+		return ResponseEntity.status(apiError.getStatus()).body(apiError);
+	}
+
+	private ResponseEntity<ApiError> handle(HttpStatus status, String message) {
+		return new ResponseEntity<>(new ApiError(status.toString(), message, status.value() ), status);
+	}
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity userNotFoundException(UserNotFoundException e) {
+		return handle(HttpStatus.NOT_FOUND,e.getMessage());
 	}
 }
