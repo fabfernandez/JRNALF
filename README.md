@@ -2,6 +2,13 @@
 
 Development of an API RESTful with the purpose of updating marketing processes and the requirements imposed by the international company "Delux", dedicated to the distribution of luxury vehicles, buses, trucks and their respective spare parts. This company has its headquarters in Brazil, and has different headquarters in different countries.
 
+##🐙 GIT BRANCH
+- Use master.
+
+## 💿 DATABASE
+- MySQL has to be installed and running.
+- Execute **/db/scriptsSQL/db.sql** - [db.sql](../db/scriptsSQL/db.sql)
+- Update the file **application-local-yml** with your database credentials.
 
 ## 🚀 Postman Collection
 Collection link:
@@ -11,13 +18,13 @@ _https://www.getpostman.com/collections/50b92cd36c867030dd98_
 - Set environment variables IN POSTMAN.
   - **token** : Leave empty, automatically fills with Bearer token after login.
   - **hostname** : ```localhost:8080/``` - or Fury URL.
-  - (if you are consuming this api from its fury instance set **furytoken** )
+  - (if you are hitting the fury instance set **furytoken** )
   
 - This collection includes login data to login as the "Casa Matriz" or a "Casa Central".
   
 
 
-## To access the app it is necessary to authenticate.
+## 📒 To access the app it is necessary to authenticate.
 > **POST /api/v1/login**
 > 
 > This endpoint returns a JWT Bearer token in it's body
@@ -36,7 +43,8 @@ _Response body example:_
 }
 ```
 
-### ⌨️ Application endpoints (Use Bearer Token to access these)
+# ⌨️ Application endpoints 
+###(Use Bearer Token to access these)
 
 ml-parts-01
 --------------
